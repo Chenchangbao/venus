@@ -1,0 +1,125 @@
+.square{
+    width:3px;
+    height:13px;
+    background-color:black;
+    display:inline-block;
+    margin-right:10px;
+}
+.h4-style{
+    margin-left: 15px;
+}
+.widthControl{
+    width: 900px;
+}
+.error{
+    color: red;
+}
+.red{
+    color: red;
+    padding-right: 5px;
+}
+.line-distance{
+    margin-bottom: 10px;
+}
+.label-style{
+    width: 11%;
+    text-align: right;
+}
+.square{
+    width:3px;
+    height:13px;
+    background-color:black;
+    display:inline-block;
+    margin-right:10px;
+}
+textarea{
+    resize:none;
+}
+.error {
+color: #f60;
+}
+.success {
+color: #78be25;
+}
+.small-i {
+margin-top: 3px;
+}
+.nextStep{
+    margin-left: 166px;
+}
+.cancel{
+    margin-left: 50px;
+}
+.button-sty{
+    margin-top: 20px;
+}
+    
+
+
+.table-body {
+    padding: 10px 0
+}
+
+.sn-table {
+    border: 1px solid #e0e0e0;
+    width: 100%;
+    border-collapse: collapse
+}
+
+.sn-table th {
+    font-size: 14px;
+    color: #000;
+    font-weight: 700
+}
+
+.sn-table td,
+.sn-table th {
+    border: 1px solid #e0e0e0;
+    height: 38px;
+    text-align: center
+}
+
+.sn-table td {
+    /*font-size: 12px;*/
+    color: #333;
+    padding: 6px 0
+}
+
+.sn-table td a {
+    color: #3a8cbb;
+    margin: 0 10px;
+    cursor: pointer
+}
+
+
+.sn-table tr:nth-child(odd) {
+    background-color: #f0f2f5
+}
+
+.sn-table tr:first-child {
+    background-color: #eaedf1
+}
+
+.sn-table-btn-group {
+    width: 35%
+}
+
+.sn-table-pager {
+    width: 65%
+}
+
+.sn-table-pager ul {
+    margin: 0
+}
+
+.table-text {
+    margin-top: 10px;
+    font-size: 12px;
+    color: #333
+}
+
+.table-text a {
+    margin-left: 20px;
+    color: #3a8cbb;
+    cursor: pointer
+}

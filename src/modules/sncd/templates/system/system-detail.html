@@ -1,0 +1,207 @@
+<!-- <div class="row"> -->
+<!-- 	<div class="col-md-4"> -->
+<div class="panel panel-default">
+	
+	<div class="panel-body">
+		<div class="col-md-4">
+			<div echarts="option" class="chart pieSize"></div>
+			<div class="description row no-padding">
+					<div class="col-md-4 no-padding">
+							<div class="textcenter">
+								  <span class="testing">●</span>
+									<label class="font12">测试中：</label>
+									<a ui-sref="VersionProcess({sysId:sys.sysId,status:'0591'})" class="font12">{{testing}}个</a>
+									<!--<span class="font12">{{testing}}个</span>-->
+							</div>
+					</div>   
+					<div class="col-md-4 no-padding">
+							<div class="textcenter">
+								  <span class="developing">●</span>
+									<label class="font12">开发中：</label>
+									<a ui-sref="VersionProcess({sysId:sys.sysId,status:'059'})" class="font12">{{developing}}个</a>
+							</div>
+					</div>  
+					<div class="col-md-4 no-padding">
+							<div class="textcenter">
+								  <span class="closed">●</span>
+									<label class="font12">已封版：</label>
+									<a ui-sref="VersionProcess({sysId:sys.sysId,status:'060'})" class="font12">{{closed}}个</a>
+							</div>
+					</div>  
+			</div>
+		</div>
+		<div class="col-md-8 formBox no-padding">
+			<div class="col-md-6 form-group">
+				<label class="col-md-4 control-label">一级中心：</label>
+				<label class="col-md-8 control-label text-left">{{system.orgName}}</label>
+			</div>
+			<div class="col-md-6 form-group">
+				<label class="col-md-4 control-label">技术总监：</label>
+				<label class="col-md-8 control-label text-left">{{system.techChief}}</label>
+			</div>
+			<div class="col-md-6 form-group">
+				<label class="col-md-4 control-label">系统中文名：</label>
+				<label class="col-md-8 control-label text-left">{{system.sysCnname}}</label>
+			</div>
+			<div class="col-md-6 form-group">
+				<label class="col-md-4 control-label">产品总监：</label>
+				<label class="col-md-8 control-label text-left">{{system.prdChief}}</label>
+			</div>
+			<div class="col-md-6 form-group">
+				<label class="col-md-4 control-label">系统英文名：</label>
+				<label class="col-md-8 control-label text-left">{{system.sysEnname}}</label>
+			</div>
+			<div class="col-md-6 form-group">
+				<label class="col-md-4 control-label">技术负责人：</label>
+				<label class="col-md-8 control-label text-left">{{system.techManager}}</label>
+			</div>
+			<div class="col-md-6 form-group">
+				<label class="col-md-4 control-label">系统简称：</label>
+				<label ng-if="system.sysParentid == null || (system.sysParentid !=null && system.sysParentid =='0'  )" class="col-md-8 control-label text-left">{{system.sysName}}</label>
+				<label ng-if="system.sysParentid!=null && system.sysParentid !='0'" class="col-md-8 control-label text-left">{{system.sysParentName}}</label>
+			</div>
+			<div class="col-md-6 form-group">
+				<label class="col-md-4 control-label">产品负责人：</label>
+				<label class="col-md-8 control-label text-left">{{system.prdManager}}</label>
+			</div>
+			<div class="col-md-6 form-group">
+				<label class="col-md-4 control-label">运行状态：</label>
+				<label class="col-md-8 control-label text-left">{{system.sysStat | sysStatusFilter}}</label>
+			</div>
+			<div class="col-md-6 form-group">
+				<label class="col-md-4 control-label">系统等级：</label>
+				<label class="col-md-8 control-label text-left">{{system.systemGrade}}</label>
+			</div>
+			<div class="col-md-6 form-group">
+				<label class="col-md-4 control-label">创建时间：</label>
+				<label class="col-md-8 control-label text-left">{{system.createTime  | date:'yyyy-MM-dd HH:mm:ss'}}</label>
+			</div>
+			<div class="col-md-6 form-group">
+				<label class="col-md-4 control-label"><i class="fu fu-question-circle-o" ng-click="changeSysTypeNotice()"></i>系统类型：</label>
+				<label ng-if="type != 'edit'" class="col-md-5 control-label text-left">{{system.sysType |sysTypeFilter}}</label>
+				<a href="" ng-if="hasPermissionMap[sys.sysId]['7003'] && type != 'edit'" class="col-md-3" ng-click="editSystem();">修改</a>
+				<select ng-if="type == 'edit'" class="form-control col-md-6" ng-model="system.sysType" style="margin-right:4px;">
+						<option value="">请选择</option>
+						<option value="{{type}}" ng-selected="type == system.sysType" ng-repeat="type in sysTypelist">{{type |sysTypeFilter}}</option>
+					</select>
+				<a href="" ng-if="type == 'edit'" class="aleft" ng-click="exitEdit();">取消</a>
+				<a href="" ng-if="type == 'edit'" ng-click="updateSystem();">保存</a>
+			</div>
+			<div class="col-md-6 form-group">
+				<label class="col-md-4 control-label">更新时间：</label>
+				<label class="col-md-8 control-label text-left">{{system.updateTime  | date:'yyyy-MM-dd HH:mm:ss'}}</label>
+			</div>
+			<div class="col-md-6 form-group">
+				<label class="col-md-4 control-label">系统管理员：</label>
+				<label ng-if="cmo != 'edit'" class="col-md-5 control-label text-left">{{system.sysCmo}}</label>
+				<a ng-if="hasPermissionMap[sys.sysId]['7003'] && cmo != 'edit'" href="" class="col-md-3" ng-click="editSystemCmo();">修改</a>
+				<div class="col-md-8" style="margin-top:-20px;margin-left:-25px;">
+					<div class="form-group" ng-repeat="userL in userLable" ng-if="cmo == 'edit'">
+			          <label for="user" >{{userL.name}}</label>
+				      <div class="log-user-select"  >
+				        <input type="input" class="form-control" autocomplete="off"  disableautocomplete id="user" ng-model="userL.model.value" data-toggle="dropdown" required="required" aria-haspopup="true" aria-expanded="true" ng-change="queryByUser($index)" placeholder="请输入系统管理员" ng-blur="getUser($index)" style="width:136px;">
+				        <span class="glyphicon glyphicon-chevron-down form-control-feedback" style="display:none;" aria-hidden="true"></span>
+				        <ul class="dropdown-menu" aria-labelledby="user" style="overflow:hidden;width:150px;" >
+				          <li ng-repeat="user in userList|filterEmpty:userL.model.value|filter:userL.model.value|numberLimit:20">
+				            <a href="" ng-mousedown="selectUser(user,$parent.$index)" sn-tooltip='{{user}}' ng-show="user.length > 35">{{user.substring(0,35)+'...'}}</a>
+				            <a href="" ng-mousedown="selectUser(user,$parent.$index)" ng-show="user.length <= 35">{{user}}</a>
+				          </li>
+				          <li></li>
+				        </ul>
+						<a href="" ng-if="cmo == 'edit'" class="aleft" ng-click="exitEditCmo();">取消</a>
+						<a href="" ng-if="cmo == 'edit'" ng-click="updateSystemManager();">保存</a>
+				      </div>
+					  	
+			      	</div>
+					
+				
+					
+					<!--<label class="col-md-4 control-label text-right"></label>
+					<label class="col-md-8 control-label text-left"></label>-->
+				</div>
+			</div>
+			
+			<div class="col-md-12 form-group border-line">
+
+			</div>
+			<div class="col-md-6 form-group">
+				<label class="col-md-4 control-label text-right">ITP主Code：</label>
+				<label class="col-md-8 control-label text-left">{{system.mainSystemUid}}</label>
+			</div>
+			<div class="col-md-6 form-group">
+				<label class="col-md-4 control-label text-right">ITPcode：</label>
+				<label class="col-md-8 control-label text-left">{{system.sysItpCode}}</label>
+			</div>
+		</div>
+	</div>
+</div>
+	<div ng-if="sys.sysType=='1'">
+<h3>该系统是sap系统，新版暂不支持相关操作，请	<a ng-href="newSystem/sapSystemDetailInfo.htm?sysId={{sys.sysId}}">点击此处</a>跳转至旧版进行相关操作！</h3></a>
+	</div>
+<div class="panel panel-default" ng-if="sys.sysType!='1'">
+	<div class="panel-heading heading2">
+		<h1 class="panel-title">版本信息</h1>
+	</div>
+	<a href="" ng-if="sys.sysType!=null && sys.sysType!='' && repos!=null" class="createtitle" ui-sref="CreateVersion({sysId:sys.sysId,tab:'CreateVersion'})">+创建版本</a>
+	<!--<button type="submit" class="btn btn-default buttonRight" ui-sref="CreateVersion({sysId:sys.sysId,tab:'CreateVersion'})">创建版本</button>-->
+	<div class="content">
+		<table class="table table-bordered table-hover" style="border-collapse:collapse;">
+			<tbody>
+				<tr>
+					<td>版本</td>
+					<td>路径</td>
+					<!--<td>分支CMO</td>-->
+					<td width="10%" style="text-align:left;">状态
+							<div class="btn-group" sn-dropdown>
+									<button type="button" class="btn btn-xs dropdown-toggle list-filter">
+											{{formData.selectedStatus.name}}<span class="caret"></span>
+									</button>
+									<ul class="dropdown-menu dropdown-menu-extra">
+											<li ng-repeat="status in statusList" ng-click="statusFilter(status)">
+													<a href="javascript:void(0);">
+															{{status.name}}
+													</a>
+											</li>
+									</ul>
+							</div>
+					</td>
+					<td>版本质量报告</td>
+				</tr>
+				<tr ng-repeat="version in versionList">
+					<td> <a ui-sref="VersionDetail({sysId:sysId,versionId:version.branchId})">{{version.branchName}}[{{version.version}}]</a></td>
+					<td>{{version.branchUrl}}<button class="btn btn-default" clip-copy="version.branchUrl" clip-click="doSomething()" style="margin-left:10px">复制</button></td>
+					<!--<td>{{version.techManager}}</td>-->
+					<td>{{version.status | versionStatusFilter}}</td>
+					<td>
+						<a href="angular/quality/versionQualityReport.htm?sysId={{version.sysId}}&versionId={{version.branchId}}" target="_blank">查看</a>
+						<!--<a href="" ui-sref="VersionReport({sysId:version.sysId,versionId:version.branchId,vtab:'VersionReport'})">查看</a>-->
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<footer class="ft-pager clearfix" style="margin-right:15px;">
+		<div sn-pager itemsPerPage="{{pager.pageSize}}" totalItems="{{pager.totalCount}}" listSize="{{pager.pageSize}}" class="text-right">
+		</div>
+	</footer>
+</div>
+<!-- 	</div> -->
+
+<!-- 	<div class="col-md-4"> -->
+<!-- 		<div class="panel panel-default"> -->
+<!-- 			<div class="panel-heading"> -->
+<!-- 				<h1 class="panel-title">配置信息</h1> -->
+<!-- 			</div> -->
+<!-- 			<div class="panel-body"> -->
+<!-- 				<table class="table table-bordered table-hover"> -->
+<!-- 					<tbody> -->
+<!-- 						<tr> -->
+<!-- 							<td>技术框架：</td> -->
+<!-- 							<td>{{system.devFw | devFwFilter}}</td> -->
+<!-- 						</tr> -->
+<!-- 					</tbody> -->
+<!-- 				</table> -->
+<!-- 			</div> -->
+<!-- 		</div> -->
+<!-- 	</div> -->
+<!-- </div> -->

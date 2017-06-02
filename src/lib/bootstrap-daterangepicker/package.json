@@ -1,0 +1,65 @@
+{
+    "name": "bootstrap-daterangepicker",
+    "version": "2.1.22",
+    "description": "Date range picker component for Bootstrap",
+    "main": "daterangepicker.js",
+    "style": "daterangepicker.css",
+    "scripts": {
+        "scss": "node-sass daterangepicker.scss > daterangepicker.css",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/dangrossman/bootstrap-daterangepicker.git"
+    },
+    "author": {
+        "name": "Dan Grossman",
+        "email": "dan@dangrossman.info",
+        "url": "http://www.dangrossman.info"
+    },
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/dangrossman/bootstrap-daterangepicker/issues"
+    },
+    "homepage": "https://github.com/dangrossman/bootstrap-daterangepicker",
+    "dependencies": {
+        "jquery": ">=1.10",
+        "moment": "^2.9.0"
+    },
+    "devDependencies": {
+        "node-sass": "^3.4.2"
+    },
+    "gitHead": "7e46da4e92214d97fbb822258bd8c1a83136d4de",
+    "_id": "bootstrap-daterangepicker@2.1.22",
+    "_shasum": "6203407ff3da0ccf118bfb86f00d9e900e345420",
+    "_from": "bootstrap-daterangepicker@>=2.1.18 <3.0.0",
+    "_npmVersion": "1.4.12",
+    "_npmUser": {
+        "name": "dangrossman",
+        "email": "dan@dangrossman.info"
+    },
+    "maintainers": [
+        {
+            "name": "g0blin",
+            "email": "seidrhrafn@gmail.com"
+        },
+        {
+            "name": "vperron",
+            "email": "victor@iso3103.net"
+        },
+        {
+            "name": "dangrossman",
+            "email": "dan@dangrossman.info"
+        }
+    ],
+    "dist": {
+        "shasum": "6203407ff3da0ccf118bfb86f00d9e900e345420",
+        "tarball": "https://registry.npmjs.org/bootstrap-daterangepicker/-/bootstrap-daterangepicker-2.1.22.tgz"
+    },
+    "_npmOperationalInternal": {
+        "host": "packages-12-west.internal.npmjs.com",
+        "tmp": "tmp/bootstrap-daterangepicker-2.1.22.tgz_1466080412923_0.12847034563310444"
+    },
+    "directories": {},
+    "_resolved": "https://registry.npmjs.org/bootstrap-daterangepicker/-/bootstrap-daterangepicker-2.1.22.tgz"
+}

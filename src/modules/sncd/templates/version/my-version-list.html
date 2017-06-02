@@ -1,0 +1,251 @@
+  <!--<div class="module-head paneltitle">
+    <div class="module-info">
+        <p class="title titlefont" ng-if="type=='1'"> 进行中版本</p>
+        <p class="title titlefont" ng-if="type=='2'">已结束版本</p>
+        <p class="sub-title titlecolor" ng-if="type=='1'">展示用户当前正在进行中的版本,包含开发中，测试中，已封版</p>
+        <p class="sub-title titlecolor" ng-if="type=='2'">展示关闭的版本，包含已合并及已废弃</p>
+    </div>
+  </div>-->
+    
+
+
+   
+        <!-- <div class="panel-heading">
+            <p class="panel-title link-cursor" ui-sref="SystemInfo({sysId:version.sysId})" >{{version.sysCnname}}({{version.sysName}}) <span class="pull-right">版本CMO： {{version.techManager}}</span></p>
+        </div> -->
+        <!-- <div class="panel-body"> -->
+        <div class="panel panel-default">
+           <!--  <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th width="20%" style="text-align:left;">版本</th>
+                <th width="20%" style="text-align:left;">状态</th>
+                <th ng-if="type == '2'" width="10%" style="text-align:left;">SIT次数</th>
+                <th ng-if="type == '2'" width="10%" style="text-align:left;">PRE次数</th>
+                <th width="20%" style="text-align:left;">配置操作</th>
+                <th ng-if="type=='1'" width="20%" style="text-align:left;">发布操作</th>
+                <th width="20%" style="text-align:left;">质量趋势</th>
+            </tr>
+            </thead>
+            <tbody ng-repeat="version in versList">
+            <tr>
+                <td align="left">
+               	<a href="" ui-sref="VersionDetail({sysId:version.sysId,versionId:version.branchId})">{{version.branchName}} [{{version.version}}]</a>
+                </td>
+                <td align="left">
+                   {{version.status | versionStatusFilter}}
+                </td>
+                 <td ng-if="type == '2'" align="left">
+                 {{version.sitNum}}
+                </td>
+                <td ng-if="type == '2'" align="left">
+                {{version.preNum}}
+                </td>
+                <td ng-if="type == '1'" align="left">
+                	进行中
+                   	<a href="javascript:void(0)" ng-click="freezen(version,$index)" ng-if="version.status=='059' && hasPermissionMap[version.sysId]['7011'] !=null && hasPermissionMap[version.sysId]['7011']">封板</a>
+					<a href="javascript:void(0)" ng-click="backMerged(version,$index)" ng-if="version.status=='059' && hasPermissionMap[version.sysId]['7014'] !=null && hasPermissionMap[version.sysId]['7014'] && version.backMerged=='0'">确认已回合</a>
+					解版
+					<a href="index.html#version-info/{{version.sysId}}/{{version.branchId}}/unfreezen?vtab=UnfreezenVersion" ng-if="version.status=='060' && hasPermissionMap[version.sysId]['7012'] !=null && hasPermissionMap[version.sysId]['7012']">解版</a>
+                   	
+                   	<a href="index.html#/version-info/{{version.sysId}}/{{version.branchId}}/merge?vtab=MergeVersion"  ng-if="version.backMerged!='0'&&version.sysId!=325&&version.sysId!=324 &&(hasPermissionMap[version.sysId]['7013'] !=null && hasPermissionMap[version.sysId]['7013']) && version.status=='060'" >合并主干</a>
+                    <a href="index.html#/version-info/{{version.sysId}}/{{version.branchId}}/merge?vtab=MergeVersion"  ng-if="version.backMerged!='0'&&version.sysId!=325&&version.sysId!=324 &&(hasPermissionMap[version.sysId]['7013'] !=null && hasPermissionMap[version.sysId]['7013']) && version.status=='060'">合并详情</a>
+                   	<a href="javascript:void(0)" ui-sref="CreateVersion({sysId:version.sysId,versionId:version.branchId,tab:'CreateVersion'})" ng-if="hasPermissionMap[version.sysId]['7010'] !=null && hasPermissionMap[version.sysId]['7010']">类似创建</a>
+                   	
+                   	<a href="javascript:void(0)" ui-sref="PackageVersion({sysId:version.sysId,versionId:version.branchId,vtab:'PackageVersion'})" ng-if="hasPermissionMap[version.sysId]['7001'] !=null && hasPermissionMap[version.sysId]['7001']">打包地址</a>
+                   	<a href="javascript:void(0)" ng-click="abandonVersion(version.branchId)" ng-if="hasPermissionMap[version.sysId]['7015'] !=null && hasPermissionMap[version.sysId]['7015']">废弃</a>
+                    <a  ui-sref="VersionJob({sysId:version.sysId,versionId:version.branchId,vtab:'VersionJob'})"  ng-if="hasPermissionMap[version.sysId]['7019'] !=null && hasPermissionMap[version.sysId]['7019']">质量分析</a>
+                    <a  ui-sref="VersionReviewBoard({sysId:version.sysId,versionId:version.branchId,vtab:'VersionReviewBoard'})" ng-if="hasPermissionMap[version.sysId]['7020'] !=null && hasPermissionMap[version.sysId]['7020']">在线评审</a>
+                </td>
+                <td ng-if="type == '2'" align="left">
+                	<a   ui-sref="CreateVersion({sysId:version.sysId,versionId:version.branchId,tab:'CreateVersion'})" ng-if="hasPermissionMap[version.sysId]['7010'] !=null && hasPermissionMap[version.sysId]['7010']">类似创建</a>
+                	<a  ui-sref="VersionDeploy({sysId:version.sysId,versionId:version.branchId,vtab:'VersionDeploy'})" >历史包发布</a>
+                </td>
+                <td  ng-if="type=='1'" align="left">
+                     <a href="javascript:void(0)" ui-sref="CreateDeployReq({sysId:version.sysId,versionId:version.branchId,envType:'019',vtab:'CreateDeployReq'})" ng-if="hasPermissionMap[version.sysId]['7018'] !=null && hasPermissionMap[version.sysId]['7018']">sit发布</a>
+                    <a href="javascript:void(0)" ui-sref="CreateDeployReq({sysId:version.sysId,versionId:version.branchId,envType:'020',vtab:'CreateDeployReq'})" ng-if="hasPermissionMap[version.sysId]['7018'] !=null && hasPermissionMap[version.sysId]['7018']">pre发布</a>
+                    <a href="javascript:void(0)" ui-sref="CreateDeployReq({sysId:version.sysId,versionId:version.branchId,envType:'021',vtab:'CreateDeployReq'})" ng-disable="version.status != '060'" ng-if="hasPermissionMap[version.sysId]['7018'] !=null && hasPermissionMap[version.sysId]['7018']" ng-click="publish('021',version)">prd发布</a>
+                </td>
+                
+                <td  ng-if="version.isCodeTrend != 0 " align="left">
+                    <a ui-sref="QualityCenter({sysId:version.sysId,branchId:version.branchId,type:2})"> {{version.codeTrend | quaTrendFilter}}</a> 
+                </td>
+                <td  ng-if="version.isCodeTrend == 0" align="left">
+                   <a  ui-sref="VersionJob({sysId:version.sysId,versionId:version.branchId,vtab:'VersionJob'})"  ng-if="hasPermissionMap[version.sysId]['7019'] !=null && hasPermissionMap[version.sysId]['7019']">设置质量分析</a>
+                   <a href = "javascript:;" ng-if="hasPermissionMap[version.sysId]['7019'] ==null || (hasPermissionMap[version.sysId]['7019'] == false)">尚未设置</a>
+                </td>
+            </tr>
+            </tbody>
+        </table> -->
+        <div class="panel-body">
+         <form class="form-inline">
+            <div class="form-group pull-left search">
+                <input type="text" class="form-control input-sm search-control" placeholder="请输入版本名" ng-model="keyword">
+                <span class="glyphicon glyphicon-search search-icon" ng-click="search()"></span>
+                <input type="submit"  style="display: none;" ng-click="search()"></input>
+                <!--<button class="btn btn-default ng-scope" ng-if="sysId != null" ui-sref="SystemManage()">返回</button>-->
+            </div>
+            </form>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th width="10%" style="text-align:center;">系统简称
+                            <div class="btn-group" sn-dropdown>
+                                <button type="button" class="btn btn-xs dropdown-toggle list-filter">
+                                    {{formData.selectedSysName}}<span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-extra">
+                                    <li ng-repeat="sysname in sysNameList" ng-click="sysNameFilter(sysname)">
+                                        <a href="javascript:void(0);">
+                                            {{sysname}}
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </th>
+                        <th width="10%" style="text-align:center;">代码库</th>
+                        <th width="15%" style="text-align:center;">版本名称</th>
+                        <!-- <th width="10%" style="text-align:left;">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">状态<b class="caret"></b></a>
+                            <ul class="dropdown-menu" ng-repeat="status in statusList">
+                                <li>{{ status.name }}</li>
+                            </ul>
+                        </th> -->
+                        <th width="10%" style="text-align:center;">版本状态
+                            <div class="btn-group" sn-dropdown>
+                                <button type="button" class="btn btn-xs dropdown-toggle list-filter">
+                                    {{formData.selectedStatus.name}}<span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-extra">
+                                    <li ng-repeat="status in statusList" ng-click="statusFilter(status)">
+                                        <a href="javascript:void(0);">
+                                            {{status.name}}
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </th>
+                        <th width="8%" style="text-align:center;">版本报告</th>
+                        <!--<th width="15%" style="text-align:center;">
+入口条件查询</th>-->
+                        <th width="17%" style="text-align:center;">更新时间</th>
+						<th width="40%" style="text-align:center;">操作</th>
+                    </tr>
+                </thead>
+                <tbody ng-repeat="version in versList">
+                    <tr>
+                        <td align="center"  >
+                            <!--<a title="{{ version.sysCnname }}" ui-sref="SysDetail({sysId:version.sysId})" >{{ version.sysName }}</a>-->
+                            <span ng-show="version.sysParentid == null || (version.sysParentid != null && version.sysParentid == '0')"  title="{{ version.sysCnname }}">{{ version.sysName }}</span>
+                            <span ng-show="version.sysParentid != null && version.sysParentid != '0'" title="{{ version.sysCnname }}">{{ version.sysParentName }}</span>
+                        </td>
+                        <td align="center">
+                           {{version.reposName}}
+                        </td>
+                        <td align="center" ng-if="version.sysType == '1'">
+                            <a href="" ui-sref="SAPSystemJump({href:'newSystem/sapSystemDetailInfo.htm?sysId={{version.sysId}}',tab:'SAPSystemJump'})">{{version.branchName}} [{{version.version}}]</a>
+                        </td>
+                        <td align="center" ng-if="version.sysType == '3'">
+                            <a href="" ui-sref="PCSystemJump({href:'branch/getBranchBySysId.htm?sysId={{version.sysId}}',tab:'PCSystemJump'})">{{version.branchName}} [{{version.version}}]</a>
+                        </td>
+                        <td align="center" ng-if="version.sysType != '1' && version.sysType != '3'">
+                            <a href="" ui-sref="VersionDetail({sysId:version.sysId,versionId:version.branchId})">{{version.branchName}} [{{version.version}}]</a>
+                        </td>
+                        <td align="center">
+                            {{version.status | versionStatusFilter}}
+                        </td>
+                        <td ng-if="version.sysType != '1' && version.sysType != '3'" align="center">
+                            <a href="angular/quality/versionQualityReport.htm?sysId={{version.sysId}}&versionId={{version.branchId}}" target="_blank" >质量报告</a>
+                       		<a ng-if="version.isCodeTrend!=null && version.isCodeTrend>=1 &&(version.status=='059'|| version.status=='0591' ||  version.status=='060')  " href="javascript:void(0)"  ng-click="validateSysPack(version.sysId,version.buildId,version.branchId)" >手动构建</a>
+                        	<a href="javascript:void(0)"  ui-sref="VersionQuaCheck({sysId:version.sysId,buildId:version.buildId,versionId:version.branchId,vtab:'VersionQuaCheck'})" ng-if="version.isCodeTrend!=null && version.isCodeTrend>=1 &&(version.status=='059'|| version.status=='0591' ||  version.status=='060')" >检查结果</a>
+                        </td>
+                        <td ng-if="version.sysType == '1' || version.sysType == '3'" align="center">
+                        	无
+                        </td> 
+                        <!--<td align="center">
+                            <a href="" title="暂未开放">查看</a>
+                        </td>-->
+                        <!--<td ng-if="type == '1'" align="center">
+                             
+                            <a href="javascript:void(0)" ng-click="freezen(version,$index)"
+                            ng-if="(version.status=='059'|| version.status=='0591') && version.hasPermissionMap[version.sysId]['7011'] !=null && version.hasPermissionMap[version.sysId]['7011']">封板</a>
+                            <a href="javascript:void(0)" ng-click="unFreezen(version,$index)"
+                            ng-if="(version.status=='060') && version.hasPermissionMap[version.sysId]['7012'] !=null && version.hasPermissionMap[version.sysId]['7012']">解板</a>
+                            <a href="javascript:void(0)" ng-click="backMerged(version,$index)"
+                            ng-if="(version.status=='059' || version.status=='0591') && version.backMerged=='0' && version.hasPermissionMap[version.sysId]['7014'] !=null && version.hasPermissionMap[version.sysId]['7014']">确认已回合</a>
+                            <a href="index.html#/version-info/{{version.sysId}}/{{version.branchId}}/merge?vtab=MergeVersion"  ng-if="version.backMerged!='0'&&version.sysId!=325&&version.sysId!=324 &&(version.hasPermissionMap[version.sysId]['7013'] !=null && version.hasPermissionMap[version.sysId]['7013']) && version.status=='060'" >合并主干</a>
+                            <a href="javascript:void(0)"
+                            ui-sref="CreateVersion({sysId:version.sysId,versionId:version.branchId,tab:'CreateVersion'})"
+                            ng-if="version.hasPermissionMap[version.sysId]['7010'] !=null && version.hasPermissionMap[version.sysId]['7010']">类似创建</a>
+                            <a href="javascript:void(0)"
+                            ui-sref="VersionDeploy({sysId:version.sysId,versionId:version.branchId,vtab:'VersionDeploy'})">发布</a>
+                            <a href="javascript:void(0)"
+                            ui-sref="PackageVersion({sysId:version.sysId,versionId:version.branchId,vtab:'PackageVersion'})"
+                            ng-if="version.hasPermissionMap[version.sysId]['7001'] !=null && version.hasPermissionMap[version.sysId]['7001']">打包地址</a>
+                            <a href="javascript:void(0)"
+                            ng-click="abandonVersion(version.branchId)"
+                            ng-if="version.hasPermissionMap[version.sysId]['7015'] !=null && version.hasPermissionMap[version.sysId]['7015']">废弃</a>
+                            <a
+                            ui-sref="VersionJob({sysId:version.sysId,versionId:version.branchId,vtab:'VersionJob'})"
+                            ng-if="version.hasPermissionMap[version.sysId]['7019'] !=null && version.hasPermissionMap[version.sysId]['7019']">质量分析</a>
+                            <a
+                            ui-sref="VersionReviewBoard({sysId:version.sysId,versionId:version.branchId,vtab:'VersionReviewBoard'})"
+                            ng-if="version.hasPermissionMap[version.sysId]['7020'] !=null && version.hasPermissionMap[version.sysId]['7020']">在线评审</a>
+                        </td>-->
+						<td align="center">
+                              {{version.updateTime|date:'yyyy-MM-dd HH:mm:ss'}}
+                        </td>  
+                        <td ng-if="type == '1' && version.sysType != '1' && version.sysType != '3'" align="center">
+                             
+                            <a href="javascript:void(0)" ng-click="freezen(version,$index)"
+                            ng-if="(version.status=='059'|| version.status=='0591') && version.hasPermissionMap['7011'] !=null && version.hasPermissionMap['7011']">封版</a>
+                            <a href="javascript:void(0)" ng-click="unFreezen(version,$index)"
+                            ng-if="(version.status=='060') && version.hasPermissionMap['7012'] !=null && version.hasPermissionMap['7012']">解版</a>
+                            <a href="javascript:void(0)" ng-click="backMerged(version,$index)"
+                            ng-if="(version.status=='059' || version.status=='0591') && version.backMerged=='0' && version.hasPermissionMap['7016'] !=null && version.hasPermissionMap['7016']">确认已回合</a>
+                            <a href="index.html#/version-info/{{version.sysId}}/{{version.branchId}}/merge?vtab=MergeVersion"  ng-if="version.backMerged!='0'&&version.sysId!=325&&version.sysId!=324 &&(version.hasPermissionMap['7016'] !=null && version.hasPermissionMap['7016']) && version.status=='060'" >合并主干</a>
+                            <a href="javascript:void(0)"
+                            ui-sref="CreateVersion({sysId:version.sysId,versionId:version.branchId,tab:'CreateVersion'})"
+                            ng-if="hasPermissionMap[version.sysId]['7010'] !=null && hasPermissionMap[version.sysId]['7010']">类似创建</a>
+                            
+							<a href="javascript:void(0)" style="display:none;"
+                            ui-sref="VersionDeploy({sysId:version.sysId,versionId:version.branchId,vtab:'VersionDeploy'})">发布</a>
+                            <a href="javascript:void(0)"
+                            ui-sref="CreateDeployReq({sysId:version.sysId,versionId:version.branchId,envType:'',vtab:'CreateDeployReq'})">发布</a>
+							
+                            <a href="javascript:void(0)"
+                            ui-sref="PackageVersion({sysId:version.sysId,versionId:version.branchId,vtab:'PackageVersion'})">打包地址</a>
+                            <a href="javascript:void(0)"
+                            ng-click="abandonVersion(version.branchId)"
+                            ng-if="version.hasPermissionMap['7016'] !=null && version.hasPermissionMap['7016']">废弃</a>
+                            <!--<a
+                            ui-sref="VersionJob({sysId:version.sysId,versionId:version.branchId,vtab:'VersionJob'})"
+                            ng-if="version.hasPermissionMap['7019'] !=null && version.hasPermissionMap['7019']">质量分析</a>
+                            <a
+                            ui-sref="VersionReviewBoard({sysId:version.sysId,versionId:version.branchId,vtab:'VersionReviewBoard'})"
+                            ng-if="version.hasPermissionMap['7020'] !=null && version.hasPermissionMap['7020']">在线评审</a>-->
+                            <!--<a
+                            ui-sref="UpdateVersionBuild({sysId:version.sysId,versionId:version.branchId,vtab:'UpdateVersionBuild'})"
+                            ng-if="version.hasPermissionMap['7019'] !=null && version.hasPermissionMap['7019']">交付流程配置</a>-->
+                            <a
+                            ui-sref="UpdateVersionBuild({sysId:version.sysId,versionId:version.branchId,vtab:'UpdateVersionBuild'})"
+                            ng-if="version.status!='063' && version.status!='178' &&version.hasPermissionMap['7019'] !=null && version.hasPermissionMap['7019']">交付流程配置</a>
+                        </td>
+                        <td ng-if="type == '2' && version.sysType != '1' && version.sysType != '3'" align="center"><a
+                            ui-sref="CreateVersion({sysId:version.sysId,versionId:version.branchId,tab:'CreateVersion'})"
+                            ng-if="hasPermissionMap[version.sysId]['7010'] !=null && hasPermissionMap[version.sysId]['7010']">类似创建</a>
+                            <a
+                            ui-sref="VersionDeploy({sysId:version.sysId,versionId:version.branchId,vtab:'VersionDeploy'})">历史包发布</a>
+                        </td>  
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <footer class="ft-pager clearfix">
+            <div sn-pager itemsPerPage="{{pager.pageSize}}" totalItems="{{pager.totalCount}}" listSize="{{pager.pageSize}}"
+                class="text-right">
+            </div>
+        </footer>
+    </div>
+  </div>
+    

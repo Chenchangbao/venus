@@ -1,0 +1,138 @@
+
+<div class="module-head paneltitle">
+    <div class="module-info">
+        <p class="title titlefont">我的质量</p>
+        <p class="sub-title titlecolor">展示各系统基线质量对比</p>
+    </div>
+    
+</div>
+<div class="container-wrapper">
+    <div class="panel panel-default">
+        <div class="panel-body">
+          		<div class="form-group pull-left search">
+ 					<button class="btn btn-default" ng-if="formData.quaLevel!=1" ng-click="backQuaComp()">返回</button>
+           		 </div>
+                <div>
+                    <table class="table" style="font-size:12px;">
+                        <thead>
+                        <tr>
+                            <th>序号</th>
+                            <th ng-if='formData.quaLevel==1'>系统名称</th>
+                            <th ng-if='formData.quaLevel==2'>版本名称</th>
+                            <th ng-if='formData.quaLevel==3'>构建结果</th>
+                            <th ng-if='formData.quaLevel==1'>代码库</th>
+                            <th>代码总行数</th>
+                            <th>阻断问题</th>
+                            <th>严重问题</th>
+                            <th>主要问题</th>
+                            <th>总问题</th>
+                            <th style="display:none;">主要及以上千行问题率</th>
+                            <th>千行问题率</th>
+                            <th>单元测试案例个数</th>
+                            <th style="display:none;">测试错误数</th>
+                            <th style="display:none;">测试失败数</th>
+                            <th>单元测试通过率</th>
+                            <th ng-if='formData.quaLevel!=1'>新增代码覆盖率</th>
+                            <th>测试覆盖率</th>
+							<th>代码注释率</th>
+                            <th>代码行重复率</th>
+                            <th>技术债务天数</th>
+                            <th>构建日期</th>
+                            <th style="display:none;" ng-if='formData.quaLevel==3||formData.quaLevel==2'>日志查看</th>
+							<th ng-if='(formData.quaLevel==2 && cq.branchId!="" && cq.branchId!=null) || (formData.quaLevel==3) || (formData.quaLevel==2)'>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="cq in sonarAnalyseResultBo">
+                            <td>
+                                {{$index+1}}
+                            </td>
+                            <td ng-if='formData.quaLevel==1'>
+                                <a class="link-cursor" ng-click="getVersionSAResult(cq.sysId)" ng-if="(null==cq.sysParentid || cq.sysParentid=='0')"> {{cq.sysName}}</a>
+                                <a class="link-cursor" ng-click="getVersionSAResult(cq.sysId)" ng-if="(null!=cq.sysParentid && cq.sysParentid!='0')"> {{cq.sysParentName}}</a>
+                        	</td>
+                        	<td ng-if='formData.quaLevel==2'>
+                                <a class="link-cursor"  ng-click="getVersionDetailSAResult(cq.branchId)" > {{cq.branchName}}({{cq.branchversion}})</a>
+                        	</td>
+                        	<td ng-if='formData.quaLevel==3'>
+                                <a class="link-cursor"  > {{cq.buildStatus|buildStatusFilter}}</a>
+                            </td>
+                            <td ng-if='formData.quaLevel==1'>
+                                {{cq.reposName}}
+                            </td>
+                            <td>
+                                {{cq.codeLines||"0"}}
+                            </td>
+                             <td>
+                                {{cq.blockerViolations||"0"}}<i style="color: red">{{cq.blockerViolations|violationsFilter}}</i>
+                            </td>
+                            <td>
+                                {{cq.criticalViolations||"0"}}<i style="color: red">{{cq.criticalViolations|violationsFilter}}</i>
+                            </td>
+                            <td>
+                                {{cq.majorViolations||"0"}}<i style="color: red">{{cq.majorViolations|violationsFilter}}</i>
+                            </td>
+                            <td>
+                                {{cq.violations||0}}
+                            </td>
+                            <td style="display:none;">
+                                {{cq.majorPermillageBugRate||"0‰"}}
+                            </td>
+                            <td>
+                                {{cq.permillageBugRate||"0‰"}}{{cq.permillageBugTrend|quaTrendFilter}}
+                            </td>
+                            <td>
+                                {{cq.tests||0}}
+                            </td>
+                            <td style="display:none;">
+                                {{cq.testErrors||0}}
+                            </td>
+                            <td style="display:none;">
+                                {{cq.testFailures||0}}
+                            </td>
+                            <td>
+                                {{cq.testSuccessDensity||0 | number:1}}%
+                            </td>
+                            <td  ng-if='formData.quaLevel!=1 && cq.newCoverage!=null && cq.newCoverage!=""'>
+                                {{cq.newCoverage | number:1}}%
+                            </td>
+                            <td  ng-if='formData.quaLevel!=1 && (cq.newCoverage==null || cq.newCoverage=="")'>
+                                {{cq.newCoverage}}
+                            </td>
+                            <td>
+                                {{cq.coverage||0}}%
+                            </td>
+							<td>
+                                {{cq.commentRate||"0.0%"}}
+                            </td>
+                            <td>
+                                {{cq.repetRate||"0.0%"}}
+                            </td>
+							<td>
+                                {{cq.technicalDebt||"0"}}
+                            </td>
+                            
+                            <td>
+                                {{cq.buildEndtime|date:'yyyy-MM-dd HH:mm:ss'}}
+                            </td>
+							<td ng-if='(formData.quaLevel==2 && cq.branchId!="" && cq.branchId!=null) || (formData.quaLevel==3) || (formData.quaLevel==2)'>
+							 <a class="link-cursor" ng-if="cq.branchStatus!=null && cq.branchStatus!=0 && cq.buildId!=null && formData.quaLevel==2 " ng-click="buildCodeQuality(cq.sysId,cq.buildId,1)" >手动构建</a>
+							   <a href="reviewboard/getReviewRequest.htm?branchId={{cq.branchId}}" target="_blank" ng-if='formData.quaLevel==2 && cq.branchId!="" && cq.branchId!=null'>在线评审</a>
+							   <a class="link-cursor" href="{{jenkinsUrl}}job/{{cq.jobName}}/{{cq.buildNumber}}/console" target="_blank" ng-if='formData.quaLevel==3'>jenkins日志查看</a>
+                               <a class="link-cursor" ng-if='formData.quaLevel==2 && cq.groupId!=null && ( cq.artifactId!="" && cq.artifactId!=null)' href="{{sonarUrl}}{{cq.groupId}}:{{cq.artifactId}}:{{cq.branchversion}}" target="_blank" >sonar结果</a>
+                               <a class="link-cursor" ng-if='formData.quaLevel==2 && cq.groupId!=null && ( cq.artifactId==null || cq.artifactId=="")' href="{{sonarUrl}}{{cq.groupId}}:{{cq.branchversion}}" target="_blank" > sonar结果</a>
+                              
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+        </div>
+    </div>
+    
+	 <footer class="ft-pager clearfix">
+        <div sn-pager itemsPerPage="{{pager.pageSize}}" totalItems="{{pager.totalCount}}" listSize="{{pager.pageSize}}"
+             class="text-right">
+        </div>
+    </footer>
+</div>

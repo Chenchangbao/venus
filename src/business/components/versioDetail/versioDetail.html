@@ -1,0 +1,109 @@
+<section class="content-header">
+    <sn-breadcrumb datalist="crumbBaseData"></sn-breadcrumb>
+    <h4 class="h4-style">
+        <div class="square"></div>
+        <strong>版本详情</strong></h4>
+</section>
+
+<section class="content">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title h3-inline">版本详情</h3>
+        </div>
+        <div class="panel-body ">
+            <div class="line-distance">
+                <label class="label-style">版本号</label>
+                <label>{{versionDetail.version}}</label>
+            </div>
+            <div class="line-distance">
+                <label class="label-style">版本名称</label>
+                <label>{{versionDetail.name}}</label>
+            </div>
+            <div class="line-distance">
+                <label class="label-style">所属应用</label>
+                <label>{{versionDetail.sysName}}</label>
+            </div>
+            <div class="line-distance">
+                <label class="label-style">状态</label>
+                <label>{{versionDetail.status | version_status}}</label>
+            </div>
+            <div class="line-distance">
+                <label class="label-style">创建时间</label>
+                <label>{{versionDetail.createTime | date:"yyyy-MM-dd HH:mm:ss"}}</label>
+            </div>
+            <div class="line-distance">
+                <label class="label-style">计划生产发布日期</label>
+                <label>{{versionDetail.deployPlanTime | date:"yyyy-MM-dd HH:mm:ss"}}</label>
+            </div>
+            <div class="line-distance">
+                <label class="label-style">实际生产发布日期</label>
+                <label>{{versionDetail.deployTime | date:"yyyy-MM-dd HH:mm:ss"}}</label>
+            </div>
+            <div class="line-distance">
+                <label class="label-style">版本经理</label>
+                <label>{{versionDetail.lead}}</label>
+            </div>
+            <div class="line-distance">
+                <label class="label-style">版本描述</label>
+                <label>{{versionDetail.description}}</label>
+            </div>
+            <div class="line-distance">
+                <label class="label-style">版本报告</label>
+                <a ui-sref="Header.VersionReport({ id: versionDetail.id})">查看</a>
+            </div>
+            <div class="line-distance">
+                <label class="label-style">需求</label>
+                <label>{{versionDetail.epicCount}}</label>
+            </div>
+            <div class="line-distance">
+                <label class="label-style">任务</label>
+                <label>{{versionDetail.taskCount}}</label>
+            </div>
+            <div class="line-distance">
+                <label class="label-style">缺陷</label>
+                <label>{{versionDetail.bugCount}}</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title h3-inline">关联分支</h3>
+        </div>
+
+        <div class="table-body">
+            <table class="sn-table">
+                <tr>
+                    <th>代码库</th>
+                    <th>代码库类型</th>
+                    <th>分支</th>
+                </tr>
+                <tr ng-repeat="repos in versionDetail.reposList">
+                    <td>{{repos.reposName}}</td>
+                    <td>{{repos.reposType}}</td>
+                    <td>{{repos.branchName}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title h3-inline">版本成员信息</h3>
+        </div>
+        <div class="panel-body ">
+            <div ng-repeat="one in selectList">
+                <div style="display:inline-block;margin-right:15px;">{{one.name}}</div>
+                <div style="margin-top: 20px;display:inline-block">
+                    <select select2='one.ename' style="width:600px" select-model="masterList" multiple>
+                        <option value="{{d.id}}" ng-repeat="d in masterRepeat" ng-if="masterRepeat" selected="selected">
+                            {{d.name}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</section>

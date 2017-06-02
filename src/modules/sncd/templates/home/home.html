@@ -1,0 +1,224 @@
+<div class="container-wrapper home">
+    <!--<div ng-if="!closeflag" id="notice" class="alert noticeWarning alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="close()"><span aria-hidden="true">&times;</span></button>
+        <div class="noticelist" ng-style="noticestyle">
+            <p class="noticeBottom" ng-repeat="item in noticelist">{{item.title}}</p>
+        </div>
+    </div>-->
+    <div class="row">
+        <div class="col-md-8 homePanel">
+        	<!-- <div class="panel my-attention">
+        		<marquee scrollAmount=5 onmouseover=stop() onmouseout=start()>旧版本将在12月底下线，请尽快将业务迁移到新系统使用，谢谢！</marquee>
+			</div> -->
+            <div class="panel my-attention">
+                <div class="panel-heading panelcolor">系统和版本</div>
+                <!--<hello class="panel-heading" loadLog="showLog()">指令加载</hello>-->
+                <!--<div editclick>hahahhahahahah
+                </div>-->
+                <div class="panel-body panelHeight">
+                    <p ng-show="nochart">暂无数据</p>
+                    <div echarts="option" class="chart pieSize"></div>
+                    <div echarts="option2" class="chart pieSize"></div>
+                    <div class="description row destitle">
+                        <div class="col-md-5">
+                            <div class="textcenter font20">
+                                <label class="fontcolor">我的系统：</label>
+                                <span class="fontred">{{systemNum}}</span>
+                                <span class="fontcolor ">个</span>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                        </div>    
+                        <div class="col-md-5">
+                            <div class="textcenter font20">
+                                <label class="fontcolor">我的版本：</label>
+                                <span class="fontred">{{versionInuseNum}}</span>
+                                <span class="fontcolor">个</span>
+                            </div>
+                        </div>  
+                        <div class="col-md-1">
+                        </div>
+                    </div>
+                    <div class="description row">
+                        <div class="col-md-6">
+                            <div class="col-md-6">
+                                <div class="textcenter">
+                                    <span class="processing">●</span>
+                                        <label class="font12">运行中：</label>
+                                        <a ui-sref="SystemManage({status:'102'})" class="font12">{{processing}}个</a>
+                                        <!--<span class="font12">{{testing}}个</span>-->
+                                </div>
+                            </div>   
+                            <div class="col-md-6">
+                                <div class="textcenter">
+                                    <span class="unstart">●</span>
+                                        <label class="font12">未启用：</label>
+                                        <a ui-sref="SystemManage({status:'296'})" class="font12">{{waiting}}个</a>
+                                </div>
+                            </div>  
+                          </div>
+                        <div class="col-md-6">
+                            <div class="col-md-4 no-padding">
+                                <div class="textcenter">
+                                    <span class="testing">●</span>
+                                        <label class="font12">测试中：</label>
+                                        <a ui-sref="VersionProcess({status:'0591'})" class="font12">{{testing}}个</a>
+                                        <!--<span class="font12">{{testing}}个</span>-->
+                                </div>
+                            </div>   
+                            <div class="col-md-4 no-padding">
+                                <div class="textcenter">
+                                    <span class="developing">●</span>
+                                        <label class="font12">开发中：</label>
+                                        <a ui-sref="VersionProcess({status:'059'})" class="font12">{{developing}}个</a>
+                                </div>
+                            </div>  
+                            <div class="col-md-4 no-padding">
+                                <div class="textcenter">
+                                    <span class="closed">●</span>
+                                        <label class="font12">已封版：</label>
+                                        <a ui-sref="VersionProcess({status:'060'})" class="font12">{{closed}}个</a>
+                                </div>
+                            </div>  
+                          </div>
+                    </div>
+                    <!--<div class="description">
+                        <div class="col-md-6">
+                            <label class="col-md-3 font12">运行中：</label>
+                            <span class="col-md-3 font12">{{processing}}个</span>
+                            <label class="col-md-3 font12">未启用：</label>
+                            <span class="col-md-3 font12">{{waiting}}个</span>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="col-md-3 font12">测试中：</label>
+                            <span class="col-md-3 font12">{{testing}}个</span>
+                            <label class="col-md-3 font12">开发中：</label>
+                            <span class="col-md-3 font12">{{developing}}个</span>
+                        </div>
+                        <div class="col-md-6">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="col-md-3 font12">已封版：</label>
+                            <span class="col-md-3 font12">{{closed}}个</span>
+                        </div>
+                    </div>-->
+
+                   
+                       
+
+                </div>
+
+            </div>
+            <div class="panel my-attention homePanel-top">
+                 <table class="table table-hover" style="padding-top:50px;">
+                            <thead class="tableTitle">
+                                <th width="15%" style="text-align:center;">系统简称</th>
+                                <th width="10%" style="text-align:center;">代码库</th>
+                                <th width="15%" style="text-align:center;">版本名称</th>
+                                <th width="12%" style="text-align:center;">版本状态
+                                    <div class="btn-group" sn-dropdown>
+                                        <button type="button" class="btn btn-xs dropdown-toggle list-filter">
+                                        {{formData.selectedStatus.name}}<span class="caret"></span>
+                                    </button>
+                                        <ul class="dropdown-menu dropdown-menu-extra">
+                                            <li ng-repeat="status in statusList" ng-click="statusFilter(status)">
+                                                <a href="javascript:void(0);">
+                                                {{status.name}}
+                                            </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </th>
+                                <th width="10%" style="text-align:center;">版本质量报告</th>
+                                <th width="40%" style="text-align:center;">快捷操作</th>
+                                
+                            </thead>
+                            <tbody ng-repeat="version in versList">
+                                <tr>
+                                    <td align="center" ng-show="null==version.sysParentid || version.sysParentid=='0'">
+                                    <div  class="text_overflow" title="{{ version.sysCnname }}">
+                                        <a  ui-sref="SysDetail({sysId:version.sysId})">{{ version.sysName }}</a>
+                                   </div>
+                                    </td>
+                                    <td align="center" ng-show="null!=version.sysParentid && version.sysParentid!='0'">
+                                    <div class="text_overflow"  title="{{ version.sysCnname }}">
+                                        <a  ui-sref="SysDetail({sysId:version.sysId})">{{ version.sysParentName }}</a>
+                                     </div>
+                                    </td>
+                                    <td align="center">
+                                        <div class="text_overflow" title="{{ version.reposName }}">{{ version.reposName }}</div>
+                                    </td>
+                                    <td align="center">
+                                        <a href="" class="versionDisplay" ui-sref="VersionDetail({sysId:version.sysId,versionId:version.branchId})" title="{{version.branchName}} [{{version.version}}]">{{version.branchName}} [{{version.version}}]</a>
+                                    </td>
+                                    <td align="center">
+                                        <span ng-class="{'testing': version.status == '0591', 'closed': version.status == '060', 'developing': version.status == '059'}">{{version.status | versionStatusFilter}}</span>
+                                        <span ng-class="{'testing': version.status == '0591', 'closed': version.status == '060', 'developing': version.status == '059'}">●</span>
+                                    </td>
+                                    <td align="center">
+                                        <a href="angular/quality/versionQualityReport.htm?sysId={{version.sysId}}&versionId={{version.branchId}}" target="_blank">查看</a>
+                                    </td>
+                                    <td ng-if="type == '1'" align="center">
+                                        <a href="javascript:void(0)" ng-click="freezen(version,$index)"
+                                        ng-if="(version.status=='059'|| version.status=='0591') && version.hasPermissionMap['7011'] !=null && version.hasPermissionMap['7011']">封版</a>
+                                        <a href="javascript:void(0)" ng-click="unFreezen(version,$index)"
+                                        ng-if="(version.status=='060') && version.hasPermissionMap['7012'] !=null && version.hasPermissionMap['7012']">解版</a>
+                                        <a href="javascript:void(0)" ng-click="backMerged(version,$index)"
+                                        ng-if="(version.status=='059' || version.status=='0591') && version.backMerged=='0' && version.hasPermissionMap['7016'] !=null && version.hasPermissionMap['7016']">确认已回合</a>
+                                        <a href="index.html#/version-info/{{version.sysId}}/{{version.branchId}}/merge?vtab=MergeVersion"  ng-if="version.backMerged!='0'&&version.sysId!=325&&version.sysId!=324 &&(version.hasPermissionMap['7016'] !=null && version.hasPermissionMap['7016']) && version.status=='060'" >合并主干</a>
+                                        <a href="javascript:void(0)"
+                                        ui-sref="CreateVersion({sysId:version.sysId,versionId:version.branchId,tab:'CreateVersion'})"
+                                        ng-if="version.hasPermissionMap['7010'] !=null && version.hasPermissionMap['7010']">类似创建</a>
+                                        <a href="javascript:void(0)"
+                                        ui-sref="VersionDeploy({sysId:version.sysId,versionId:version.branchId,vtab:'VersionDeploy'})">发布</a>
+                                        <a href="javascript:void(0)"
+                                        ui-sref="PackageVersion({sysId:version.sysId,versionId:version.branchId,vtab:'PackageVersion'})"
+                                        ng-if="version.hasPermissionMap['7001'] !=null && version.hasPermissionMap['7001']">打包地址</a>
+                                        <a href="javascript:void(0)"
+                                        ng-click="abandonVersion(version.branchId)"
+                                        ng-if="version.hasPermissionMap['7016'] !=null && version.hasPermissionMap['7016']">废弃</a>
+                                        <a
+                                        ui-sref="UpdateVersionBuild({sysId:version.sysId,versionId:version.branchId,vtab:'UpdateVersionBuild'})"
+                                        ng-if="version.hasPermissionMap['7019'] !=null && version.hasPermissionMap['7019']">交付流程配置</a>
+                                    </td>
+                                    
+                                    <td ng-if="type == '2'" align="center"><a ui-sref="CreateVersion({sysId:version.sysId,versionId:version.branchId,tab:'CreateVersion'})"
+                                            ng-if="hasPermissionMap['7010'] !=null && hasPermissionMap['7010']">类似创建</a>
+                                        <a ui-sref="VersionDeploy({sysId:version.sysId,versionId:version.branchId,vtab:'VersionDeploy'})">历史包发布</a>
+                                    </td>
+                                    
+                                </tr>
+                            </tbody>
+                        </table>
+                     <div sn-pager itemsPerPage="{{pager.pageSize}}" totalItems="{{pager.totalCount}}" listSize="{{pager.pageSize}}"
+                        class="text-right pageRight">
+                    </div>
+            </div>   
+        </div>
+        <div class="col-md-4">
+            <div class="panel my-dynamic homePanel">
+                <div class="panel-heading  panelcolor">我的动态</div>
+                <div class="panel-body panelHeight2">
+                    <p ng-show="noDynamic">暂无数据</p>
+                    <div class="trend-list">
+                        <div class="trend-item" ng-repeat="ds in dynamicState">
+                            <p><span></span>{{ds.updateTime | date:'yyyy-MM-dd HH:mm:ss'}}<a ng-if="ds.operator!=null" class="rightSize">{{ds.operator}}</a></p>
+                            <div class="media">
+                                <div class="media-body">
+                                    <p><a ng-if="!ds.operator">SNCD(持续交付平台)</a> 在系统 <a>{{ds.sysCnname}}</a> 中进行了 <a title="{{ds.detailComments}}">{{ds.comments}}</a>                                        的任务
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center" ng-hide="noDynamic">
+                        <a class="link-cursor" ng-click="dynamic(3)">更多动态
+                            <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

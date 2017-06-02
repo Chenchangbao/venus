@@ -1,0 +1,26 @@
+<div class="modal fade in" ng-controller="QrcodeCtrl">
+	<div class="modal-dialog" style="width:295px">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" ng-click="closeqrcode()"
+					data-dismiss="modal">
+					<span aria-hidden="true"><i class="suningicon">x</i></span><span
+						class="sr-only">Close</span>
+				</button>
+			</div>
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<input type="text" id="id" value="{{url}}" ng-show="false"/>
+					<div id="output"></div>
+					<script src="js/jquery/jquery-1.8.3.min.js"></script>
+					<script src="js/jquery.qrcode.min.js"></script>
+					<script>
+						jQuery(function(){
+							jQuery('#output').qrcode($("#id").val());
+						})
+					</script>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

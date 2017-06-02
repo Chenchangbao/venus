@@ -1,0 +1,101 @@
+<div class="modal fade in" ng-controller="packageQuaCheckCtrl" >
+	<div class="modal-dialog" style="width:780px">
+		<div class="modal-content" style="height:370px;">
+			<div class="modal-header">
+			    <button type="button" class="close" ng-click="close()"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+			    <h4 class="modal-title">质量结果</h4>
+			</div>
+		
+			<div class="modal-body" style="height:250px;padding:15px;">
+				<form name="deliveryCheckForm">
+					<div  class="form-group col-xs-12">
+						<div style="margin:10px 0;" ng-if="!type">
+						<!-- 一级pre,prd，构建失败 -->
+						<label class="modal-titel" ng-if="systemGrade=='一级' && (envType=='020' || envType=='021') && (buildStatus=='4' || buildStatus=='5')" style="color: red">注：{{sysCnname}}系统等级为一级系统,截止目前新增代码：{{newCodeLines}}行,最近构建日期:{{buildEndTime||'无'|date:'yyyy-MM-dd HH:mm:ss'}},构建失败,请修改！<a ng-if="buildId!=0" ui-sref="CodeBuild({sysId:sysId,buildId:buildId})" target="_blank">重新检查！</a><a ng-if="buildStatus==4|| buildStatus==5" href="{{jenkinsUrl}}" target="_blank">构建日志查看</a></label>
+						<!-- 一级pre,prd，构建成功 -->
+						<label class="modal-titel" ng-if="systemGrade=='一级' && (envType=='020' || envType=='021') && buildStatus!='4' &&  buildStatus!='5'"  style="color: red">注：{{sysCnname}}系统等级为一级系统,截止目前新增代码：{{newCodeLines}}行,最近构建日期:{{buildEndTime||'无'|date:'yyyy-MM-dd HH:mm:ss'}},按照PMO办公室质量要求,质量未达标,无法生成构件，请修改！<a ng-if="buildId!=0" ui-sref="CodeBuild({sysId:sysId,buildId:buildId})" target="_blank">重新检查！</a></label>
+						<!-- 非一级，或一级sit、dev，构建失败 -->
+						<label class="modal-titel" ng-if="(systemGrade!='一级' ||(systemGrade=='一级' &&( envType=='019' || envType=='171')))&& (buildStatus=='4' || buildStatus=='5')" style="color: red">注：{{sysCnname}}系统,截止目前新增代码：{{newCodeLines}}行,最近构建日期:{{buildEndTime||'无'|date:'yyyy-MM-dd HH:mm:ss'}},构建失败!<a ng-if="buildId!=0" ui-sref="CodeBuild({sysId:sysId,buildId:buildId})" target="_blank">重新检查！</a><a ng-if="buildStatus==4|| buildStatus==5" href="{{jenkinsUrl}}" target="_blank">构建日志查看</a></label>
+						<!-- 非一级，或一级sit、dev，构建成功 -->
+						<label class="modal-titel" ng-if="(systemGrade!='一级' ||(systemGrade=='一级' &&( envType=='019' || envType=='171'))) && buildStatus!='4' && buildStatus!='5'" style="color: red">注：{{sysCnname}}系统,截止目前新增代码：{{newCodeLines}}行,最近构建日期:{{buildEndTime||'无'|date:'yyyy-MM-dd HH:mm:ss'}},质量未达标!请修改！<a ng-if="buildId!=0" ui-sref="CodeBuild({sysId:sysId,buildId:buildId})" target="_blank">重新检查！</a></label>
+						</div>
+						<div style="margin:10px 0;" ng-if="type=='freezen'">
+							<!-- 一级pre,prd，构建失败 -->
+							<label class="modal-titel" ng-if="systemGrade=='一级' &&  envType=='021' && (buildStatus=='4' || buildStatus=='5')" style="color: red">注：{{sysCnname}}系统等级为一级系统,截止目前新增代码：{{newCodeLines}}行,最近构建日期:{{buildEndTime||'无'|date:'yyyy-MM-dd HH:mm:ss'}},构建失败！请确认是否要封板？<a ng-if="buildId!=0" ui-sref="CodeBuild({sysId:sysId,buildId:buildId})" target="_blank">重新检查！</a><a ng-if="buildStatus==4|| buildStatus==5" href="{{jenkinsUrl}}" target="_blank">构建日志查看!</a></label>
+							<!-- 一级pre,prd，构建成功 -->
+							<label class="modal-titel" ng-if="systemGrade=='一级' &&  envType=='021' && buildStatus!='4' &&  buildStatus!='5'"  style="color: red">注：{{sysCnname}}系统等级为一级系统,截止目前新增代码：{{newCodeLines}}行,最近构建日期:{{buildEndTime||'无'|date:'yyyy-MM-dd HH:mm:ss'}},按照PMO办公室质量要求,质量未达标，封板后无法生成构件和发布！请确认是否要封板？<a ng-if="buildId!=0" ui-sref="CodeBuild({sysId:sysId,buildId:buildId})" target="_blank">重新检查！</a></label>
+							<!-- 非一级，构建失败 -->
+							<label class="modal-titel" ng-if="systemGrade!='一级' &&  envType=='021' && (buildStatus=='4' || buildStatus=='5')" style="color: red">注：{{sysCnname}}系统,截止目前新增代码：{{newCodeLines}}行,最近构建日期:{{buildEndTime||'无'|date:'yyyy-MM-dd HH:mm:ss'}},构建失败!请确认是否要封板？<a ng-if="buildId!=0" ui-sref="CodeBuild({sysId:sysId,buildId:buildId})" target="_blank">重新检查！</a><a ng-if="buildStatus==4|| buildStatus==5" href="{{jenkinsUrl}}" target="_blank">构建日志查看</a></label>
+							<!-- 非一级，构建成功 -->
+							<label class="modal-titel" ng-if="systemGrade!='一级' &&  envType=='021' && buildStatus!='4' && buildStatus!='5'" style="color: red">注：{{sysCnname}}系统,截止目前新增代码：{{newCodeLines}}行,最近构建日期:{{buildEndTime||'无'|date:'yyyy-MM-dd HH:mm:ss'}},质量未达标!请确认是否要封板？<a ng-if="buildId!=0" ui-sref="CodeBuild({sysId:sysId,buildId:buildId})" target="_blank">重新检查！</a></label>
+						</div>
+						<table class="table-dialog" ng-if="vqTrendInfos!=null" id="packageQua">
+							<thead>
+								<th style="width:155px;">质量指标检测项</th>
+								<th style="width:170px;">PMO办公室定义质量标准</th>
+								<th style="width:190px;">当前检查质量数据</th>
+								<th>解决方案</th>
+							</thead>
+							<tbody>
+								<tr ng-repeat="item in vqTrendInfos">
+									<td>
+										{{item.paramName}} 
+									</td>
+									<td >
+										{{item.beCompareValue || '-'}}{{item.unit}}   
+									</td>
+									<td >
+										<span ng-if=" item.vqualityTrend==1 && item.isGreaterLess==1" style='color:red'>	
+											<span ng-if="item.paramValue!=-1 && item.paramValue!=''">{{item.paramValue }}{{item.unit}} </span> &nbsp;&nbsp;
+											<span ng-if="item.paramValue==-1">构建失败</span> &nbsp;&nbsp;
+										</span> 
+										<span ng-if=" item.vqualityTrend==0 && item.isGreaterLess==2" style='color:red'>	
+											<span ng-if="item.paramValue!=-1 && item.paramValue!=''">{{item.paramValue}}{{item.unit}} </span> &nbsp;&nbsp;
+											<span ng-if="item.paramValue==-1">构建失败</span> &nbsp;&nbsp;
+										</span>
+										<span ng-if="!(item.vqualityTrend==1 && item.isGreaterLess==1) && !(item.vqualityTrend==0 && item.isGreaterLess==2) " >	
+											<span ng-if="item.paramValue!=-1 && item.paramValue!='' && item.paramValue!=null ">{{item.paramValue||'无'}}{{item.unit}} </span> &nbsp;&nbsp;
+											<span ng-if="item.paramValue==-1">构建失败</span> &nbsp;&nbsp;
+										</span>
+									</td>
+									<td ng-if="item.paramKey=='NEW_COVERAGE'">
+										<span ng-if=" buildStatus!=4 && buildStatus!=5" ><a  href="{{sonarUrl}}" target="_blank">质量详情(提升变更代码覆盖率)</a></span>
+										<span ng-if=" buildStatus==4"><a  href="{{jenkinsUrl}}" target="_blank">构建详情(jenkins分析失败)</a></span>
+										<span ng-if=" buildStatus==5"><a  href="{{jenkinsUrl}}" target="_blank">构建详情(sonar分析失败)</a></span>
+									</td>
+									<td ng-if="item.paramKey=='TEST_SUCCESS_DENSITY'">
+										<span ng-if=" buildStatus!=4 && buildStatus!=5" ><a  href="{{sonarUrl}}" target="_blank">质量详情(提升案例执行成功率)</a></span>
+										<span ng-if=" buildStatus==4"><a  href="{{jenkinsUrl}}" target="_blank">构建详情(jenkins分析失败)</a></span>
+										<span ng-if=" buildStatus==5"><a  href="{{jenkinsUrl}}" target="_blank">构建详情(sonar分析失败)</a></span>
+									</td>
+								</tr>
+								<tr>
+									<td>人工代码评审</td>
+									<td>全部评审通过</td>
+									<td ng-if="reviewResult==1">&nbsp;&nbsp;&nbsp;通过</td>
+									<td ng-if="reviewResult==0" style='color:red'>不通过(不通过:{{codeReviewInfo.noPass}},待评审:{{codeReviewInfo.pending}})</td>
+									<td>
+										<a ui-sref="SvnCodeReviewBranch({branchId:branchId,version:version,sysName:sysName})" target="_blank">评审详情(确认代码已评审通过)</a>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="modal-footer" style="height:60px;" ng-if="type=='freezen'">
+						 <button type="button" class="btn btn-primary"   ng-click="continueBuild()" >继续封板</button>
+				</div>
+				<div class="modal-footer" style="height:60px;" ng-if="!type">
+					<div ng-if="systemGrade=='一级' && (envType=='020' || envType=='021')">
+						<div ng-if="isQuaWhite ||((buildStatus==4 || buildStatus==5)&& reviewResult==1)">
+							 <button type="button" class="btn btn-primary"   ng-click="continueBuild()" >继续打包</button>
+						</div>
+					</div>
+					<div ng-if="!(systemGrade=='一级' && (envType=='020' || envType=='021'))">
+					 	<button type="button" class="btn btn-primary"   ng-click="continueBuild()" >继续打包</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>	
+</div>

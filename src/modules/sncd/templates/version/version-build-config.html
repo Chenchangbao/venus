@@ -1,0 +1,361 @@
+<!--<h4><a ui-sref="VersionProcess">我的版本</a> > <i class="lightgray">交付流程配置</i></h4>-->
+<div  class="panel-body"  ng-if="(hasPermissionMap['7019'] !=null && hasPermissionMap['7019']) && (sys.sysType==null || sys.sysType=='' || repos==null)">
+		该系统尚未初始化，请联系技术总监/技术负责人/系统管理员按以下步骤初始化系统：</br>
+		第一步：请在“系统版本”页签下选择“系统类型”;</br>
+		第二步：创建代码库;</br>
+		第三步：设置打包配置;</br>
+</div>
+
+<div  class="panel-body"  ng-if="(hasPermissionMap['7019'] == null || !hasPermissionMap['7019'])">
+		您没有交付流程配置权限,请联系技术总监/技术负责人/系统管理员初始化权限;</br>
+</div>
+<!-- <div  class="panel-body"  ng-if="packageConfig==null || packageConfig==''">
+		该系统尚未配置打包配置，请联系技术总监/技术负责人/系统管理员设置打包配置;</br>
+</div> -->
+
+
+<div class="panel panel-default" ng-if="hasPermissionMap['7019'] !=null && hasPermissionMap['7019']  && sys.sysType!=null&& sys.sysType!='' && repos!=null ">
+	<div class="panel-body">
+	<div class="panel-heading panel-head">
+		<div class="steps-container">
+			<!--<p class="col-xs-8 text-center titleFont">交付流程配置</p>-->
+			
+			<ul class="col-xs-8">
+				<li class="step">
+					<button type="button"  ng-class="{'arrow-Backurl': step >= 3, 'arrow-complete': step < 3 }" >工具检查设置</button>
+				</li>
+				<li class="step">
+					<button type="button"  ng-class="{'arrow-Backurl': step >= 4, 'arrow-complete': step < 4 }" >代码评审设置</button>
+				</li>
+				<li class="step" ng-repeat="newstep in steplist">
+					<button type="button"  ng-class="{'arrow-Backurl': step >= newstep.step, 'arrow-complete': step < newstep.step }" >{{newstep.envType | envTypeNameFilter}}</button>
+				</li>
+			</ul>
+		</div>
+		<!--step end-->
+	</div>
+	<div class="panel panel-default">
+
+		<div class="panel-body" ng-if="postData.reposId == ''">
+			该系统尚无代码库，请先维护代码库信息再创建版本。
+			<!--         	点击维护代码库 -->
+		</div>
+
+		<div class="panel-body" ng-if="!!postData.reposId">
+
+			<form name="versionJobForm" class="form-horizontal" ng-if="step=='3'">
+				<div class="form-group ">
+					<label class="col-sm-2 control-label" for="formGroupInputSmall" style="width: 20%">选择项检查：</label>
+					<div class="col-sm-6">
+						<label ng-repeat="model in dtmListAnalysisExt" ng-show="model.itemCode != '283' && model.itemCode != '300' && model.itemCode != '302' && model.itemCode != '303'" class="checkbox-inline">
+							<input type="checkbox" ng-model="model.checked" disabled="mode.disabled">{{model.itemName}}
+						</label>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-sm-2 control-label" for="formGroupInputSmall" style="width: 20%">定时计划：</label>
+					<div class="col-sm-6">
+						<select ng-model="query.selectedRate" name="org" required ng-selected="query.selectedRate == frequencyRate.selectedRate" class="form-control" ng-options="frequencyRate as frequencyRate.frequencyRateDesc for frequencyRate in frequencyRates">
+							<option value="">--请选择 --</option>
+						</select>
+						<label class="text-danger" ng-show="versionJobForm['org'].$error.required">定时计划不可为空</label>
+						<!--<div>
+							<input type="text" ng-disabled="query.selectedRate.frequencyRate != -1" ng-model="query.selectedRate.frequencyExpression">
+						</div>-->
+					</div>
+				</div>
+				<!--<div class="form-group">
+					<label class="col-sm-2 control-label" for="formGroupInputSmall" style="width: 20%">定时计划：</label>
+					<div class="col-sm-6">
+						<select ng-model="selectedRate" ng-change="changeRate(selectedRate)" required="required" class="form-control">
+						<option value="">--请选择 --</option>
+						<option value="{{frequencyRate.frequencyRate}}" ng-repeat="frequencyRate in frequencyRates" ng-selected="selectedRate == frequencyRate.frequencyRate">{{frequencyRate.frequencyRateDesc}}</option>
+						
+						</select>
+						<div>
+							<input type="text">{{frequencyRate.frequencyExpression}}
+						</div>
+					</div>
+				</div>-->
+				<div class="form-group">
+					<label class="col-sm-2 control-label" for="formGroupInputSmall" style="width: 20%">自定义表达式：</label>
+					<div class="col-sm-6">
+						<textarea id="frequencyExpression" ng-disabled="query.selectedRate.frequencyRate != -1" ng-model="query.selectedRate.frequencyExpression" class="form-control" name="frequencyExpression" ></textarea>
+					</div>
+				</div>
+				<div class="form-group ">
+					<label class="col-sm-2 control-label " for="formGroupInputSmall" style="width: 20%">邮件通知触发器：</label>
+					<div class="col-sm-6">
+						<label ng-repeat="model in dtmListTrigger" class=" checkbox-inline">
+							<input type="checkbox" ng-model="model.checked">{{model.itemName}}
+						</label>
+						<div ng-if="dtmListTrigger[triggerLength-1].checked" >
+							<label class="checkbox-inline">基线配置：</label>
+							<label ng-repeat="base in baseLines" class="checkbox-inline">
+								<input type="checkbox" ng-true-value="1" ng-false-value="0" ng-model="base.isCompare">{{base.paramName}}({{base.isGreaterLess|glReverseFilter}}{{base.paramValue}}{{base.unit}})
+							</label>
+						</div>
+					</div>
+				</div>
+				<div class="form-group ">
+					<label class="col-sm-2 control-label" for="formGroupInputSmall" style="width: 20%">邮件发送人员：</label>
+					<div class="col-sm-6">
+						<label ng-repeat="model in dtmListRecipent" class="checkbox-inline">
+							<input type="checkbox" ng-model="model.checked">{{model.roleName|developRoleNameFilter}}
+						</label>
+					</div>
+				</div>
+				<div class="form-group" ng-if="version.packageType == 'ANT'">
+					<label class="col-sm-2 control-label" for="formGroupInputSmall" style="width: 20%">工程属性：</label>
+					<div class="col-sm-6">
+						<select ng-model="version.branchBuildInfoBo.projectType" name="project" required="required" class="form-control" ng-options="projectType.projectType as projectType.projectDesc for projectType in projectTypes">
+						<option value="">--请选择 --</option>
+						</select>
+							<label class="text-danger" ng-show="versionJobForm['project'].$error.required">工程属性必须</label>
+					</div>
+				</div>
+				<div class="form-group" ng-if="version.branchBuildInfoBo!=null && version.packageType == 'ANT' && version.branchBuildInfoBo.projectType=='2'">
+					<label class="col-sm-2 control-label" for="formGroupInputSmall" style="width: 20%"><i style="color: red">*</i>工程名称：</label>
+					<div class="col-sm-6">
+						<textarea class="form-control" ng-model="version.branchBuildInfoBo.projectNames" required ng-blur="replaceContent()">
+						</textarea>多工程名请用逗号隔开
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<!--<button type="button"  class="btn btn-default" ng-click="nextStep('2')">上一步</button>-->
+						<button type="button"  class="btn btn-default" ng-click="nextStep('4',versionJobForm.$invalid)">下一步</button>
+						<a class="btn btn-default" ng-click="exitCreateVersion();">取消</a>
+						<!-- <button type="button"  class="btn btn-default" ng-click="lastStep('4')">暂不设置</button> -->
+					</div>
+				</div>
+			</form>
+
+
+			<form name="reviewBoardForm" class="form-horizontal" ng-if="step=='4'">
+				<div class="form-group">
+					<label class="col-sm-2 control-label" for="formGroupInputSmall" style="width: 30%">使用ReviewBoard评审：</label>
+					<div class="col-sm-6">
+						<label class="radio-inline"> <input type="radio"
+						name="codereviewOpen" value="0" ng-model="postData.codereviewOpen">
+						不使用
+					</label> <label class="radio-inline"> <input type="radio"
+						name="codereviewOpen" value="1" ng-model="postData.codereviewOpen">
+						使用
+					</label>
+					</div>
+				</div>
+				<!-- >代码评审人及开发人员对应列表 -->
+				<table class="table table-bordered table-hover" ng-if="postData.codereviewOpen=='1'">
+					<tbody>
+						<tr>
+							<th width="20%" align="center">代码评审人</th>
+							<th width="70%" align="center">开发人员</th>
+							<th width="10%" align="center">操作</th>
+						</tr>
+						<tr ng-repeat="reviewerAndDevelopers in reviewerAndDevelopersBoList ">
+							<td>
+								<!-- 						<input -->
+								<!-- 							type="text" class="form-control" placeholder="代码评审人" -->
+								<!-- 							ng-model="reviewerAndDevelopers.reviewer.fullName" required /> -->
+
+								<div class="log-user-select">
+									<!--<label class="text-danger" ng-show="reviewBoardForm['reviewer'].$error.required">评审人员不可为空</label>-->
+									<input type="input" class="form-control" id="user" required ng-model="reviewerAndDevelopers.reviewer.fullName" name="reviewer"
+										data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" ng-change="queryByUser($index)" placeholder="代码评审人"
+										ng-blur="getUser($index)"> <span class="glyphicon glyphicon-chevron-down form-control-feedback" style="display: none;"
+										aria-hidden="true"></span>
+										
+									<ul class="dropdown-menu" aria-labelledby="user" style="overflow: hidden;">
+										<li ng-repeat="user in userList|filterEmpty:reviewerAndDevelopers.reviewer.fullName|filter:reviewerAndDevelopers.reviewer.fullName|numberLimit:20">
+											<a href="" ng-mousedown="selectUser(user,$parent.$index)" sn-tooltip='{{user}}' ng-show="user.length > 35">{{user.substring(0,35)+'...'}}</a>
+											<a href="" ng-mousedown="selectUser(user,$parent.$index)" ng-show="user.length <= 35">{{user}}</a>
+										</li>
+										<li></li>
+									</ul>
+								</div>
+
+							</td>
+							<td>
+								<div>
+									<label class="checkbox-inline" ng-repeat="developer in reviewerAndDevelopers.newDevelopers"> <input
+									type="checkbox" ng-model="developer.checked">
+									{{developer.fullName}}
+								</label>
+								</div>
+							</td>
+							<td><a href="javascript:void(0)" ng-click="add();" ng-if="$index == 0">增加</a> <a href="javascript:void(0)" ng-click="del($index)"
+									ng-if="$index > 0">删除</a></td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="form-group" ng-if="postData.codereviewOpen=='1'">
+					<div class="col-sm-offset-2 col-sm-10">
+						<span id="reviewtips" style="color:red">{{errorMsg}}</span>
+					</div>
+				</div>
+
+				<div class="form-group">
+
+					<div class="form-group">
+						<div class="col-sm-offset-2 col-sm-10">
+							<button type="button"  class="btn btn-default" ng-click="nextStep('3')">上一步</button>
+							<button type="button"  class="btn btn-default" ng-click="saveVersion('1',reviewBoardForm.$invalid,step)" ng-disabled="disableComplete">完成</button>
+							<button type="button"  class="btn btn-default" ng-if="steplist.length > 0" ng-click="nextStep('5',versionJobForm.$invalid)">下一步</button>
+							<button type="button"  class="btn btn-default" ng-click="exitCreateVersion();">取消</button>
+							<!-- <button type="button"  class="btn btn-default" ng-click="saveVersion('0',reviewBoardForm.$invalid)">暂不设置</button> -->
+						</div>
+					</div>
+				</div>
+			</form>
+
+
+			<!--交付配置-->
+			<form name="versionJobForm" class="form-horizontal" ng-repeat="newstep in steplist" ng-show="step == newstep.step">
+				<div class="form-group ">
+					<label class="col-sm-2 control-label" for="formGroupInputSmall" style="width: 20%">发布前检测项：</label>
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label class="radio-inline"> 
+							<input type="radio" value="1" ng-model="dataList[newstep.code].beforeObj.isOpen" ng-checked="dataList[newstep.code].beforeObj.isBeforeOpen == 1" name="beforeOpen">开启
+							</label>
+							<label class="radio-inline"> 
+							<input type="radio" value="0" ng-model="dataList[newstep.code].beforeObj.isOpen" ng-checked="dataList[newstep.code].beforeObj.isBeforeOpen == 0" name="beforeOpen">关闭
+							</label>
+						</div>
+						<div class="form-group">
+							<label ng-repeat="model in dataList[newstep.code].beforeObj.dcDetailBo" ng-show="model.analysisType!='283' && model.analysisType != '300' && model.analysisType != '302' && model.analysisType != '303'" class=" checkbox-inline">
+								<input type="checkbox" ng-disabled="dataList[newstep.code].beforeObj.isOpen == 0 || model.analysisType=='283' || model.analysisType == '300' || model.analysisType == '302' || model.analysisType == '303'" ng-model="model.analysisChecked">{{model.analysisType | analysisFilter}}
+							</label>
+							<p>提示：开启检测项后，以下相应详细配置才生效。</p>
+						</div>
+					</div>
+				</div>
+				<div class="form-group ">
+					<label class="col-sm-2 control-label" for="formGroupInputSmall" style="width: 20%">发布后触发项：</label>
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label class="radio-inline"> 
+							<input type="radio" value="1" ng-disabled="true" ng-model="dataList[newstep.code].afterObj.isAfterOpen" ng-checked="dataList[newstep.code].afterObj.isAfterOpen == 1" name="afterOpen">开启
+							</label>
+							<label class="radio-inline"> 
+							<input type="radio" value="0" ng-disabled="true" ng-model="dataList[newstep.code].afterObj.isAfterOpen" ng-checked="dataList[newstep.code].afterObj.isAfterOpen == 0" name="afterOpen">关闭
+							</label>
+						</div>
+						<div class="form-group">
+							<label ng-repeat="afmodel in dataList[newstep.code].afterObj.dcDetailBo" class=" checkbox-inline">
+						  	<input type="checkbox" ng-disabled="true" ng-model="afmodel.analysisChecked">{{afmodel.analysisType | analysisFilter}}
+							</label>
+							<p>提示：此功能正在开发中...</p>
+						</div>
+					</div>
+				</div>
+				<div class="panel-heading">
+					<p>检测配置详情</p>
+				</div>
+				 <div class="">
+					 <div class="panel panel-noborder">
+						<ul class="nav nav-tabs nav-new">
+							<li ng-class="{'active': selectedTab==1}"><a ng-class="{'active2': selectedTab==1}"
+								ng-click="selectTab('1')">发布前</a></li>
+							<li ng-class="{'active': selectedTab==2}"><a ng-class="{'active2': selectedTab==2}"
+								ng-click="selectTab('2'); ">发布后</a></li>
+						</ul>
+						<div ng-if="selectedTab == 1">
+							<div class="col-sm-6" ng-repeat="config in dataList[newstep.code].beforeObj.dcDetailBo" ng-show="(config.dcDetailBoList||[]).length != 0">
+								<div class="bottom10" ng-if="config.analysisType!=283">
+									<span>{{config.analysisType | analysisNameFilter}}</span>
+									<a href="" class="rightSide" ng-if="!config.staticEdit" ng-click="editStatic(newstep,config)">修改指标</a>
+									<button type="button"  ng-if="config.staticEdit" class="rightSide" ng-click="cancleEdit(newstep,config)">取消</button>
+									<button type="button"  ng-if="config.staticEdit" class="rightSide" ng-click="changeStatic(newstep,config)">确认</button>
+								</div>
+								<table class="table table-bordered" ng-if="config.analysisType!=283">
+									<thead>
+										<th item-width="33%">参数</th>
+										<th item-width="33%">指标</th>
+										<th item-width="34%">设为入口条件</th>
+									</thead>
+									<tbody>
+										<!--<tr ng-if="(config.dcDetailBoList||[]).length == 0">
+											<td colspan="3" align="center" height="120px">
+												<p><h3>此功能正在开发中...</h3></p>
+											</td>
+										</tr>-->
+										<tr ng-repeat="item in config.dcDetailBoList">
+											<td>{{item.paramName}}</td>
+											<td>
+												<span>{{item.isGreaterLess | greateLessFilter}}</span>
+												<span ng-if="!config.staticEdit">{{item.paramValue}}</span>
+												<input type="text"  class="width30" ng-if="config.staticEdit" ng-model="item.paramValue" ng-disabled="item.disabled" ng-keyup="obj.totalCount(item,config.dcDetailBoList,$event)" ng-blur="obj.totalCount(item,config.dcDetailBoList,$event)">
+												<span>{{item.unit}}</span>
+											</td>
+											
+											<td ng-if="item.isEntranceDisabled">
+												<input type="checkbox" ng-disabled="true" ng-model="item.isEntrance" ng-true-value="1">
+											</td>
+											
+											<td ng-if="!item.isEntranceDisabled">
+												<input type="checkbox" ng-true-value="1" ng-false-value="0"  ng-model="item.isEntrance">
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							
+						</div>
+						<div ng-if="selectedTab == 2">
+							<div class="col-sm-6" ng-repeat="config in dataList[newstep.code].afterObj.dcDetailBo">
+								<div class="bottom10">
+									<span>{{config.analysisType | analysisNameFilter}}</span>
+									<a href="" class="rightSide" ng-if="!config.staticEdit" ng-click="editStatic(newstep,config)">修改指标</a>
+									<button type="button"  ng-if="config.staticEdit" class="rightSide" ng-click="cancleEdit(newstep,config)">取消</button>
+									<button type="button"  ng-if="config.staticEdit" class="rightSide" ng-click="changeStatic(newstep,config)">确认</button>
+								</div>
+								<table class="table table-bordered">
+									<thead>
+										<th item-width="33%">参数</th>
+										<th item-width="33%">指标</th>
+										<th item-width="34%">设为入口条件</th>
+									</thead>
+									<tbody>
+										<tr ng-if="(config.dcDetailBoList||[]).length == 0">
+											<td colspan="3" align="center" height="120px">
+												<p><h3>此功能正在开发中...</h3></p>
+											</td>
+										</tr>
+										<tr ng-repeat="item in config.dcDetailBoList">
+											<td>{{item.paramName}}</td>
+											<td>
+												<span>{{item.isGreaterLess | greateLessFilter}}</span>
+												<span ng-if="!config.staticEdit">{{item.paramValue}}</span>
+												<input type="text"  class="width30" ng-if="config.staticEdit" ng-model="item.paramValue">
+												<span>{{item.unit}}</span>
+											</td>
+											<td>
+												<input type="checkbox" ng-model="item.analysisChecked">
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>     
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button type="button"  class="btn btn-default" ng-click="nextStep(newstep.step-1)">上一步</button>
+						<button type="button"  class="btn btn-default" ng-if="steplist[steplist.length-1].code != newstep.code" ng-click="nextStep(newstep.step+1,versionJobForm.$invalid)">下一步</button>
+						<button type="button"  class="btn btn-default" ng-click="saveVersion('1',reviewBoardForm.$invalid,newstep.step)" ng-disabled="disableComplete">完成</button>
+						<a class="btn btn-default" ng-click="exitCreateVersion();">取消</a>
+					</div>
+				</div>
+			</form>
+
+
+
+			<br />
+
+		</div>
+	</div>
+</div>

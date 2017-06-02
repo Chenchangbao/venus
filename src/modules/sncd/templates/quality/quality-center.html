@@ -1,0 +1,103 @@
+<div class="module-head">
+    <div class="module-info">
+        <p class="title">质量中心</p>
+        <p class="sub-title">展示我的系统基线质量</p>
+    </div>
+   
+    <div class="form-group pull-right search">
+        <input type="text" class="form-control input-sm" placeholder="系统中文名称或者英文名称或版本信息" ng-model="formData.queryParam">
+        <span class="glyphicon glyphicon-search search-icon" ng-click="search()"></span>
+        <!--<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ng-click="search()"></span>-->
+    </div>
+      
+</div>
+
+<div class="container-wrapper">
+	 <div class="panel-body" style="padding:0px;">
+		 <a  class="form-group pull-right" ng-if="formData.branchId==null && formData.sysTemp!=null" ui-sref="SystemManage()">返回</a>
+	     <a  class="form-group pull-right" ng-if="formData.branchId!=null" ui-sref="VersionProcess({sysId:formData.sysTemp})">返回</a>
+	   	 <a  class="form-group pull-right" ng-if="formData.sysId!=null &&( formData.type==4 || formData.type==0)" ui-sref="QualityCenter({type:0})">返回</a>
+   	</div>
+    <div class="panel panel-default" ng-repeat="qua in quaList">
+        <div class="panel-heading" ng-if="qua.branchId==0" >
+            <h3 class="panel-title"> 
+              <a ui-sref="SystemInfo({sysId:qua.sysId})">{{qua.sysCnname}}({{qua.sysEnname}})</a>
+           	  <a  class="link-cursor" ng-click="branchAnalysis(qua.sysId)"  >查看版本</a>
+              <span class="pull-right">版本CMO：{{qua.sysCmo}}</span>
+            </h3>
+        </div>
+         <div class="panel-heading" ng-if="qua.branchId!=0" >
+            <h3 class="panel-title"> 
+            <a ui-sref="SystemInfo({sysId:qua.sysId})">{{qua.sysCnname}}({{qua.sysEnname}})</a>
+             	<a ui-sref="VersionJob({sysId:qua.sysId,versionId:qua.branchId,vtab:'VersionJob'})"> 质量分析</a>
+	         	<a ui-sref="VersionReviewBoard({sysId:qua.sysId,versionId:qua.branchId,vtab:'VersionReviewBoard'})">在线评审</a>
+	         	<span class="pull-right">版本CMO：{{qua.sysCmo}}</span>
+            </h3>
+        </div>
+        <div class="panel-body">
+            <table class="table table-align-center">
+                <thead>
+                <tr>
+                    <th width="20%" style="text-align:left;">版本</th>
+                    <th width="20%" style="text-align:left;">质量分析</th>
+                    <th width="10%" style="text-align:left;" ng-if="qua.branchversion!=null">状态</th>
+                    <th width="15%" style="text-align:left;">操作</th>
+                    <th width="10%" style="text-align:left;" >定时计划</th>
+                    <th width="15%" style="text-align:left;">上次构建时间</th>
+                    <th width="10%" style="text-align:left;">质量趋势</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td ng-if="qua.branchId!=0">
+                    	<a ui-sref="VersionDetail({sysId:qua.sysId,versionId:qua.branchId})">{{qua.branchName}}[{{qua.branchversion}}]</a>
+                    </td>
+                    <td ng-if="qua.branchId==0">
+                    	{{qua.branchName}}[{{qua.branchversion||"trunk"}}]
+                    </td>
+                    <td>
+				                       代码行数：{{qua.codeLines||"0"}}<br>
+				                       主要Bug以上：{{qua.majoronViolations||"0"}}<br>
+				                       失败次数/总构建次数：{{qua.failureNumbers}}/{{qua.totalNumbers}} <br>
+				         <span ng-if="qua.branchId!=0">评审总数/未评审总数：{{qua.haveReviewedNumbers}}/{{qua.notReviewNumbers}}<br></span>
+                    </td>
+                    <td ng-if="qua.branchId!=0">
+                        {{qua.branchStatus | versionStatusFilter}}
+                    </td>
+                    <td>
+                    	<div ng-if="qua.branchId==0 && qua.frequencyRate!=0">
+                   		<!-- <a href="javascript:void(0)" ng-click="getCodeQualityDetail(qua,1)">执行编译</a><br> -->
+                        <a href="javascript:void(0)"  ng-click="getCodeQualityDetail(qua,2)">代码质量查看</a> <br>
+                        </div>
+                        <div ng-if="qua.branchId!=0 && ((qua.sonarBaseId!=null && qua.sonarBaseId!=0)|| trunkBuildInfo.mergeCount==0)">
+	                        <a href="javascript:void(0)"  ng-if="qua.branchStatus!=null && qua.branchStatus!=063 && qua.branchStatus!=178 " ng-click="getCodeQualityDetail(qua,1)">执行编译</a> <br>
+	                        <a href="javascript:void(0)"  ng-click="getCodeQualityDetail(qua,2)">代码质量查看</a> <br>
+                        </div>
+                        <!-- <div ng-if="qua.branchStatus!=null && qua.branchStatus!=063 && qua.branchStatus!=178 && (qua.sonarBaseId==0 ||qua.sonarBaseId==null) && trunkBuildInfo.mergeCount>0">
+		    				<strike style = "color:red" class="t3">执行编译(未构建trunk，无关联基线)</strike>
+		    			</div> -->
+		    			<div ng-if="qua.branchStatus!=null && qua.branchStatus!=063 && qua.branchStatus!=178">
+		    				<strike style = "color:red" class="t3">执行编译</strike>
+		    			</div>
+                        <a href="javascript:void(0)" ng-if="qua.branchId!=0" ng-click="getCodeQualityDetail(qua,3)">代码评审查看</a> <br>
+                    </td>
+                    <td >
+                        {{qua.frequencyRate|buildFilter}} 		
+                    </td>
+                    <td>
+                        {{qua.buildEndtime|date:'yyyy-MM-dd HH:mm:ss'}}
+                    </td>
+                    <td>
+                        {{qua.codeQualityTrend|quaTrendFilter}}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+     <footer class="ft-pager clearfix">
+        <div sn-pager itemsPerPage="{{pager.pageSize}}" totalItems="{{pager.totalCount}}" listSize="{{pager.pageSize}}"
+             class="text-right">
+        </div>
+    </footer>
+</div>

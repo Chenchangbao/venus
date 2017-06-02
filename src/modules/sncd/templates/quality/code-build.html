@@ -1,0 +1,62 @@
+<div class="module-head paneltitle">
+    <div class="module-info">
+        <p class="title titlefont">我的质量</p>
+        <p class="sub-title titlecolor">{{branchBuildInfoBo.branchName}}进行编译</p>
+    </div>
+    
+</div>
+
+<div class="container-wrapper">
+ 	<div class="panel-body" style="padding:0px;" ng-if="type=='myQuality'">
+	   	 <a  class="form-group pull-right"  ui-sref="MyQuality({sysId:formData.sysId,versionId:branchBuildInfoBo.branchId,type:2})">返回</a>
+   	</div>
+   	<div class="panel-body" style="padding:0px;" ng-if="type=='version'">
+	   	 <a  class="form-group pull-right"  ui-sref="VersionProcess()">返回</a>
+   	</div>
+   	<div class="panel-body" style="padding:0px;" ng-if="type=='checkVersion'">
+	   	 <a  class="form-group pull-right"  ui-sref="VersionQuaCheck({sysId:formData.sysId,buildId:formData.buildId,versionId:branchBuildInfoBo.branchId,vtab:'VersionQuaCheck'})">返回</a>
+   	</div>
+     <div class="panel panel-default">
+        <table class="table table-bordered table-hover">
+	        <th>【基本信息】</th>
+	        <tr>
+	        	<td>分支版本号</td>
+	        	<td>{{branchBuildInfoBo.branchversion}}</td>
+	        	<td>分支路径</td>
+	        	<td>{{branchBuildInfoBo.branchUrl}}</td>
+	        	<td>上次构建时间</td>
+	        	<td>{{branchBuildInfoBo.branchBuildTaskBo.buildEndtime|date:'yyyy-MM-dd HH:mm:ss'}}</td>
+	        	<td>上次分析状态</td>
+	        	<td>{{branchBuildInfoBo.branchBuildTaskBo.buildStatus|buildStatusFilter}}</td>
+	        </tr>
+       </table>
+    </div>
+    
+    <div class="panel panel-default" >
+       <div>【sonar分析日志】</div>
+        <div class="panel-body" ng-repeat="log in analyse" id="analyse">
+            <!-- <span ng-if="log.indexOf('http')==-1">
+           	 	{{log}}</br>
+            </span>	
+            <span ng-if="log.indexOf('http')>-1">
+           	 	<a href="{{log}}" target="_blank">{{log}}</a></br>
+            </span> -->
+        </div>
+    </div>
+    
+   <div class="panel panel-default" >
+       <div>【sonar分析结果】</div>
+      
+        <div class="panel-body" ng-repeat="result in analyseResult">
+        	<span ng-if="result.indexOf('http')==-1">
+           	 	{{result}}
+            </span>	
+        	<span ng-if="result.indexOf('http')>-1">
+           	 	<a href="{{result}}" target="_blank">{{result}}</a>
+            </span>	
+        </div>
+    </div>
+
+   
+
+</div>

@@ -1,0 +1,132 @@
+<div class="container-wrapper">
+<div class="module-head ng-scope">
+    <div class="module-info">
+        <p class="title ng-binding">打包地址</p>
+        <p class="sub-title">提供打包以及发布功能</p>
+    </div>
+</div>
+
+<br/>
+
+<div class="panel panel-default">
+
+	<!-- 	 <ul class="nav nav-tabs"> -->
+	<!--         <li ng-class="{'active': envType == '019'}"><a  class="link-cursor" ng-click="selectEnv('019')">SIT打包</a></li> -->
+	<!--         <li ng-class="{'active': envType == '020'}"><a class="link-cursor" ng-click="selectEnv('020')">PRE打包</a></li> -->
+	<!--         <li ng-class="{'active': envType == '021'}"><a class="link-cursor" ng-click="selectEnv('021')">PRD打包</a></li> -->
+	<!--         <li ng-class="{'active': envType == '171'}"><a class="link-cursor" ng-click="selectEnv('171')">DEV打包</a></li> -->
+	<!--     </ul> -->
+
+	<div class="panel-heading">
+		<h3 class="panel-title" ng-if="envType == '019'">SIT打包</h3>
+		<h3 class="panel-title" ng-if="envType == '020'">PRE打包</h3>
+		<h3 class="panel-title" ng-if="envType == '021'">PRD打包</h3>
+		<h3 class="panel-title" ng-if="envType == '171'">DEV打包</h3>
+	</div>
+	<div class="panel-body" ng-if="message!=null && message!=''">{{message}}</div>
+	<div class="panel-body" ng-if="message == null || message == ''">
+		<table class="table table-bordered table-hover">
+			<tbody>
+				<tr>
+					<td style="width: 150px;">系统中文名称:</td>
+					<td>{{systemBean.sysCnname}}</td>
+				</tr>
+				<tr>
+					<td>系统英文名称：</td>
+					<td>{{systemBean.sysEnname}}</td>
+				</tr>
+				<tr>
+					<td>版本URL：</td>
+					<td>{{branch.branchUrl}}</td>
+				</tr>
+				<tr>
+					<td>发布环境：</td>
+					<td>{{bmBuildHis.deployEnv|envTypeFilter}}</td>
+				</tr>
+				<tr ng-if="packageType != 'ANT' &&  paraStat == 'Y' ">
+					<td>环境参数：</td>
+					<td><span >{{bmBuildHis.envParam}}</span>
+					</td>
+				</tr>
+				<tr ng-if="environment!=undefined">
+					<td>发布环境名称：</td>
+					<td>{{environment.envName}}</td>
+				</tr>
+				<tr ng-if="environmentList!=undefined">
+					<td>发布环境名称：</td>
+					<td>
+						<label class="radio-inline" ng-repeat="environment in environmentList">
+							<input name="envId" type="radio"  ng-model="environment.checked" ng-if="envId==environment.envId" checked="checked" ng-click="changeEnv(environment.envId)" required>
+							<input name="envId" type="radio"  ng-if="envId!=environment.envId" ng-click="changeEnv(environment.envId)">
+							{{environment.envName}}
+						</label>
+					</td>
+				</tr>
+				<tr ng-if="envType == '021'">
+					<td>自动化发布入口：</td>
+					<td>
+						<button type="submit" 
+							ng-if="usable"
+							class="btn btn-default"
+							ng-click="oneKeyDeploy();">发布</button>&nbsp;&nbsp;&nbsp;&nbsp;
+							<span ng-if="!usable"
+						class="sys-tip">{{useMsg}}</span> 
+					</td>
+				</tr>
+				<tr>
+					<td>打包入口：</td>
+					<td>
+						<!--ng-show="GrantedElementisShow" if-any-granted="ROLE_DEPLOYER"-->
+						<button type="submit" 
+							ng-if="(freezeMsg  == '' || freezeMsg == null) "
+							class="btn btn-default"
+							ng-click="packageVersion(bmBuildHis,systemBean,packageType)">打包</button>&nbsp;&nbsp;&nbsp;&nbsp;
+							<span ng-if="freezeMsg  == '' || freezeMsg == null"
+						class="sys-tip">如需执行手动发布，点击打包后，从FTP取得发布包后执行手动发布。</span> <span
+						ng-if="freezeMsg != ''">{{freezeMsg}}</span>
+					</td>
+				</tr>
+				<tr ng-if="!!jenkinsPath">
+					<td>Jenkins日志地址：</td>
+					<td><a href="{{jenkinsPath}}" target="_blank">{{jenkinsPath}}</a>
+					</td>
+				</tr>
+
+			</tbody>
+		</table>
+
+		<div class="mt15"
+			ng-if="packageType=='PC' &&  bmBuildHis.buildId!='' &&   pcPackageLog && pcPackageLog!='' ">
+			<h3>【打包日志】</h3>
+			<div id="pcDeployArea"
+				style="width: 100%; height: 200px; overflow-y: auto;"></div>
+		</div>
+	</div>
+	<div class="panel-heading">
+		<h3 class="panel-title">最近一次打包记录：</h3>
+	</div>
+	<div class="panel-body">
+		<table class="table table-bordered table-hover">
+			<thead>
+				<tr>
+					<th width="150">打包人</th>
+					<th width="120">环境</th>
+					<th width="180">开始时间</th>
+					<th width="100">结果</th>
+					<th>FTP地址</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="result  in  queryResult">
+					<td>{{result.buildUser}}</td>
+					<td>{{result.deployEnv | envTypeFilter}}</td>
+					<td>{{result.startTime|date:'yyyy-MM-dd HH:mm:ss'}}</td>
+					<td>{{result.buildFlg | buildFlagFilter}}</td>
+					<td><a href="{{result.ftpPath}}" target="_blank"
+						ng-if="!!result.ftpPath">{{result.ftpPath}}</a></td>
+				</tr>
+			</tbody>
+
+		</table>
+	</div>
+</div></div>

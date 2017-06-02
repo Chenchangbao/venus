@@ -1,0 +1,147 @@
+/*
+* home模块样式
+*/
+
+.home {
+
+}
+
+.home .panel {
+    border: none;
+}
+
+.home .panel-heading {
+    color: #fff;
+    font-size: 16px;
+}
+
+.my-attention .panel-heading {
+    background-color: #ff6c60;
+}
+
+.my-dynamic .panel-heading {
+    background-color: #5dd8c6;
+}
+
+.my-attention .panel-body,
+.my-dynamic .panel-body {
+    height: 480px;
+    padding: 5px 15px;
+}
+
+.block-reason .panel-heading {
+    background-color: #46d163;
+}
+
+.serious-reason .panel-heading {
+    background-color: #c18bd8;
+}
+
+.quality-trend .panel-heading {
+    background-color: #58c9f3;
+}
+
+
+.attention-sys, .mine-trends, .announcement, .publish-info {
+    background: #fff;
+    padding: 8px;
+}
+
+.attention-sys {
+    min-height: 180px;
+}
+.attention-sys .table th, .attention-sys .table td {
+    text-align: center;
+}
+.attention-sys footer {
+    line-height: 35px;
+    margin-top: -20px;
+    border-top: 1px solid #e8e8e8;
+    overflow: hidden;
+}
+
+.trend-list .trend-item {
+    margin: 10px 5px;
+}
+
+.trend-list .media {
+    height: 40px;
+    padding-left: 10px;
+    border-left: 1px solid #ddd;
+}
+
+.trend-list .media-left {
+    width: 40px;
+}
+
+.trend-list .media-left img {
+    width: 40px;
+    height: 40px;
+}
+
+.trend-list .trend-item p span {
+    height: 10px;
+    width: 10px;
+    display: inline-block;
+    border: 1px solid green;
+    border-radius: 5px;
+    margin-right: 10px;
+    margin-left: -5px;
+}
+
+.announcement {
+    min-height: 150px;
+}
+
+.publish-info {
+    min-height: 350px;
+    margin-top: 5px;
+}
+
+.link-cursor {
+    cursor: pointer;
+}
+
+.mini-pager li{
+    float: left;
+    list-style-type: none;
+    margin: 0 5px;
+}
+
+.mini-pager li a {
+    color: #ccc;
+}
+
+.mini-pager > .disabled > a,
+.mini-pager > .disabled > a:hover,
+.mini-pager > .disabled > a:focus {
+    color: #777;
+    cursor: not-allowed;
+}
+
+.mini-pager > .active > a,
+.mini-pager > .active > a:hover,
+.mini-pager > .active > a:focus {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    border-radius: 4px;
+    z-index: 2;
+    color: #fff;
+    background-color: #3da0e2;
+}
+
+.menu-scroll-bar {
+	position:absolute!important;
+	top:0;
+	left:0;
+	bottom:0px;
+	width:100%;
+ 
+  
+}
+.menu-scroll-bar .ps-scrollbar-y-rail{
+	
+}

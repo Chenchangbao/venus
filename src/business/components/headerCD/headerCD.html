@@ -1,0 +1,19 @@
+<div class="wrapper" style="background: white;margin: 10px;">
+    <header ng-include="'modules/portal/templates/header.html'"></header>
+
+    <aside ng-include="'modules/portal/templates/aside.html'"></aside>
+
+    <div class="panel panel-default" style="min-height:1102px;">
+        <div class="panel-body">
+            <div class="content-wrapper" ui-view style="padding-top: 50px;"></div>
+        </div>
+    </div> 
+    <footer class="main-footer">
+        <div class="pull-right hidden-xs">
+            <b>Version</b> 2.0
+        </div>
+        <strong>Copyright &copy; 2014-2015 <a href="#">苏宁云商</a>.</strong> All rights reserved.
+    </footer>
+
+    <aside ng-include="'modules/portal/templates/control-sidebar.html'"></aside>
+</div>

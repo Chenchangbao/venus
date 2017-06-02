@@ -1,0 +1,134 @@
+<div class="module-head paneltitle">
+    <div class="module-info">
+        <p class="title titlefont">
+            构件查询
+        </p>
+        <p class="sub-title titlecolor">
+        </p>
+    </div>
+</div>
+<div class="container-wrapper">
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="search-con" style="padding: 15px 0;">
+                <form class="form-inline">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="系统英文名称" ng-model="componentParam.sysEnName">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="版本号或版本名" ng-model="componentParam.componentVersion">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="应用包名" ng-model="componentParam.appName">
+                    </div>
+                    <div class="form-group">
+                        <div class="form-control ng-pristine ng-untouched ng-valid placeholder" filter-list-input-sign option="newrwUsers"></div>
+                    </div>
+                    <br/>
+                    <div class="form-group">
+                        <select class="form-control" ng-model="componentParam.envType" name="envType" ng-options=" envType.envType as  envType.envName for envType in envTypes">
+                            <option value="">-- 选择环境类型 --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <select class="form-control" ng-model="componentParam.isDeploy" name="isDeploy" ng-options="deployStatus.status as deployStatus.name for deployStatus in deployStatus" ng-change="deployStatusChange()">
+                            <option value="">-- 是否被部署 --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <select class="form-control" ng-model="componentParam.deployResult" name="deployResult" ng-options="deployResult.status as deployResult.name for deployResult in deployResult" ng-disabled="deployResultDisable">
+                            <option value="">-- 部署结果 --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <div sn-datetimepicker show-time="false" ng-model="componentParam.createTime" placeholder="创建时间">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-default" ng-click="search()">
+                        搜索
+                    </button>
+                </form>
+            </div>
+            <ul class="nav nav-tabs nav-new">
+                <li ng-class="{'active': selectedTab==1}" class="">
+                    <a ng-class="{'active2': selectedTab==1}" ui-sref="MyComponentList()" class="">我的构件</a>
+                </li>
+                <li ng-class="{'active': selectedTab==2}" class="active">
+                    <a ng-class="{'active2': selectedTab==2}" ui-sref="ComponentList()" class="active2">系统构件</a>
+                </li>
+            </ul>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th width="5%" style="text-align:center;">
+                            序号
+                        </th>
+                        <th width="15%" style="text-align:center;">
+                            应用包名
+                        </th>
+                        <th width="5%" style="text-align:center;">
+                            版本号
+                        </th>
+                        <th width="10%" style="text-align:center;">
+                            环境类型
+                        </th>
+                        <th width="10%" style="text-align:center;">
+                            环境参数
+                        </th>
+                        <th width="10%" style="text-align:center;">
+                            是否被部署
+                        </th>
+                        <th width="10%" style="text-align:center;">
+                            申请人
+                        </th>
+                        <th width="10%" style="text-align:center;">
+                            创建时间
+                        </th>
+                        <th width="10%" style="text-align:center;">
+                            操作
+                        </th>
+                    </tr>
+                </thead>
+                <tbody ng-repeat="item in list">
+                    <tr>
+                        <td align="center">
+                            {{$index+1}}
+                        </td>
+                        <td align="center">
+                            <div ng-repeat="appItem in item.appName|inputSplitFilter">
+                                {{appItem}}
+                            </div>
+                        </td>
+                        <td align="center">
+                            {{item.componentVersion}}
+                        </td>
+                        <td align="center">
+                            {{item.envType|envTypeFilter}}
+                        </td>
+                        <td align="center">
+                            <span ng-if="item.envParam!=''">{{item.envParam}}</span>
+                            <span ng-if="item.envParam==''">无</span>
+                        </td>
+                        <td align="center">
+                            {{item.isDeploy|isdeployFilter}}
+                        </td>
+                        <td align="center">
+                            {{item.userName}}
+                        </td>
+                        <td align="center">
+                            {{item.createTime | date:'yyyy-MM-dd HH:mm:ss'}}
+                        </td>
+                        <td align="center">
+                            <a ui-sref="ComponentDetail({id:item.componentId})">详情</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <footer class="ft-pager clearfix">
+            <div sn-pager itemsPerPage="{{pager.pageSize}}" totalItems="{{pager.totalCount}}" listSize="{{pager.pageSize}}" class="text-right">
+            </div>
+        </footer>
+    </div>
+</div>
+</div>

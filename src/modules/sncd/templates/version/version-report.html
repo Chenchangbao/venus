@@ -1,0 +1,373 @@
+<h3>版本质量报告 【系统：持续交付平台SNCD；分支：优化版本（V1.0.0）】</h3>
+<p>本报告由持续交付平台SNCD自动生成，请勿回复。</p>
+<div class="panel panel-default" style="overflow:hidden" ng-controller="VersionReportCtrl">
+	<div class="panel-heading">
+		<h3 class="panel-title">版本基本情况：</h3>
+	</div>
+	<div class="panel-body">
+		<table class="table table-bordered table-hover">
+			<tbody>
+				<tr>
+					<td>创建时间：</td>
+					<td>{{version.createTime | date: 'yyyy-MM-dd HH:mm'}}</td>
+				</tr>
+				<tr>
+					<td>版本URL：</td>
+					<td>{{version.versionUrl}}</td>
+				</tr>
+				<tr>
+					<td>依赖URL：</td>
+					<td>{{version.dependUrl}}</td>
+				</tr>
+				<tr>
+					<td>版本包含开发人员：</td>
+					<td>{{version.deployments}}</td>
+				</tr>
+				<tr>
+					<td>首次发布测试时间：</td>
+					<td>{{version.firstDeployTime}}</td>
+				</tr>
+				<tr>
+					<td>目前测试情况：</td>
+					<td><span> 
+						SIT发布次数[{{version.sitDeployTimes||0}}]次，
+						成功率[{{version.sitDeploySDensity||0}}]，
+						PRE发布次数[{{version.preDeployTimes||0}}]次，
+						成功率[{{version.preDeploySDensity||0}}]
+						</span></td>
+				</tr>
+				<tr>
+					<td>首次封板时间：</td>
+					<td><span> {{version.unFreeZenTime | date:'yyyy-MM-dd HH:mm'}} </span></td>
+				</tr>
+				<tr>
+					<td>上线发布情况：</td>
+					<td><span> [时间]首次发布生产，
+						解版[{{version.freeZenTimes||0}}]次，
+						生产发布[{{}}]次 </span></td>
+				</tr>
+				<tr>
+					<td>合并版本时间：</td>
+					<td><span> {{version.mergeTime | date:'yyyy-MM-dd HH:mm'}} </span></td>
+				</tr>
+				<tr>
+					<td>版本合并情况：</td>
+					<td ng-show="version.mergeTime">在{{version.mergeTime | date:'yyyy-MM-dd HH:mm'}}合并完成，版本关闭</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<div ng-show="version.ciFlag === 1">
+		<div class="panel-heading">
+			<h3 class="panel-title">{{version.versionName}} 版本构建[{{quality.buildTimes||0}}]次， 成功率[{{quality.buildSDensity}}%]， 当前质量情况</h3>
+		</div>
+		<div class="panel-body ">
+			<div class="col-xs-12 info-report">
+				<div class="row">
+					<div class="col-xs-6">
+						<div class="col-xs-4 row">
+							质量趋势:
+						</div>
+						<div class="col-xs-7">
+							{{quality.qualityTrend}}
+						</div>
+					</div>
+					<div class="col-xs-6">
+						<div class="col-xs-4 row">
+							当前构建成功率:
+						</div>
+						<div class="col-xs-7">
+							{{quality.buildSDensity}}%
+						</div>
+					</div>
+
+					<div class="col-xs-6">
+						<div class="col-xs-4 row">
+							代码行数:
+						</div>
+						<div class="col-xs-7">
+							{{quality.codeLines}}
+						</div>
+					</div>
+					<div class="col-xs-6">
+						<div class="col-xs-4 row">
+							新增代码行数:
+						</div>
+						<div class="col-xs-7">
+
+						</div>
+					</div>
+
+					<div class="col-xs-6">
+						<div class="col-xs-4 row">
+							问题总数:
+						</div>
+						<div class="col-xs-7">
+							{{quality.violations}}
+						</div>
+					</div>
+					<div class="col-xs-6">
+						<div class="col-xs-4 row">
+							主要问题:
+						</div>
+						<div class="col-xs-7">
+							{{quality.majoronViolations}}
+						</div>
+					</div>
+					<div class="col-xs-6">
+						<div class="col-xs-4 row">
+							阻断问题:
+						</div>
+						<div class="col-xs-7">
+							{{quality.blockerViolations}}
+						</div>
+					</div>
+					<div class="col-xs-6">
+						<div class="col-xs-4 row">
+							严重问题:
+						</div>
+						<div class="col-xs-7">
+							{{quality.criticalViolations}}
+						</div>
+					</div>
+					<div class="col-xs-6">
+						<div class="col-xs-4 row">
+							复杂度:
+						</div>
+						<div class="col-xs-7">
+							{{quality.complexity}}
+						</div>
+					</div>
+					<div class="col-xs-6">
+						<div class="col-xs-4 row">
+							重复率:
+						</div>
+						<div class="col-xs-7">
+							{{quality.repetRate}}
+						</div>
+					</div>
+					<div class="col-xs-6">
+						<div class="col-xs-4 row">
+							技术债务:
+						</div>
+						<div class="col-xs-7">
+							{{quality.technicalDebt}}
+						</div>
+					</div>
+					<div class="col-xs-6">
+						<div class="col-xs-4 row">
+							注释率:
+						</div>
+						<div class="col-xs-7">
+							{{quality.commentRate}}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--<div class="panel-heading">
+		<h3 class="panel-title">版本开发人员构建情况分析</h3>
+	</div>
+	<div class="panel-body">
+		<table class="table">
+			<tr>
+				<th>人员</th>
+				<th>提交代码行数</th>
+				<th>千行bug率</th>
+				<th>新增总问题个数</th>
+				<th>新增阻断问题个数</th>
+				<th>新增严重问题个数</th>
+				<th>新增主要问题个数</th>
+			</tr>
+		</table>
+	</div>-->
+
+
+	<div ng-show="version.ciFlag === 1&&version.isUnitTest === 1">
+		<div class="panel-heading">
+			<h3 class="panel-title">单元测试报告</h3>
+		</div>
+		<div class="panel-body unit-report">
+			<div class="col-xs-12">
+				<div class="row">
+					<div class="col-xs-2">
+						代码覆盖率:
+					</div>
+					<div class="col-xs-6">
+						{{quality.coverage}}
+					</div>
+				</div>
+			</div>
+			<div class=" col-xs-12">
+				<div class="row">
+					<div class="col-xs-2">
+						行覆盖率:
+					</div>
+					<div class="col-xs-6">
+						{{quality.lineCoverage}}
+					</div>
+				</div>
+			</div>
+			<div class=" col-xs-12">
+				<div class="row">
+					<div class="col-xs-2">
+						测试跳过个数:
+					</div>
+					<div class="col-xs-6">
+						{{quality.skippedTests}}
+					</div>
+				</div>
+			</div>
+			<div class=" col-xs-12">
+				<div class="row">
+					<div class="col-xs-2">
+						单元测试个数:
+					</div>
+					<div class="col-xs-6">
+						{{quality.tests}}
+					</div>
+				</div>
+			</div>
+			<div class=" col-xs-12">
+				<div class="row">
+					<div class="col-xs-2">
+						单元测试执行时间:
+					</div>
+					<div class="col-xs-6">
+						{{quality.testExecutionTime||0}}
+					</div>
+				</div>
+			</div>
+			<div class=" col-xs-12">
+				<div class="row">
+					<div class="col-xs-2">
+						单元测试错误个数:
+					</div>
+					<div class="col-xs-6">
+						{{quality.testErrors}}
+					</div>
+				</div>
+			</div>
+			<div class=" col-xs-12">
+				<div class="row">
+					<div class="col-xs-2">
+						单元测试失败个数:
+					</div>
+					<div class="col-xs-6">
+						{{quality.testFailures}}
+					</div>
+				</div>
+			</div>
+			<div class=" col-xs-12">
+				<div class="row">
+					<div class="col-xs-2">
+						单元测试成功率:
+					</div>
+					<div class="col-xs-6">
+						{{quality.testSuccessDensity||0}}%
+					</div>
+				</div>
+			</div>
+			<div class=" col-xs-12">
+				<div class="row">
+					<div class="col-xs-2">
+						详见地址:
+					</div>
+					<div class="col-xs-6">
+						{{quality.unitTestUrl}}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div ng-show="version.ciFlag === 1&& version.isSecurityScan === 1">
+		<div class="panel-heading">
+			<h3 class="panel-title">安全扫描报告</h3>
+		</div>
+		<div class="panel-body safe-report">
+			<div class=" col-xs-12">
+				<div class="row">
+					<div class="col-xs-2">
+						All Warnings:
+					</div>
+					<div class="col-xs-6">
+						{{quality.warnings}}
+					</div>
+				</div>
+			</div>
+			<div class=" col-xs-12">
+				<div class="row">
+					<div class="col-xs-2">
+						New Warnings:
+					</div>
+					<div class="col-xs-6">
+						{{quality.newWarnings}}
+					</div>
+				</div>
+			</div>
+			<div class=" col-xs-12">
+				<div class="row">
+					<div class="col-xs-2">
+						Fixed Warnings：
+					</div>
+					<div class="col-xs-6">
+						{{quality.fixedWarnings}}
+					</div>
+				</div>
+			</div>
+			<div class=" col-xs-12">
+				<div class="row">
+					<div class="col-xs-2">
+						Total：
+					</div>
+					<div class="col-xs-6">
+						{{quality.warnings}}
+					</div>
+				</div>
+			</div>
+			<div class=" col-xs-12">
+				<div class="row">
+					<div class="col-xs-2">
+						High Priority：
+					</div>
+					<div class="col-xs-6">
+						{{quality.highPriorityWarnings}}
+					</div>
+				</div>
+			</div>
+			<div class=" col-xs-12">
+				<div class="row">
+					<div class="col-xs-2">
+						Normal Priority：
+					</div>
+					<div class="col-xs-6">
+						{{quality.normalPriorityWarning}}
+					</div>
+				</div>
+			</div>
+			<div class=" col-xs-12">
+				<div class="row">
+					<div class="col-xs-2">
+						Low Priority：
+					</div>
+					<div class="col-xs-6">
+						{{quality.lowPriorityWarning}}
+					</div>
+				</div>
+			</div>
+			<div class=" col-xs-12">
+				<div class="row">
+					<div class="col-xs-2">
+						详见地址:
+					</div>
+					<div class="col-xs-6">
+						{{quality.sercurityScanResultUrl}}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

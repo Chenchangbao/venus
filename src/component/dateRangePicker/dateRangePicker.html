@@ -1,0 +1,15 @@
+<div class="form-group">
+    <label class="control-label">{{ customDateLabel }}</label>
+</div>
+<div class="form-group" ng-show="!snDatePicker.singleDatePicker">
+    <div class="sn-datepicker-lg" name="date">
+        <input type="text" class="form-control" name="selectDate" ng-disabled="isDatePickerDisabled" placeholder="选择日期" ng-focus="selectDate()">
+        <i class="fa fa-calendar glyphicon glyphicon-calendar"></i>
+    </div>
+</div>
+<div class="form-group" ng-show="snDatePicker.singleDatePicker">
+    <div class="sn-datepicker-sm" name="date">
+        <input type="text" class="form-control" name="selectDate" ng-disabled="isDatePickerDisabled" placeholder="选择日期" ng-focus="selectDate()">
+        <i class="fa fa-calendar glyphicon glyphicon-calendar"></i>
+    </div>
+</div>

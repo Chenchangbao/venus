@@ -1,0 +1,46 @@
+body {
+  font-family: "Hiragino Sans GB", "STHeitiSC-Light", "Microsoft YaHei", Avenir, Verdana, Arial, sans-serif !important;
+}
+
+body.overflow-hidden {
+  overflow: hidden !important;
+}
+
+header.main-header {
+  > .navbar.navbar-static-top {
+    > select {
+      width: 240px;
+      visibility: hidden;
+    }
+    > .select2 {
+      margin: 14px 10px 8px 0px;
+      .select2-selection--single {
+        background: transparent;
+        border: none;
+        border-left: 1px solid @box-border-color;
+        height: 24px;
+        // margin-left: 20px;
+        
+        .select2-selection__rendered {
+          color: #fff;
+          height: 24px;
+          line-height: 24px;
+        }
+        .select2-selection__arrow {
+          display: none;
+        }
+      }
+    }
+  }
+}
+
+.copy-right {
+  font-size: 12px;
+  color: #999;
+}
+
+p.static-text {
+  font-size: 12px;
+  color: #999999;
+  padding: 10px;
+}

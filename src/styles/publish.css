@@ -1,0 +1,182 @@
+/*
+* 发布模块样式
+*/
+.pl-10{padding-left:10px;}
+.container-bg{background-color:#f0f1f6;margin:10px 0 0 -10px;padding-bottom:15px;}
+.publish-title{background-color:#f0f1f6;margin:10px;display:inline;}
+.publish-title span{background-color:#337ab7;width:3px;height:15px;display:block;float:left;margin:3px 0 0 -5px;}
+.container-body-bg{background-color:#fff;padding-bottom:15px;}
+/*首页头部*/
+.firstStepWait {
+	width:100px;
+	height:30px;
+	background:url("../css/images/publish/step_default_wait.png") ;	/*#0081CC;*/
+	background-size:101px 30px;
+	display:block;
+	text-align:center;
+	margin:-1px 0 0 -12px;
+	padding-top:7px;	font-size:12px;
+	float:left; display:inline;
+	cursor:pointer;
+	color:#728a9a;
+}
+.nextStepWait {
+	width:100px;
+	height:30px;
+	background:url("../css/images/publish/step_default.png") ;	/*#0081CC;*/
+	background-size:101px 30px;
+	display:block;
+	text-align:center;
+	margin:-1px 0 0 -9px;
+	padding-top:7px;
+	color:#728a9a;
+	font-size:12px;
+	float:left; display:inline;
+	cursor:pointer;
+}
+.firstStepError {
+	width:100px;
+	height:30px;
+	background:url("../css/images/publish/step_default_error.png") ;	/*#0081CC;*/
+	background-size:101px 30px;
+	display:block;
+	text-align:center;
+	margin:-1px 0 0 -12px;
+	padding-top:7px;
+	font-size:12px;
+	float:left; display:inline;
+	cursor:pointer;
+	color:#f0f1f6;
+}
+.nextStepError {
+	width:100px;
+	height:30px;
+	background:url("../css/images/publish/step_error.png") ;	/*#0081CC;*/
+	background-size:101px 30px;
+	display:block;
+	text-align:center;
+	margin:-1px 0 0 -9px;
+	padding-top:7px;
+	color:#f0f1f6;
+	font-size:12px;
+	float:left; display:inline;
+	cursor:pointer;
+}
+.firstStepSuccess {
+	width:100px;
+	height:30px;
+	background:url("../css/images/publish/step_start.png") ;	/*#0081CC;*/
+	background-size:101px 30px;
+	display:block;
+	text-align:center;
+	margin:-1px 0 0 -12px;
+	padding-top:7px;
+	font-size:12px;
+	float:left; display:inline;
+	cursor:pointer;
+	color:#f0f1f6;
+}
+.nextStepSuccess {
+	width:100px;
+	height:30px;
+	background:url("../css/images/publish/step_success.png") ;	/*#0081CC;*/
+	background-size:101px 30px;
+	display:block;
+	text-align:center;
+	margin:-1px 0 0 -9px;
+	padding-top:7px;
+	color:#f0f1f6;
+	font-size:12px;
+	float:left; display:inline;
+	cursor:pointer;
+}
+.firstStepPublish {
+	width:100px;
+	height:30px;
+	background:url("../css/images/publish/first_step_publish.png") ;	/*#0081CC;*/
+	background-size:101px 30px;
+	display:block;
+	text-align:center;
+	margin:-1px 0 0 -12px;
+	padding-top:7px;
+	font-size:12px;
+	float:left; display:inline;
+	cursor:pointer;
+	color:#f0f1f6;
+}
+.nextStepPublish {
+	width:100px;
+	height:30px;
+	background:url("../css/images/publish/next_setp_publish.png") ;	/*#0081CC;*/
+	background-size:101px 30px;
+	display:block;
+	text-align:center;
+	margin:-1px 0 0 -9px;
+	padding-top:7px;
+	color:#f0f1f6;
+	font-size:12px;
+	float:left; display:inline;
+	cursor:pointer;
+}
+
+.cpanel div.icon span{-moz-transition-duration: 0.8s;background-color: #67b467;background-position: -30px 50%;border: 1px solid #67b467;border-radius: 60px;color: #fff;display: block;float: left;height: 35px;width: 35px;text-align:center;text-indent:0;padding-top:9px;margin-bottom:15px;font-size:12px;}
+.cpanel div.icon span:hover{border:1px solid #67b467;}
+
+.cpanel div.icon-blue span{-moz-transition-duration: 0.8s;background-color: #6690c4;background-position: -30px 50%;border: 1px solid #6690c4;border-radius: 60px;color: #fff;display: block;float: left;height: 35px;width: 35px;text-align:center;text-indent:0;padding-top:11px;margin-bottom:15px;font-size:12px;}
+.cpanel div.icon-blue span:hover{border:1px solid #6690c4;}
+
+.cpanel div.icon-pic {
+	width:22px;
+	height:22px;
+	background:url("../css/images/publish/step_node.png") ;	/*#0081CC;*/
+	display:block;
+	margin:30px 6px;
+ }
+
+.btn{}
+.btn.btn-danger{margin:20px;}
+.panel-default-left{margin:0 0 0 20px;padding-bottom:25px;}
+
+.list-group-item{border-radius:0px;}
+
+.package-title{width:100%;height:28px;border:1px solid #67b467;background-color:#67b467;color:#fff;padding:2px 0 0 5px;margin-top:5px;}
+.package-publish-title{width:100%;height:28px;background-color:#f0f1f6;margin-top:5px;}
+.form-group-width{width:80px;color:#7c91a0;font-weight:bold;}
+
+table{width:100%;text-align:center;}
+table, td, th
+  {
+  	border:1px solid #c7d1d8;
+	font-size:12px;
+  }
+
+th
+{
+  background-color:#e3e9ed;
+  height:30px;
+  text-align:center;
+}
+td
+{
+  height:35px;
+  word-wrap:break-word;word-break:break-all;
+}
+.tb-noborder{border:0px;text-align:left;}
+.tb-noborder td{border:0px;}
+.tb-noborder td{border:0px;}
+
+.tb-noborder td:first-child
+{
+	font-weight:bold
+}
+.deploy-success{
+	width:518px;
+	height:178px;
+	background:url("../css/images/publish/deploy_success.png") ;	/*#0081CC;*/
+	display:block;
+	margin:200px 6px;
+}
+.deploy-success .btn{
+	margin:130px 0 0 220px;
+}
+.deploy-log-detail{padding:10px 20px;text-align:left;}

@@ -1,0 +1,114 @@
+<div class="module-head paneltitle">
+    <div class="module-info">
+        <p class="title titlefont">质量对比</p>
+        <p class="sub-title titlecolor">展示各系统质量对比</p>
+    </div>
+    
+</div>
+<div class="container-wrapper" width="1150px;">
+    <div class="panel panel-default">
+        <div class="panel-body" >
+                <div class="form-group pull-left search">
+ 					<button class="btn btn-default" ng-if="formData.quaLevel!=1" ng-click="backQuaComp()">返回</button>
+           		 </div>
+                <div>
+                    <table class="table" style="font-size:12px;">
+                        <thead>
+                        <tr >
+                            <th>序号</th>
+                            <th ng-if='formData.quaLevel==1'>中心名称</th>
+                            <th ng-if='formData.quaLevel==2'>技术总监</th>
+                            <th ng-if='formData.quaLevel==3'>系统名称</th>
+                            <th ng-if='formData.quaLevel==3'>代码库</th>
+                            <th ng-if='formData.quaLevel!=3'>系统个数</th>
+                            <th>代码总行数</th>
+                            <th>阻断问题</th>
+                            <th>严重问题</th>
+                            <th style="display:none;">主要问题</th>
+                            <th>总问题</th>
+                            <th style="display:none;">主要及以上千行问题率</th>
+                            <th>千行问题率</th>
+                            <th>测试案例个数</th>
+                            <th style="display:none;">测试错误数</th>
+                            <th style="display:none;">测试失败数</th>
+                            <th>单元测试通过率</th>
+                            <th style="display:none;">技术债务天数</th>
+                            <th>代码注释率</th>
+							<th> 代码行重复率</th>
+							<th ng-if='formData.quaLevel==3'>构建日期</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="cq in codeQualityList">
+                            <td>
+                                {{$index+1}}
+                            </td>
+                            <td ng-if='formData.quaLevel==1'>
+                                <a class="link-cursor" ng-click="getDetail(cq)"> {{cq.orgName}}</a>
+                            </td>
+                            <td ng-if='formData.quaLevel==2'>
+                                <a class="link-cursor" ng-click="getDetail(cq)"> {{cq.techChiefFullName}}({{cq.techChief}})</a>
+                            </td>
+                              <td ng-if='formData.quaLevel==3'>
+                                <a class="link-cursor" ng-if="(null==cq.sysParentid ||cq.sysParentid=='0')" > {{cq.sysName}}[{{cq.techManagerFullName}}({{cq.techManager}})]</a>
+                                <a class="link-cursor" ng-if="(null!=cq.sysParentid && cq.sysParentid!='0')"> {{cq.sysParentName}}[{{cq.techManagerFullName}}({{cq.techManager}})]</a>
+                            </td>
+                              <td ng-if='formData.quaLevel==3'>
+                                <a class="link-cursor" > {{cq.reposName}}</a>
+                            </td>
+                            <td ng-if='formData.quaLevel!=3'>
+                                {{cq.systemCount}}
+                            </td>
+                            <td>
+                                {{cq.codeLines}}
+                            </td>
+                            <td>
+                                {{cq.blockerViolations}}
+                            </td>
+                            <td>
+                                {{cq.criticalViolations}}
+                            </td>
+                            <td style="display:none;">
+                                {{cq.majorViolations}}
+                            </td>
+                            <td>
+                                {{cq.violations}}
+                            </td>
+                            <td style="display:none;">
+                                {{cq.majorPermillageBugRate}}
+                            </td>
+                            <td>
+                                {{cq.permillageBugRate}}{{cq.trendPermillage|quaTrendFilter}}
+                            </td>
+                            <td>
+                                {{cq.tests}}
+                            </td>
+                            <td style="display:none;">
+                                {{cq.testErrors}}
+                            </td>
+                            <td style="display:none;">
+                                {{cq.testFailures}}
+                            </td>
+                            <td>
+                                {{cq.testSuccessDensity | number:1}}%
+                            </td>
+                            <td style="display:none;">
+                                {{cq.technicalDebt}}
+                            </td>
+                             <td>
+                                {{cq.commentRate}}
+                            </td>
+							<td>
+                                {{cq.repetRate}}
+                            </td>
+                            <td ng-if='formData.quaLevel==3'>
+                                {{cq.buildEndtime|date:'yyyy-MM-dd HH:mm:ss'}}
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,167 @@
+
+<div class="module-head paneltitle">
+    <div class="module-info">
+        <p class="title titlefont">系统质量导出</p>
+    </div>
+    
+</div>
+<div class="container-wrapper">
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="search-con" style="padding: 15px 0;">
+                <form class="form-inline">
+                    <div class="form-group">
+                        <select class="form-control" ng-model="orgId" name="org" ng-options="org.orgId as  org.orgName for org in orgs">
+                            <option value="">-- 全部 --</option>
+                        </select>
+                    </div>
+                    <div ng-show="false" class="form-group">
+                        <input type="text" class="form-control" placeholder="系统中文名称" ng-model="sysCnname">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="系统名称" ng-model="sysName">
+                    </div>
+                    <div class="form-group">
+                        <div sn-datetimepicker show-time="false" ng-model="buildTimeStart" placeholder="请选择开始时间">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div sn-datetimepicker show-time="false" ng-model="buildTimeEnd" placeholder="请选择结束时间">
+                        </div>
+                    </div>
+                    <button ng-if='formData.quaLevel==1' type="submit" class="btn btn-default" ng-click="search()">搜索</button>
+                    <button ng-if='formData.quaLevel==1' class="btn btn-default" ng-click="exportSysExcel()" ng-disabled="button_clicked">导出</button>
+                    <button ng-if='formData.quaLevel==2' class="btn btn-default" ng-click="exportVerExcel()" ng-disabled="button_clicked">导出</button>
+                </form>
+            </div>
+
+          		<div class="form-group pull-left search">
+ 					<button class="btn btn-default" ng-if="formData.quaLevel!=1" ng-click="backQuaComp()">返回</button>
+           		 </div>
+                <div>
+                    <table class="table" style="font-size:12px;">
+                        <thead>
+                        <tr>
+                            <th>序号</th>
+                            <th>一级中心</th>
+                            <th style="display:none;">二级中心</th>
+                            <th>系统名称</th>
+                            <th style="display:none;">系统中文名称</th>
+                            <th>系统等级</th>
+                            <th>代码库</th>
+                            <th style="display:none;">ITP子系统ID</th>
+                            <th ng-if='formData.quaLevel==2'>版本名称</th>
+                            <th>构建日期</th>
+                            <th>代码总行数</th>
+                            <th>新增代码行数</th>
+                            <th>阻断问题</th>
+                            <th>严重问题</th>
+                            <th>主要问题</th>
+                            <th style="display:none;">主要以上问题</th>
+                            <th style="display:none;">主要以上问题千行密度</th>
+                            <th>总问题</th>
+                            <th style="display:none;">其他问题</th>
+                            <th>代码注释率</th>
+                            <th>代码行重复率</th>
+                            <th style="display:none;">单元测试未覆盖行数</th>
+                            <th style="display:none;">单元测试需要覆盖行数</th>
+                            <th style="display:none;">单元测试实际覆盖行数</th>
+                            <th>测试覆盖率</th>
+                            <th>新增代码测试覆盖率</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="cq in sonarAnalyseResultBo">
+                            <td>
+                                {{$index+1}}
+                            </td>
+                            <td>
+								<div title="{{cq.orgName}}" class="text_overflow">{{cq.orgName}}</div> 
+                            </td>
+                            <td style="display:none;">
+                                {{cq.orgtwoName||""}}
+                            </td>
+                            <td  ng-if='formData.quaLevel==1'>
+                                {{cq.sysName}}
+                        	</td>
+                            <td  ng-if='formData.quaLevel==2'>
+                                {{cq.sysName}}
+                        	</td>
+                            <td style="display:none;">
+                                {{cq.sysCnname||""}}
+                            </td>
+                            <td>
+                                {{cq.systemGrade||""}}
+                            </td>
+	                        <td>
+								<div class="text_overflow" title="{{cq.reposName||''}}">{{cq.reposName||""}}</div> 
+                            </td>
+                            <td style="display:none;">
+                                {{cq.sysItpcode||""}}
+                            </td>
+                        	<td ng-if='formData.quaLevel==2'>
+								<div class="text_overflow" title="{{cq.branchName}}({{cq.branchVersion}})">{{cq.branchName}}({{cq.branchVersion}})</div> 
+                        	</td>
+                            <td>
+                                {{cq.buildEndtime|dateFilter}}
+                            </td>
+                            <td>
+                                {{cq.codeLines||"0"}}
+                            </td>
+                            <td>
+                                {{cq.newCodeLines||"0"}}
+                            </td>
+                             <td>
+                                {{cq.blockerViolations||"0"}}<i style="color: red">{{cq.blockerViolations|violationsFilter}}</i>
+                            </td>
+                            <td>
+                                {{cq.criticalViolations||"0"}}<i style="color: red">{{cq.criticalViolations|violationsFilter}}</i>
+                            </td>
+                            <td>
+                                {{cq.majorViolations||"0"}}<i style="color: red">{{cq.majorViolations|violationsFilter}}</i>
+                            </td>
+                            <td style="display:none;">
+                                {{cq.majoronViolations||"0"}}<i style="color: red">{{cq.majoronViolations|violationsFilter}}</i>
+                            </td>
+                            <td style="display:none;">
+                                {{cq.majoronViolationsDensity||"0"}}
+                            </td>
+                            <td>
+                                {{cq.violations||0}}
+                            </td>
+                            <td style="display:none;">
+                                {{cq.otherViolations||0}}
+                            </td>
+							<td>
+                                {{cq.commentRate||"0.0%"}}
+                            </td>
+                            <td>
+                                {{cq.repetRate||"0.0%"}}
+                            </td>
+                            <td style="display:none;">
+                                {{cq.uncoveredLines||0}}
+                            </td>
+                            <td style="display:none;">
+                                {{cq.linesToCover||0}}
+                            </td>
+                            <td style="display:none;">
+                                {{cq.linesFactCover||0}}
+                            </td>
+                            <td>
+                                {{cq.coverage||"0.0%"}}
+                            </td>
+                            <td>
+                                {{cq.newCoverage||"0.0%"}}
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+        </div>
+    </div>
+	 <footer class="ft-pager clearfix">
+        <div sn-pager itemsPerPage="{{pager.pageSize}}" totalItems="{{pager.totalCount}}" listSize="{{pager.pageSize}}"
+             class="text-right">
+        </div>
+    </footer>
+</div>

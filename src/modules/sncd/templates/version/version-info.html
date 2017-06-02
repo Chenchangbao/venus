@@ -1,0 +1,31 @@
+
+<div class="module-head ng-scope paneltitle headtitle">
+    <div>
+        <p class="title">{{version.branchName}}【 {{version.version}} 】</p>
+    </div>
+    <div class="form-group pull-right search">
+       <!--<p class="sub-title link-cursor"  style="margin-top: 20px;"  ui-sref ="SystemInfo({sysId:version.sysId})"  >进入系统</p>-->
+    </div>
+    <ul class="nav nav-tabs newtab">
+        <li ng-class="{'active': selectedTab== 'VersionDetail'}"><a class="link-cursor" ng-click="selectTab('VersionDetail')">版本信息</a></li>
+        <!--<li ng-class="{'active': selectedTab== 'VersionBranchAuth'}"><a  class="link-cursor" ng-click="selectTab('VersionBranchAuth')">版本权限</a></li>-->
+        
+        <li ng-class="{'active': selectedTab== 'VersionDeploy'}" ><a  class="link-cursor" ng-click="selectTab('VersionDeploy')">发布单</a></li>
+        <li ng-class="{'active': selectedTab=='UnfreezenVersion'}" ng-if="version.status == '060'"><a   class="link-cursor" ng-click="selectTab('UnfreezenVersion')">解版</a></li>
+        <li ng-class="{'active': selectedTab=='MergeVersion'}" ng-if="isVersionActive && isVersionFreezen "> <a class="link-cursor" ng-click="selectTab('MergeVersion')">合并主干</a></li>
+        <!--<li ng-class="{'active': selectedTab=='VersionJob'}"><a  class="link-cursor"  ng-click="selectTab('VersionJob')">质量分析</a></li>-->
+        <li ng-if="isVersionActive" ng-class="{'active': selectedTab=='UpdateVersionBuild'}"><a  class="link-cursor"  ng-click="selectTab('UpdateVersionBuild')">交付流程配置</a></li>
+        <li ng-show="isVersionActive" ng-class="{'active': selectedTab== 'PackageVersion'}" ><a  class="link-cursor" ng-click="selectTab('PackageVersion')">打包地址</a></li>
+           <li ng-show="isVersionActive" ng-class="{'active': selectedTab== 'VersionQuaCheck'}" ><a  class="link-cursor" ng-click="selectTab('VersionQuaCheck')">检查结果</a></li>
+        <!--<li ng-class="{'active': selectedTab=='VersionReviewBoard'}"><a  class="link-cursor"  ng-click="selectTab('VersionReviewBoard')">在线评审</a></li>-->
+        <!--<li ng-class="{'active': selectedTab=='VersionReport'}"><a  class="link-cursor"  ng-click="selectTab('VersionReport')">版本报告</a></li>-->
+<!--         <li ng-class="{'active': selectedTab==9}"><a ui-sref="SystemTeamDetail({sysId:sys.sysId,tab:7})" ng-click="selectedTab=9">定制发布计划</a></li> -->
+		<a class="pull-right" style="margin-top: 20px;    margin-left: 10px;" ui-sref ="SystemInfo({sysId:version.sysId})">进入系统</a>
+        <a class="pull-right" style="margin-top: 20px;" ng-if="isVersionActive"  ui-sref="VersionProcess">返回进行中版本</a>
+		<a class="pull-right" style="margin-top: 20px;" ng-if="!isVersionActive" ui-sref="VersionFinish">返回已结束版本</a>
+    </ul>
+
+</div>
+
+    
+    <div class="container-wrapper ng-scope" ui-view></div>

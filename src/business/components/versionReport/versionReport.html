@@ -1,0 +1,146 @@
+<section class="content-header">
+    <sn-breadcrumb datalist="crumbBaseData"></sn-breadcrumb>
+    <h4 class="h4-style">
+        <div class="square"></div>
+        <strong>版本报告</strong></h4>
+</section>
+
+<section class="content">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title h3-inline">基本信息</h3>
+        </div>
+        <div class="panel-body ">
+            <div class="line-distance">
+                <label class="label-style">版本号：</label>
+                <label>{{versionDetail.version}}</label>
+            </div>
+            <div class="line-distance">
+                <label class="label-style">版本名称：</label>
+                <label>{{versionDetail.name}}</label>
+            </div>
+            <div class="line-distance">
+                <label class="label-style">所属应用：</label>
+                <label>{{versionDetail.sysName}}</label>
+            </div>
+            <div class="line-distance">
+                <label class="label-style">状态：</label>
+                <label>{{versionDetail.status | version_status}}</label>
+            </div>
+            <div class="line-distance">
+                <label class="label-style">创建时间：</label>
+                <label>{{versionDetail.createTime | date:"yyyy-MM-dd HH:mm:ss"}}</label>
+            </div>
+            <div class="line-distance">
+                <label class="label-style">计划生产发布日期：</label>
+                <label>{{versionDetail.deployPlanTime | date:"yyyy-MM-dd HH:mm:ss"}}</label>
+            </div>
+            <div class="line-distance">
+                <label class="label-style">实际生产发布日期：</label>
+                <label>{{versionDetail.deployTime | date:"yyyy-MM-dd HH:mm:ss"}}</label>
+            </div>
+            <div class="line-distance">
+                <label class="label-style">版本经理：</label>
+                <label>{{versionDetail.lead}}</label>
+            </div>
+            <div class="line-distance">
+                <label class="label-style">版本描述：</label>
+                <label>{{versionDetail.description}}</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title h3-inline">关联分支</h3>
+        </div>
+
+        <div class="table-body">
+            <table class="sn-table">
+                <tr>
+                    <th>代码库</th>
+                    <th>代码库类型</th>
+                    <th>分支</th>
+                </tr>
+                <tr ng-repeat="repos in versionDetail.reposList">
+                    <td>{{repos.reposName}}</td>
+                    <td>{{repos.reposType}}</td>
+                    <td>{{repos.branchName}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title h3-inline">任务信息</h3>
+        </div>
+        <div class="panel-body ">
+            <div class="line-distance">
+                <label class="label-style">需求：</label>
+                <label>{{versionDetail.epicCount}}</label>
+            </div>
+            <div class="line-distance">
+                <label class="label-style">任务：</label>
+                <label>{{versionDetail.taskCount}}</label>
+            </div>
+            <div class="line-distance">
+                <label class="label-style">缺陷：</label>
+                <label>{{versionDetail.bugCount}}</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title h3-inline">质量情况</h3>
+        </div>
+        <div class="panel-body ">
+            <div class="line-distance">
+                <label class="label-style">总问题：</label>
+                <label></label>
+            </div>
+            <div class="line-distance">
+                <label class="label-style">阻断问题：</label>
+                <label></label>
+            </div>
+            <div class="line-distance">
+                <label class="label-style">严重问题：</label>
+                <label></label>
+            </div>
+            <div class="line-distance">
+                <label class="label-style">单元测试通过率：</label>
+                <label></label>
+            </div>
+            <div class="line-distance">
+                <label class="label-style">单元测试覆盖率：</label>
+                <label></label>
+            </div>
+            <div class="line-distance">
+                <label class="label-style">自动化比率：</label>
+                <label></label>
+            </div>
+            <div class="line-distance">
+                <label class="label-style">自动化成功率：</label>
+                <label></label>
+            </div>
+            <div class="line-distance">
+                <label class="label-style">高危漏洞：</label>
+                <label></label>
+            </div>
+            <div class="line-distance">
+                <label class="label-style">中危漏洞：</label>
+                <label></label>
+            </div>
+            <div class="line-distance">
+                <label class="label-style">进度偏差：</label>
+                <label></label>
+            </div>
+            <div class="line-distance">
+                <label class="label-style">任务完成率：</label>
+                <label></label>
+            </div>
+        </div>
+    </div>
+
+</section>

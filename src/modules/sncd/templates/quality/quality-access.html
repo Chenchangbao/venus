@@ -1,0 +1,81 @@
+
+<div class="module-head paneltitle">
+    <div class="module-info">
+        <p class="title titlefont">质量统计</p>
+    </div>
+    
+</div>
+<div class="container-wrapper">
+    <div class="panel panel-default">
+        <div class="panel-body">
+          		<div class="form-group pull-left search">
+ 					<button class="btn btn-default" ng-click="exportExcel()">导出</button>
+ 					<button class="btn btn-default" ng-if="formData.quaLevel!=1" ng-click="search()">返回</button>
+           		 </div>
+                <div>
+                    <table class="table" style="font-size:12px;">
+                        <thead>
+                        <tr>
+                            <th>序号</th>
+                            <th>一级中心</th>
+                            <th ng-if='formData.quaLevel==1'>系统个数</th>
+                            <th ng-if='formData.quaLevel==2'>系统名称</th>
+                            <th>总代码量</th>
+                            <th>新增代码量</th>
+                            <th ng-if='formData.quaLevel==2'>新增代码单元测试覆盖率</th>
+                            <th ng-if='formData.quaLevel==1'>单元测试系统占比</th>
+                            <th ng-if='formData.quaLevel==1'>静态检查系统占比</th>
+                            <th ng-if='formData.quaLevel==2'>是否接入单元测试</th>
+                            <th ng-if='formData.quaLevel==2'>是否接入静态检查</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="cq in sonarAnalyseResultBo">
+                            <td>
+                                {{$index+1}}
+                            </td>
+                            <td ng-if='formData.quaLevel==1'>
+                            	<a class="link-cursor" ng-click="getSysQualityAccess(cq.orgId)" > {{cq.orgName}}</a>
+                            </td>
+                            <td ng-if='formData.quaLevel==2'>
+                            	{{cq.orgName}}
+                            </td>
+                            <td ng-if='formData.quaLevel==1'>
+                                {{cq.sysCount}}
+                        	</td>
+                            <td ng-if='formData.quaLevel==2'>
+                                {{cq.sysName}}
+                        	</td>
+                            <td>
+                                {{cq.codeLines}}
+                            </td>
+                            <td>
+                                {{cq.newCodeLines}}
+                            </td>
+                            <td ng-if='formData.quaLevel==2'>
+                                {{cq.newCoverage}}
+                        	</td>
+                            <td ng-if='formData.quaLevel==1'>
+                                {{cq.testsRate}}
+                            </td>
+                            <td ng-if='formData.quaLevel==1'>
+                                {{cq.staticCheckRate}}
+                            </td>
+                            <td ng-if='formData.quaLevel==2'>
+                                {{cq.haveTests}}
+                            </td>
+                            <td ng-if='formData.quaLevel==2'>
+                                {{cq.haveStaticCheck}}
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+        </div>
+    </div>
+	 <footer class="ft-pager clearfix" ng-if="formData.quaLevel==2">
+        <div sn-pager itemsPerPage="{{pager.pageSize}}" totalItems="{{pager.totalCount}}" listSize="{{pager.pageSize}}"
+             class="text-right">
+        </div>
+    </footer>
+</div>

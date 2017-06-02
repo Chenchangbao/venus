@@ -1,0 +1,238 @@
+@font-face {
+  font-family: 'uxcool';
+  src:  url('fonts/uxcool.eot?imy6q2');
+  src:  url('fonts/uxcool.eot?imy6q2#iefix') format('embedded-opentype'),
+    url('fonts/uxcool.ttf?imy6q2') format('truetype'),
+    url('fonts/uxcool.woff?imy6q2') format('woff'),
+    url('fonts/uxcool.svg?imy6q2#uxcool') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.fu {
+  position: relative;
+  top: 1px;
+  display: inline-block;
+  font-family: 'uxcool';
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.fu-up:before { content: "\e900"; }
+.fu-down:before { content: "\e901"; }
+.fu-left:before { content: "\e902"; }
+.fu-right:before { content: "\e903"; }
+.fu-arrow-up:before { content: "\e904"; }
+.fu-arrow-down:before { content: "\e905"; }
+.fu-arrow-left:before { content: "\e906"; }
+.fu-arrow-right:before { content: "\e907"; }
+.fu-caret-up:before { content: "\e908"; }
+.fu-caret-down:before { content: "\e909"; }
+.fu-caret-left:before { content: "\e90a"; }
+.fu-caret-right:before { content: "\e90b"; }
+.fu-question-circle-o:before { content: "\e90c"; }
+.fu-question-circle:before { content: "\e90d"; }
+.fu-info-circle-o:before { content: "\e90e"; }
+.fu-info-circle:before { content: "\e90f"; }
+.fu-cross-circle-o:before { content: "\e910"; }
+.fu-cross-circle:before { content: "\e911"; }
+.fu-check-circle-o:before { content: "\e912"; }
+.fu-check-circle:before { content: "\e913"; }
+.fu-exclamation-circle-o:before { content: "\e914"; }
+.fu-exclamation-circle:before { content: "\e915"; }
+.fu-check:before { content: "\e916"; }
+.fu-cross:before { content: "\e917"; }
+.fu-ellipsis:before { content: "\e918"; }
+.fu-ellipsis-verticle:before { content: "\e919"; }
+.fu-ellipsis-full:before { content: "\e91a"; }
+.fu-plus:before { content: "\e91b"; }
+.fu-plus-square-o:before { content: "\e91c"; }
+.fu-plus-square:before { content: "\e91d"; }
+.fu-plus-circle-o:before { content: "\e91e"; }
+.fu-plus-circle:before { content: "\e91f"; }
+.fu-minus:before { content: "\e920"; }
+.fu-minus-square-o:before { content: "\e921"; }
+.fu-minus-square:before { content: "\e922"; }
+.fu-minus-circle-o:before { content: "\e923"; }
+.fu-minus-circle:before { content: "\e924"; }
+.fu-search:before { content: "\e925"; }
+.fu-copy:before { content: "\e926"; }
+.fu-paste:before { content: "\e927"; }
+.fu-delete:before { content: "\e928"; }
+.fu-radio:before { content: "\e929"; }
+.fu-radio-o:before { content: "\e92a"; }
+.fu-checkbox:before { content: "\e92b"; }
+.fu-checkbox-o:before { content: "\e92c"; }
+.fu-fresh:before { content: "\e92d"; }
+.fu-exit:before { content: "\e92e"; }
+.fu-user:before { content: "\e92f"; }
+.fu-like-o:before { content: "\e930"; }
+.fu-like:before { content: "\e931"; }
+.fu-star-o:before { content: "\e932"; }
+.fu-star:before { content: "\e933"; }
+.fu-heart-o:before { content: "\e934"; }
+.fu-heart:before { content: "\e935"; }
+.fu-date-o:before { content: "\e936"; }
+.fu-date:before { content: "\e937"; }
+.fu-detail:before { content: "\e938"; }
+.fu-reply:before { content: "\e939"; }
+.fu-notification:before { content: "\e93a"; }
+.fu-contactus:before { content: "\e93b"; }
+.fu-edit:before { content: "\e93c"; }
+.fu-overview:before { content: "\e93d"; }
+.fu-server:before { content: "\e93e"; }
+.fu-images:before { content: "\e93f"; }
+.fu-hard-disk:before { content: "\e940"; }
+.fu-backups:before { content: "\e941"; }
+.fu-public-ip:before { content: "\e942"; }
+.fu-router:before { content: "\e943"; }
+.fu-load-balancing:before { content: "\e944"; }
+.fu-firewall:before { content: "\e945"; }
+.fu-api:before { content: "\e946"; }
+.fu-database:before { content: "\e947"; }
+.fu-save:before { content: "\e948"; }
+.fu-load-balanc:before { content: "\e949"; }
+.fu-cdn:before { content: "\e94a"; }
+.fu-operation-log:before { content: "\e94b"; }
+.fu-jobs:before { content: "\e94c"; }
+.fu-unsubscribe:before { content: "\e94d"; }
+.fu-login:before { content: "\e94e"; }
+.fu-settings:before { content: "\e94f"; }
+.fu-database1:before { content: "\e950"; }
+.fu-information:before { content: "\e951"; }
+.fu-bucket:before { content: "\e952"; }
+.fu-resource-monitor:before { content: "\e953"; }
+.fu-accesskey:before { content: "\e954"; }
+.fu-development-tool:before { content: "\e955"; }
+.fu-network:before { content: "\e956"; }
+.fu-account-management:before { content: "\e957"; }
+.fu-backups1:before { content: "\e958"; }
+.fu-parameter-setting:before { content: "\e959"; }
+.fu-log-management:before { content: "\e95a"; }
+.fu-monitoring:before { content: "\e95b"; }
+.fu-performance:before { content: "\e95c"; }
+.fu-alarm:before { content: "\e95d"; }
+.fu-safety:before { content: "\e95e"; }
+.fu-home:before { content: "\e95f"; }
+.fu-settings1:before { content: "\e960"; }
+.fu-account:before { content: "\e961"; }
+.fu-user-guide:before { content: "\e962"; }
+.fu-cloud-server:before { content: "\e963"; }
+.fu-ssh:before { content: "\e964"; }
+.fu-template:before { content: "\e965"; }
+.fu-operation-log1:before { content: "\e966"; }
+.fu-consumption:before { content: "\e967"; }
+.fu-trial:before { content: "\e968"; }
+.fu-order:before { content: "\e969"; }
+.fu-service:before { content: "\e96a"; }
+.fu-mylist:before { content: "\e96b"; }
+.fu-order1:before { content: "\e96c"; }
+.fu-payments:before { content: "\e96d"; }
+.fu-billing:before { content: "\e96e"; }
+.fu-notice:before { content: "\e96f"; }
+.fu-password:before { content: "\e970"; }
+.fu-sub-account:before { content: "\e971"; }
+.fu-apimin:before { content: "\e972"; }
+.fu-router1:before { content: "\e973"; }
+.fu-firewall1:before { content: "\e974"; }
+.fu-host:before { content: "\e975"; }
+.fu-switch:before { content: "\e976"; }
+.fu-menu:before { content: "\e977"; }
+.fu-chart-zoom:before { content: "\e978"; }
+.fu-chart-reduction:before { content: "\e979"; }
+.fu-account1:before { content: "\e97a"; }
+.fu-full-scale:before { content: "\e97b"; }
+.fu-adaptive-canvas:before { content: "\e97c"; }
+.fu-data-exchange:before { content: "\e97d"; }
+.fu-data1:before { content: "\e97e"; }
+.fu-transformation:before { content: "\e97f"; }
+.fu-function:before { content: "\e980"; }
+.fu-draft:before { content: "\e981"; }
+.fu-Import:before { content: "\e982"; }
+.fu-export:before { content: "\e983"; }
+.fu-folder:before { content: "\e984"; }
+.fu-folder-open:before { content: "\e985"; }
+.fu-zoom:before { content: "\e986"; }
+.fu-reduction:before { content: "\e987"; }
+.fu-running-node:before { content: "\e988"; }
+.fu-pause-node:before { content: "\e989"; }
+.fu-hive:before { content: "\e98a"; }
+.fu-fullscreen:before { content: "\e98b"; }
+.fu-exit-fullscreen:before { content: "\e98c"; }
+.fu-move:before { content: "\e98d"; }
+.fu-selected:before { content: "\e98e"; }
+.fu-start:before { content: "\e98f"; }
+.fu-pause:before { content: "\e990"; }
+.fu-go-online:before { content: "\e993"; }
+.fu-offline:before { content: "\e994"; }
+.fu-attribute-view:before { content: "\e995"; }
+.fu-mapping:before { content: "\e996"; }
+.fu-resources:before { content: "\e997"; }
+.fu-monotonic:before { content: "\e998"; }
+.fu-service-monitoring:before { content: "\e999"; }
+.fu-MapReduce:before { content: "\e99a"; }
+.fu-Java:before { content: "\e99b"; }
+.fu-Python:before { content: "\e99c"; }
+.fu-Spark:before { content: "\e99d"; }
+.fu-SparkSql:before { content: "\e99e"; }
+.fu-machine-learn:before { content: "\e99f"; }
+.fu-experiment:before { content: "\e9a0"; }
+.fu-assembly:before { content: "\e9a1"; }
+.fu-data-source:before { content: "\e9a2"; }
+.fu-sql:before { content: "\e9a3"; }
+.fu-rom:before { content: "\e9a4"; }
+.fu-service-use:before { content: "\e9a5"; }
+.fu-statistics:before { content: "\e9a6"; }
+.fu-merge:before { content: "\e9a7"; }
+.fu-differenceset:before { content: "\e9a8"; }
+.fu-segmentation:before { content: "\e9a9"; }
+.fu-transform:before { content: "\e9aa"; }
+.fu-sampling:before { content: "\e9ab"; }
+.fu-sort:before { content: "\e9ac"; }
+.fu-classification:before { content: "\e9ad"; }
+.fu-bigdata:before { content: "\e9ae"; }
+.fu-random:before { content: "\e9af"; }
+.fu-matrix:before { content: "\e9b0"; }
+.fu-parameter:before { content: "\e9b1"; }
+.fu-promotion-management:before { content: "\e9b2"; }
+.fu-z-test:before { content: "\e9b3"; }
+.fu-t-test:before { content: "\e9b4"; }
+.fu-ladder:before { content: "\e9b5"; }
+.fu-data-growth:before { content: "\e9b6"; }
+.fu-cloud-firewall:before { content: "\e9b7"; }
+.fu-ccprotect:before { content: "\e9b8"; }
+.fu-personal-center:before { content: "\e9b9"; }
+.fu-limit:before { content: "\e9ba"; }
+.fu-tool:before { content: "\e9bb"; }
+.fu-poster:before { content: "\e9bc"; }
+.fu-resource-management1:before { content: "\e9bd"; }
+.fu-script-upgrade:before { content: "\e9be"; }
+.fu-script-mannage:before { content: "\e9bf"; }
+.fu-script-search:before { content: "\e9c0"; }
+.fu-qualityallocation:before { content: "\e9c1"; }
+.fu-quality-contrast:before { content: "\e9c2"; }
+.fu-quality-module:before { content: "\e9c3"; }
+.fu-system-management:before { content: "\e9c4"; }
+.fu-components:before { content: "\e9c5"; }
+.fu-components-search-:before { content: "\e9c6"; }
+.fu-use-square:before { content: "\e9c7"; }
+.fu-machine-square:before { content: "\e9c8"; }
+.fu-recise-square:before { content: "\e9c9"; }
+.fu-delete-square:before { content: "\e9ca"; }
+.fu-group-square:before { content: "\e9cb"; }
+.fu-assembly2:before { content: "\e9cc"; }
+.fu-basic-controls:before { content: "\e9cd"; }
+.fu-colour:before { content: "\e9ce"; }
+.fu-design-principles:before { content: "\e9cf"; }
+.fu-exhibition:before { content: "\e9d0"; }
+.fu-font:before { content: "\e9d1"; }
+.fu-format:before { content: "\e9d2"; }
+.fu-layout:before { content: "\e9d3"; }
+.fu-modular:before { content: "\e9d4"; }
+.fu-navigation:before { content: "\e9d5"; }
+.fu-typesetting:before { content: "\e9d6"; }
+.fu-others:before {content: "\e9d7"; }
+.fu-tools:before {content: "\e9d8"; }

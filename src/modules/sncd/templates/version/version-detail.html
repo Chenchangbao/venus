@@ -1,0 +1,237 @@
+<!--<h4><a ui-sref="VersionProcess">我的版本</a> > <i class="lightgray">{{version.branchName}}</i></h4>-->
+<div class="panel panel-default">
+	<div class="panel-body" ng-if="type=='show'">
+		<div class="col-md-4">
+			<div style="margin-top:30px;">
+				<img src="css/images/versionLife.png" alt="">
+			</div>
+		</div>
+		<div class="col-md-8 formBox no-padding">
+			<div class="col-md-12 form-group row">
+				
+				<a href="" class="pull-right" ng-if="!isVersionFreezen && isVersionActive  && hasPermissionMap['7016'] !=null && hasPermissionMap['7016']"
+						ng-click="editVersion();">修改</a>
+			</div>
+			<div class="col-md-6 form-group">
+				<label class="col-md-4 control-label no-padding">版本名称：</label>
+				<label class="col-md-8 control-label text-left">{{version.branchName}}</label>
+			</div>
+			<div class="col-md-6 form-group">
+				<label class="col-md-4 control-label no-padding">系统名称：</label>
+				<label class="col-md-8 control-label text-left">{{system.sysCnname}}</label>
+			</div>
+			<div class="col-md-6 form-group">
+				<label class="col-md-4 control-label no-padding">版本状态：</label>
+				<label class="col-md-8 control-label text-left">{{version.status | versionStatusFilter}}</label>
+			</div>
+			<div class="col-md-6 form-group">
+				<label class="col-md-4 control-label no-padding">一级中心：</label>
+				<label class="col-md-8 control-label text-left">{{system.orgName}}</label>
+			</div>
+			<div class="col-md-6 form-group">
+				<label class="col-md-4 control-label no-padding">版本号：</label>
+				<label class="col-md-8 control-label text-left">{{version.version}}</label>
+			</div>
+			<div class="col-md-6 form-group">
+			</div>
+			<div class="col-md-12 form-group">
+				<label class="col-md-2 control-label no-padding">版本URL：</label>
+				<label class="col-md-7 control-label text-left urlStyle">{{version.branchUrl}}
+				</label>
+				<button class="col-md-1 control-label btn btn-default buttonTop" style="width:55px" clip-copy="version.branchUrl" clip-click="doSomething()" >复制</button>
+			</div>
+			<div class="col-md-12 form-group">
+				<label class="col-md-2 control-label no-padding">操作：</label>
+				
+				<button class="col-md-2 control-label btn btn-default buttonTop" style="width:55px" ng-click="freezen(version)"
+                            ng-if="(version.status=='059'|| version.status=='0591') && hasPermissionMap['7011'] !=null && hasPermissionMap['7011']" ng-show="free">封版</button>
+				<button class="col-md-2 control-label btn btn-default buttonTop" style="width:55px"  ng-click="abandonVersion(version.branchId)"
+                            ng-if="(version.status=='059'|| version.status=='0591' || version.status=='060')&& hasPermissionMap['7016'] !=null && hasPermissionMap['7016']" ng-show="abando">废弃</button>
+                <button class="col-md-2 control-label btn btn-default buttonTop" style="width:100px" ng-click="backMerged(version)"
+                            ng-if="(version.status=='059' || version.status=='0591') && version.backMerged=='0' && hasPermissionMap['7016'] !=null && hasPermissionMap['7016']" ng-show="backM">确认已回合</button>
+                <button class="col-md-2 control-label btn btn-default buttonTop" style="width:100px" ng-click="jumpOld(version)"
+                            ng-if="isDependSystem == 1 && !isVersionFreezen && isVersionActive  && hasPermissionMap['7016'] !=null && hasPermissionMap['7016']">打包依赖配置</button>
+            	<button class="col-md-4 control-label btn btn-default buttonTop" style="width:100px" ng-click="adminMerge(version)" 
+                            ng-if="version.status=='060' && null!=curentuserid && '11076994'==curentuserid">确认合并</button>
+             </div>  
+			<div class="col-md-12 form-group">
+				<label class="col-md-2 control-label no-padding">发布的应用包：</label>
+				<label class="col-md-10 control-label text-left">
+					<span ng-repeat="package in version.deployPackageList">
+							{{package.packageName}} 
+					</span>
+				</label>
+			</div>
+			<div class="col-md-12 form-group">
+				<label class="col-md-2 control-label no-padding">计划发布时间：</label>
+				<div class="col-md-10 control-label text-left">
+					<label ng-repeat="date in version.deployProcess" class="col-md-3 control-label text-left no-padding">{{date.envType | configNameFilter}}&nbsp;&nbsp;&nbsp;&nbsp;{{date.date}}</label>
+				</div>
+				
+			</div>
+			<div class="col-md-12 form-group border-line">
+			</div>
+			<div class="col-md-12 form-group">
+				<label class="control-label ">功能描述：</label>
+				<label class="col-md-8 control-label text-left">{{version.branchDesc}}</label>
+			</div>
+		</div>
+		
+		
+	</div>
+	<div ng-if="type == 'edit'">
+	<div class="panel-body">
+		<form name="versionForm" class="form-horizontal">
+
+			<div class="form-group">
+				<label class="col-sm-3 control-label" for="formGroupInputSmall">版本：</label>
+				<div class="col-sm-6 log-user-select">
+					{{postData.version}}
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-sm-3 control-label" for="formGroupInputSmall">版本名称：</label>
+				<div class="col-sm-6 log-user-select">
+					<input type="text" class="form-control" placeholder="请输入版本名称" required ng-model="postData.branchName">
+				</div>
+			</div>
+			
+			<!--<div class="form-group" ng-repeat="userL in userLable">
+				<label for="user" class="col-sm-3 control-label">{{userL.name}}：</label>
+				<div class="log-user-select col-sm-6">
+					<input type="input" class="form-control" id="user" required="required" ng-model="userL.model.value" data-toggle="dropdown"
+						autocomplete="off" disableautocomplete aria-haspopup="true" aria-expanded="true" ng-change="queryByUser($index)" placeholder="请输入姓名或工号"
+						ng-blur="getUser($index)" arrow-move> <span class="glyphicon glyphicon-chevron-down form-control-feedback" style="display: none;"
+						aria-hidden="true"></span>
+					<ul class="dropdown-menu" aria-labelledby="user" style="overflow: hidden;">
+						<li ng-repeat="user in userList|filterEmpty:userL.model.value|filter:userL.model.value|numberLimit:20">
+							<a href="" ng-mousedown="selectUser(user,$parent.$index)" ng-class="{active:user.focus}" sn-tooltip='{{user}}' ng-show="user.length > 35">{{user.substring(0,35)+'...'}}</a>
+							<a href="" ng-mousedown="selectUser(user,$parent.$index)" ng-class="{active:user.focus}" ng-show="user.length <= 35">{{user}}</a>
+						</li>
+					</ul>
+				</div>
+			</div>-->
+
+			<div class="form-group">
+				<label class="col-sm-3 control-label" for="formGroupInputSmall">发布包：</label>
+				<div class=" log-user-select col-sm-6">
+					<label class="checkbox-inline" ng-repeat="package in postData.sysPackageList">
+                            <input type="checkbox" id="inlineCheckbox1" ng-model="package.selectPackage"> {{package.packageName}}
+                        </label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label" for="formGroupInputSmall">版本功能简要描述：</label>
+				<div class=" log-user-select col-sm-6">
+					<textarea class="form-control" rows="3" placeholder="请输入版本功能简要描述" ng-model="postData.branchDesc"></textarea>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label class="col-sm-3 control-label" for="formGroupInputSmall">发布日期：</label>
+				<div class="col-sm-9 control-label">
+					<div ng-repeat="item in version.deployProcess">
+						<div class="col-sm-2 text-left"><input type="checkbox" ng-model="item.checked" >{{item.envType | envTypeNameFilter}}</div>
+						<!--<label class="col-sm-1 text-left">{{item.envType | configNameFilter}}</label>-->
+						
+						<div sn-datetimepicker show-time="false" ng-model="item.date" class="col-sm-10 text-left" placeholder="选择日期">
+						</div>
+						<!--<input type="text" class="putOnTime form-control pull-right ng-isolate-scope" date-range-picker="item.dateOption">-->
+					</div>
+				</div>
+			</div>
+			<br/>
+			<div class="form-group">
+				<label class="col-sm-3 control-label" for="formGroupInputSmall"></label>
+				<div class="log-user-select col-sm-6">
+					<a class="btn btn-default" ng-click="updateVersion(versionForm.$invalid)">保存</a>&nbsp;&nbsp;&nbsp;
+					<a class="btn btn-default" ng-click="goBack()">取消</a>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+</div>
+
+
+<div class="panel panel-default" ng-controller="VersionAuthCtrl">
+	<div class="panel-heading">
+		<h3 class="panel-title">版本权限</h3>
+		<a href="" class="pull-right editSide" ng-if="!isVersionFreezen && isVersionActive  && hasPermissionMap['7016'] !=null && hasPermissionMap['7016']"
+		ng-click="editVersionAuth();">修改</a>
+	</div>
+	<div class="panel-body"  ng-if="authtype=='show'">
+         <table class="table table-bordered table-hover" style="border-collapse:collapse">
+					 
+            <tbody>
+                <tr>
+                    <td width="20%">
+                    版本只读权限：
+                    </td>
+                    <td>
+                        {{oldrUser}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                    版本读写权限：
+                    </td>
+                    <td>
+                        {{oldrwUser}}
+                    </td>
+                </tr>
+                </tbody>
+         </table>
+         <table class="table table-bordered table-hover" style="border-collapse:collapse">
+              <tbody>
+                  <tr ng-repeat="item in permissionUsers">
+                      <td width="20%">{{item.name | roleFilter}}</td>
+                      <td><span ng-repeat="value in item.value">{{value}}</span></td>
+                  </tr>
+              </tbody>
+          </table>    
+          <!--<div class="form-group pull-right">
+          		<button type="submit" class="btn btn-default" 
+					
+						ng-click="editVersionAuth();">修改</button>
+            
+          </div>-->
+  </div>
+	<div class="panel-body" ng-if="authtype=='edit'"  onkeydown="if(event.keyCode==13){return false;}">
+	<form name="packageForm" class="form-horizontal">
+		 <div class="form-group">
+			<label class="col-sm-2 control-label" for="formGroupInputSmall" style="width: 20%">版本只读权限：</label>
+			<div class="col-sm-6">
+				<div class="optionedUsers" filter-list-input option="newrUsers"></div>
+				<!-- <p ng-repeat="rUser in rUsers">{{rUser}} <a href="javascript:;" ng-click="removeAuth('r',$index)">x</a></p>
+				<textarea ng-model="viewData.newrUsers" rows="3" cols="3"  class="form-control"></textarea> -->
+			</div>
+		</div> 
+	
+				
+	 <div class="form-group">
+			<label class="col-sm-2 control-label" for="formGroupInputSmall" style="width: 20%">版本读写权限：</label>
+			<div class="col-sm-6">
+			<div class="optionedUsers" filter-list-input option="newrwUsers"></div>
+				<!--  <p ng-repeat="rwUser in rwUsers">{{rwUser}} <a href="javascript:;" ng-click="removeAuth('rw',$index)">x</a></p>
+				 <textarea  ng-model="viewData.newrwUsers" rows="3" cols="3"  class="form-control"></textarea> -->
+			</div>
+		</div> 
+		 <div class="form-group" ng-repeat="role in roleList">
+            <label class="col-sm-2 control-label" for="formGroupInputSmall" style="width: 20%">{{role.name | roleFilter}}：</label>
+            <div class="col-sm-6">
+                <div class="optionedUsers" filter-list-input option="role" required>
+                </div>
+            </div>
+         </div>
+        
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-10">
+				<button type="submit" class="btn btn-default" ng-click="saveVersionAuth();">确定</button>
+				<button  class="btn btn-default" ng-click="exitEdit();">取消</button>
+			</div>
+		</div>
+	</form>
+	</div>
+</div>

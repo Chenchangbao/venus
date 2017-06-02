@@ -1,0 +1,61 @@
+.sn-datepicker-container{
+    margin-top: 40px;
+    margin-left: 10px;
+    margin-bottom: 70px;
+}
+
+.sn-datepicker-sm{
+    position: relative;
+    width: 200px;
+}
+
+.sn-datepicker-sm > input{
+    margin-left: 10px;
+    width: 100% !important;
+}
+
+.sn-datepicker-sm > i{
+    position: absolute;
+    top: 10px;
+    right: 5px;
+}
+
+.sn-datepicker-lg{
+    position: relative;
+    width: 300px;
+}
+
+.sn-datepicker-lg > input{
+    margin-left: 10px;
+    width: 100% !important;
+}
+
+
+.sn-datepicker-lg > i{
+    position: absolute;
+    top: 10px;
+    right: 5px;
+}
+
+/*单点到单点*/
+.date{
+    position: relative;
+    margin-left: 10px;
+    width: 200px;
+}
+
+.date > i{
+    position: absolute;
+    top:10px;
+    right:15px;
+}
+
+.date > input{
+    width: 100% !important;
+}
+
+.start{
+    margin-right: 20px;
+}
+
+

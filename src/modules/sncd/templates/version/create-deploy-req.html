@@ -1,0 +1,170 @@
+<!--<h4><a ui-sref="VersionProcess">我的版本</a> > <i class="lightgray">{{version.branchName}}——发布单</i>> <i class="lightgray">{{envType}}</i></h4>-->
+<div class="panel panel-default  panel-middle" style="height: 820px">
+    <div class="panel-heading">
+    	<h3 class="panel-title" ng-if="envType == ''">请选择发布环境类型</h3>
+        <h3 class="panel-title" ng-if="envType == '019'">集成测试发布单</h3>
+        <h3 class="panel-title" ng-if="envType == '020'">预生产发布单</h3>
+        <h3 class="panel-title" ng-if="envType == '021'">生产发布单</h3>
+    </div>
+    <div class="panel-body">
+        <div class="panel-body text-danger" ng-if=" !!message &&  message != ''">
+            <span ng-bind-html="message"></span>
+        </div>
+        <form class="form-horizontal" name="versionForm">
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="formGroupInputSmall">
+                    公文单号：
+                </label>
+                <div class="col-sm-6 ">
+                    {{process.requestNo}}
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="formGroupInputSmall">
+                    申请人：
+                </label>
+                <div class="col-sm-6">
+                    {{requestor}}
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="formGroupInputSmall">
+                    发布环境类型：
+                </label>
+                <div class="col-sm-6">
+                    <select class="form-control" ng-model="envType" name="envType" ng-options="envType.envType as  envType.envName for envType in envTypes" ng-change="deployChange()" ng-show="componentInfo==undefined">
+                        <option value="">-- 选择环境类型 --</option>
+                    </select>
+					<div class="form-control" ng-model="envType" name="envType" ng-show="componentInfo!=undefined" disabled="disabled">{{envType|envTypeFilter}}</div>
+                </div>
+            </div>
+            <div ng-if=" message == null ||	 message == ''">
+                <div ng-if="canDeploy==true">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="formGroupInputSmall">
+                            发布环境：
+                        </label>
+                        <div class="col-sm-6">
+                            <span ng-if="envList.length==1">{{envList[0].envName}}</span>
+                            <select class="form-control" ng-model="deployParam.env" required="required" name="env" ng-options="env.envName for env in envList" ng-change="envChange()" ng-if="envList.length>1" >
+                                <option value="">-- 请选择 --</option>
+                            </select>
+                            <div style="color: red; font-size: small;">
+                                {{envError}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" ng-if="packageType != 'ANT' &&  paraStat == 'Y' ">
+                        <label class="col-sm-2 control-label" for="formGroupInputSmall">
+                            打包参数：
+                        </label>
+                        <div class="col-sm-6">
+                            <select ng-model="deployParam.envParam" class="form-control" ng-options="envParam for envParam in envParams" ng-show="componentInfo==undefined">
+                            </select>
+							<div ng-model="deployParam.envParam" class="form-control" ng-show="componentInfo!=undefined" disabled="disabled">
+								{{deployParam.envParam}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="formGroupInputSmall">
+                            发布时间：
+                        </label>
+                        <div class="col-sm-6">
+                            <div sn-datetimepicker show-time="true" min-date="nowtime"  ng-model="deployParam.deployTime" placeholder="请选择时间">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="formGroupInputSmall">
+                           <div ng-show="componentInfo==undefined"> 发布包：</div>
+						   <div ng-show="componentInfo!=undefined"> 选择构件：</div>
+                        </label>
+                        <div>
+                            <label class="checkbox-inline" ng-if="componentPackageList!=undefined" ng-repeat="package in componentPackageList">
+                                <input type="checkbox" id="inlineCheckbox1" ng-model="package.selectPackage" ng-disabled="package.disable">{{package.packageName}}
+                            </label>
+                            <label class="checkbox-inline" ng-if="componentPackageList==undefined" ng-repeat="package in branchPackageList">
+                                <input type="checkbox" id="inlineCheckbox1" ng-model="package.selectPackage" ng-disabled="package.disable">{{package.packageName}}
+                            </label>
+                            <div style="margin-left: 200px;color: #1A4FD8; font-size: small;" ng-if="hasPackage==false">
+                                您尚未维护打包配置，暂不能使用持续交付部署功能， 请在系统-打包配置处进行维护！
+                            </div>
+                            <div style="margin-left: 200px;color: red; font-size: small;">
+                                {{warError}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" style="display:none;">
+                        <label class="col-sm-2 control-label" for="formGroupInputSmall">
+                            构件：
+                        </label>
+                        <div>
+                            <input type="checkbox" ng-model="chk" ng-click="checkComponent(chk)" ng-disabled="componentSelected">选择已有构件<a href="#" style="margin-left: 370px;" style="display:none;" ng-click="selectComponent()">+添加构件</a>
+                            <div ng-if="packagesShow==true" style="margin-left: 200px;">
+                                <table ng-repeat="(key,value) in packages" class="table" style="width:520px;">
+                                    <tr style="border:1px solid #ccc;margin:20px;padding:10px;">
+                                        <td style="width:90%">
+                                            {{key}}
+                                        </td>
+                                        <td>
+                                            <a href="#" ng-click="delPacage(key)">删除</a>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" ng-if="hasFreezenPermission==true">
+                        <label class="col-sm-2 control-label" for="formGroupInputSmall">
+                            是否封板：
+                        </label>
+                        <div ng-if="version.status=='060'||version.status=='061'||version.status=='062'">
+                            {{version.status|versionStatusFilter}}
+                        </div>
+                        <div ng-if="version.status!='060'&& branch.status!='061'&& branch.status!='062'">
+                            <label class="checkbox-inline">
+                                <input type="radio" name="isFrezen" value="1" ng-model="deployParam.isFreezen">封版
+                            </label>
+                            <label class="checkbox-inline">
+                                <input type="radio" name="isFrezen" value="0" ng-model="deployParam.isFreezen">不封版
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group" ng-if="shareEnvFlag == true">
+                        <label class="col-sm-2 control-label" for="formGroupInputSmall">
+                            发布方式：
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="radio" name="deployType" value="停启应用" ng-model="deployParam.deployPattern">停启应用
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="radio" name="deployType" value="停启Server" ng-model="deployParam.deployPattern">停启Server
+                        </label>
+                        <div ng-show="deployParam.deployType == '停启Server' &&  shareEnvFlag== true " style="margin-left: 170px; color: #1A4FD8; font-size: small;">
+                            当前环境有其他系统共用，该方式会影响其他应用的正常使用，建议停启应用！
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="formGroupInputSmall">
+                           <div> 质量分析：</div>
+                        </label>
+                        <div>
+                            <label class="checkbox-inline" ng-repeat="quality in qualitys">
+                                <input type="checkbox" id="inlineCheckbox1" ng-model="quality.checked" >{{quality.name}}
+                            </label>
+                            
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <a class="btn btn-default" ng-click="saveDeployReq()" ng-if="manageRole==true || (isVersionActive&&hasPermissionMap['7021'] !=null && hasPermissionMap['7021'])">发布</a>
+                            <a class="btn btn-default" ui-sref="VersionDeploy({vtab:'VersionDeploy'})">取消</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

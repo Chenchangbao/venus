@@ -1,0 +1,23 @@
+<div>
+  <span class="btn-prev">
+    <a class="btn btn-link" ng-click="doPrev()" ng-disabled="!canPrev()" ng-show="needBtn">
+      <i class="fa fa-chevron-left"></i>
+    </a>
+  </span>
+  <span class="btn-next">
+    <a class="btn btn-link" ng-click="doNext()" ng-disabled="!canNext()" ng-show="needBtn">
+      <i class="fa fa-chevron-right"></i>
+    </a>
+  </span>
+  <div class="nav-contant">
+    <ul class="nav nav-tabs" ng-style="ulStyle">
+      <li ng-repeat="panel in panels" ng-class="{'active': panel.selected}">
+        <a ng-click="selectPanel(panel)">
+          {{panel.title}}
+          <hr>
+        </a>
+      </li>
+    </ul>
+  </div>
+  <div class="tab-content" ng-transclude></div>
+</div>

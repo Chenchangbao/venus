@@ -1,0 +1,62 @@
+<section class="content pullrequestcontent">
+    <form class="form-inline">
+        <div class="form-group marginbottom10">
+            <button class="btn btn-default" ui-sref="Header.VersioManage">创建版本</button>
+        </div>
+        <div class="form-group marginbottom10">
+            <select class="form-control" ng-model="sysId" ng-options="option.id as option.value for option in system">
+                <option value="">-- 请选择 --</option>
+            </select>
+        </div>
+        <div class="form-group marginbottom10">
+            <input type="text" class="form-control" placeholder="请输入版本号" ng-model="version">
+        </div>
+        <div class="form-group marginbottom10">
+            <select class="form-control" ng-model="status" ng-options="option.id as option.value for option in statusList">
+                <option value="">-- 请选择 --</option>
+            </select>
+        </div>
+        <div class="form-group marginbottom10">
+            <button class="btn btn-default" ng-click="search()">查询</button>
+        </div>
+        <a href="javascript:void(0)" ng-click="reset()">重置</a>&nbsp&nbsp&nbsp
+    </form>
+
+    <div class="table-body">
+        <table class="sn-table">
+            <tr>
+                <th>版本号</th>
+                <th>版本名称</th>
+                <th>归属应用</th>
+                <th>需求</th>
+                <th>任务</th>
+                <th>缺陷</th>
+                <th>状态</th>
+                <th>版本报告</th>
+                <th>操作</th>
+            </tr>
+            <tr ng-repeat="a in versions">
+                <td>{{a.version}}</td>
+                <td><a ui-sref="Header.VersioDetail({ id: a.id})">{{a.name}}</a></td>
+                <td>{{a.sysName}}</td>
+                <td>{{a.epicCount}}</td>
+                <td>{{a.taskCount}}</td>
+                <td>{{a.bugCount}}</td>
+                <td>{{a.status | version_status}}</td>
+                <td>
+                    <a ui-sref="Header.VersionReport({ id: a.id})">查看</a>
+                </td>
+                <td>
+                    <div ng-if="a.status != 0">
+                        <a>封版</a>
+                        <a>构建</a>
+                        <a>发布</a>
+                        <a ng-click="delete(a)">删除</a>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div style="float:right" sn-pager page="pageIndex" page-size="pageSize" total="totalCount" paging-action="paging1(page, pageSize, total)"></div>
+</section>

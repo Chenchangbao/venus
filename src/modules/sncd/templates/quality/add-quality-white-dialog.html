@@ -1,0 +1,25 @@
+<div class="modal fade in" ng-controller="addQualityWhiteDialogCtrl">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-titel">增加白名单</h4>
+            </div>
+            <form name="WhiteListForm" class="form-inline">
+                <div class="modal-body"  style="height: 200px;padding:15px">
+                    <div class="form-group" >
+                        <select style="width:400px"  ng-mousedown="chooseSysinfo()" class="form-control" ng-model="systeminfo" ng-options="systeminfo.sysName for systeminfo in systemList">
+                        <option value="">-- 请选择系统英文简称(代码库名称) --</option>
+                        </select>
+                <button type="button" class="btn btn-primary" ng-click="updateWhitelist(systeminfo.sysName,systeminfo.sysId,1)"  >
+                  增加
+                    </button>
+                    </div>
+                    <p>{{message}}</p>
+                </div>
+                <div class="modal-footer" style="height:60px;">
+                    <button type="button" class="btn btn-default" ng-click="close()">关闭</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

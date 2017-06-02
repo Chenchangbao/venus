@@ -1,0 +1,122 @@
+
+<div class="panel panel-default">
+    
+      <ul class="nav nav-tabs">
+        <li ng-class="{'active': selectedTab==1}"><a  ng-click="selectedTab=1;showEnvConfig('019')">集成测试SIT</a></li>
+        <li ng-class="{'active': selectedTab==2}"><a ng-click="selectedTab=2;showEnvConfig('020')">预生产测试PRE</a></li>
+        <li ng-class="{'active': selectedTab==3}"><a  ng-click="selectedTab=3;showEnvConfig('021')">生产环境PROD</a></li>
+        <li ng-class="{'active': selectedTab==4}"><a  ng-click="selectedTab=4;showEnvConfig('171')">本地测试DEV</a></li>
+        <li><a href="http://pcp.cnsuning.com/spcp-web/vm/index.htm" target="_blank">创建系统环境</a></li>
+    </ul>
+    
+    <div ng-if="message != ''" class="content">{{message}}</div>
+    
+    <div class="content" ng-if="message == '' || message == null">
+        <table class="table table-bordered table-hover" >
+            <tbody>
+            <tr>
+                <th>
+                  环境类型
+                </th>
+                <th>
+                   环境名称
+                </th>
+                   <th>
+                  应用server类型
+                </th>
+                <th>
+                   环境状态
+                </th>
+            </tr>
+            <tr ng-repeat="env in envList" ng-click="showDMConfig(env.envId,env.appServerType)">
+                <td>
+                  {{env.envType | envTypeFilter}}
+                </td>
+                <td>
+                {{env.envName}}
+                </td>
+                <td>
+                 {{env.appServerType}}
+                </td>
+                <td>
+                    <span ng-if="env.status==2&&env.zipStatus==1">war包可用</span>
+                    <span ng-if="env.status==1&&env.zipStatus==2">zip包可用</span>
+                    <span ng-if="env.status==2&&env.zipStatus==2">war包可用，zip包可用</span>
+                    <span ng-if="env.status==2&&env.zipStatus==3">exe包可用</span>
+                    <span ng-if="env.status==1&&env.zipStatus==1">不可用</span>
+                </td>
+            </tr>
+            </tbody></table>
+
+<span ng-if="appServerType == 'was'">【DM信息】</span>
+<span ng-if="appServerType == 'jboss'">【domain信息】</span>
+           <table class="table table-bordered table-hover">
+            <tbody>
+            <tr>
+                <th>
+                  序号
+                </th>
+                <th ng-if="appServerType == 'jboss'">
+                   domain名称
+                </th>
+                <th ng-if="appServerType == 'was'">
+                   DM名称
+                </th>
+                   <th>
+                 机器IP
+                </th>
+                <th>
+                   部署类型
+                </th>
+            </tr>
+            <tr ng-repeat="dm in dmList">
+                <td>
+                  {{$index+1}}
+                </td>
+                <td>
+                {{dm.dmName}}
+                </td>
+                <td>
+                 {{dm.macIp}}
+                </td>
+                <td>
+        <span ng-if="dm.wasType=='standalone'">standalone</span>
+        <span ng-if="dm.wasType!='standalone'">分布式</span>
+                </td>
+            </tr>
+            </tbody></table>
+           
+           【发布包部署】
+             <table class="table table-bordered table-hover">
+            <tbody>
+            <tr>
+                <th>
+                  系统名称
+                </th>
+                <th>
+                   发布包名称
+                </th>
+                   <th>
+                 server名称
+                </th>
+                <th>
+                   机器IP
+                </th>
+            </tr>
+            <tr ng-repeat="package in projectGroupPackageInfoList">
+                <td>
+                  {{package.sysName}}
+                </td>
+                <td>
+                {{package.packageName}}
+                </td>
+                <td>
+                 {{package.serverName}}
+                </td>
+                <td>
+                {{package.macIp}}
+                </td>
+            </tr>
+            </tbody></table>
+    </div>
+</div>

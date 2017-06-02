@@ -1,0 +1,97 @@
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<form name="packageForm" class="form-horizontal">
+
+					<div class="form-group" ng-class="{'has-error': packageForm.packageName.$error.pattern && packageForm.packageName.$dirty}">
+						<label class="col-sm-2 control-label" for="formGroupInputSmall">发布包名称：</label>
+						<div class="col-sm-6 log-user-select">
+							<input type="text" class="form-control" id="packageName" ng-disabled="postData.packageId"
+								name="packageName" placeholder="请输入发布包名称"  ng-pattern="/\./"
+								ng-model="postData.packageName" required="required"
+								value="{{sysPackage.packageName}}" ng-blur="isSysPackageExist()" ng-if="system.sysType==4">
+							<input type="text" class="form-control" id="packageName"
+								name="packageName" placeholder="请输入发布包名称" ng-pattern="/\.((war)|(ear)|(zip)|(jar)|(apk)|(ipa))$/"
+								ng-model="postData.packageName" required="required" ng-disabled="postData.packageId"
+								value="{{sysPackage.packageName}}" ng-blur="isSysPackageExist()" ng-if="system.sysType!=4">
+							<label class="text-danger control-label"
+								style="text-align: left;"
+								ng-show="packageErrorMsg">
+								{{packageErrorMsg}} </label>
+						</div>
+					</div>
+
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="formGroupInputSmall">发布包类型：</label>
+						<div class="col-sm-6 log-user-select">
+							<label class="checkbox-inline"> <input type="radio"
+								name="packageType" value="163" ng-model="postData.packageType"
+								ng-disabled="postData.packageId" ng-click="getPakckgeNumByType()"> 应用发布包
+							</label> <label class="checkbox-inline"> <input type="radio"
+								name="packageType" value="164" ng-model="postData.packageType"
+								ng-disabled="postData.packageId" ng-click="getStaticPakckgeNumByType()"> 静态发布包
+							</label>
+						</div>
+					</div>
+
+
+					<div class="form-group" >
+						<label class="col-sm-2 control-label" for="formGroupInputSmall">发布包功能类型：</label>
+						<div class="col-sm-6 log-user-select">
+							<label class="checkbox-inline"> <input type="radio"
+								name="packageUseType" value="183"
+								ng-model="postData.packageUseType"
+								ng-disabled="postData.packageId || typefore">
+								前台
+							</label>
+							<label class="checkbox-inline"> <input type="radio"
+								name="packageUseType" value="298"
+								ng-model="postData.packageUseType"
+								ng-disabled="postData.packageId||typemidle">
+								中台
+							</label>
+							</label> <label class="checkbox-inline"> <input type="radio"
+								name="packageUseType" value="184"
+								ng-model="postData.packageUseType"
+								ng-disabled="postData.packageId||typeback">
+								后台
+							</label>
+							</label> <label class="checkbox-inline"> <input type="radio"
+								name="packageUseType" value="294"
+								ng-model="postData.packageUseType"
+								ng-disabled="postData.packageId">
+								自定义
+							</label>
+						</div>
+
+					</div>
+					<div class="form-group" ng-show="postData.packageUseType === '294'" ng-class="{'has-error': packageForm.packageNameType.$error.pattern && packageForm.packageNameType.$dirty}">
+						<label class="col-sm-2 control-label" for="formGroupInputSmall"></label>
+						<div class="col-sm-6 log-user-select" >
+							 <input type="text" class="form-control" id="packageNameType" name="packageNameType" ng-model="postData.packageUseTypeName"   maxlength="50" ng-blur="isPackageTypeExist()">
+						<label class="text-danger control-label"
+								style="text-align: left;"
+								ng-show="packageTypeErrorMsg">
+								{{packageTypeErrorMsg}} </label>
+						</div>
+					</div>
+					<div class="form-group">
+					<label class="col-sm-2 control-label" for="formGroupInputSmall">发布包功能简述：</label>
+						<div class="col-sm-6 log-user-select">
+						<textarea class="form-control" rows="3" placeholder="请输入发布包描述"
+							ng-model="postData.packageDesc" maxlength="100" ng-required="true" ></textarea>
+							<p>100/<span ng-bind="left()"></span></p>
+							<label class="text-danger control-label"
+								style="text-align: left;"
+								ng-show="packageDesErrorMsg">
+								{{packageDesErrorMsg}} </label>
+							</div>
+					</div>
+					<div class="form-group" style="margin-left: 250px;">
+						<a  class="btn btn-default" ng-disabled="packageForm.$invalid"
+							ng-click="savePackage()">提交</a>
+						<a class="btn btn-default" ng-click="goBack()">返回</a>
+					</div>
+				</form>
+			</div>
+		</div>

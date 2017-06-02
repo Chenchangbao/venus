@@ -1,0 +1,57 @@
+<div class="module-head">
+    <div class="module-info">
+        <p class="title">动态中心</p>
+        <p class="sub-title">芸萃各种活动，在这里你可以综览一切活动动向！</p>
+    </div>
+    <form class="form-inline">
+     <div class="form-group pull-right search">
+         <input type="text" class="form-control input-sm"  style="width: 150px;height: 34px;margin-left: 15px;" placeholder="系统中文名称或者英文名称或版本信息"  ng-model="formData.keyWord"  />
+      	 <span class="glyphicon glyphicon-search search-icon" ng-click="search()"></span>
+        <!--<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ng-click="search()"></span>-->
+      </div>
+     <div class="form-group pull-right search">
+       <span ng-model="formData.startTime" sn-datetimepicker show-time="true"  max-date="formData.endTime" placeholder="请选择开始时间"></span>
+       <span ng-model="formData.endtTime" sn-datetimepicker show-time="true"  min-date="formData.startTime" placeholder="请选择结束时间"></span>
+      </div>
+      
+   
+    </form>
+</div>
+<div class="container-wrapper">
+  <div class="publish-info" style="overflow: hidden;padding-bottom: 25px;">
+            <ul class="nav nav-tabs">
+                <li ng-class="{'active': selecteddynamic==1}"><a class="link-cursor" ng-click="dynamic(1)">我的系统动态</a></li>
+                <li ng-class="{'active': selecteddynamic==2}"><a class="link-cursor" ng-click="dynamic(2)">全部动态</a></li>
+                <li ng-class="{'active': selecteddynamic==3}"><a class="link-cursor" ng-click="dynamic(3)">我的动态</a></li>
+            </ul>
+       			<div class="panel panel-default my-dynamic">
+                <div class="panel-body" style="height:880px;">
+                    <div class="trend-list">
+                    	<p ng-if="!dynamicState">未找到任何满足条件的动态！</p>
+                        <div class="trend-item" ng-repeat="ds in dynamicState">
+                            <p><span></span>{{ds.updateTime	| date:'yyyy-MM-dd HH:mm:ss'}}</p>
+                            <div class="media">
+                                <div class="media-left">
+                                    <a href="#">
+                                        <img class="media-object" src="business/images/user_logo.png" alt="avatar">
+                                    </a>
+                                </div>
+                                <div class="media-body">
+                                    <p><a ng-if="!ds.operator">SNCD(持续交付平台)</a> <a ng-if="ds.operator!=null">{{ds.operator}}</a>在系统 <a>{{ds.sysCnname}}</a> 中进行了 <a title="{{ds.detailComments}}">{{ds.comments}}</a>
+                                        的任务</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                  
+                </div>
+            </div>
+        </div>
+    <footer class="ft-pager clearfix">
+        <div sn-pager itemsPerPage="{{pager.pageSize}}" totalItems="{{pager.totalCount}}" listSize="{{pager.pageSize}}"
+             class="text-right">
+        </div>
+    </footer>
+</div>
+
+

@@ -1,0 +1,333 @@
+<div class="container container-bg">
+	<div style="padding:10px;">
+		<div class="publish-title">
+			<span></span>{{deployHis.sysCnname}}环境部署
+		</div>
+	</div>
+	<div id="mainBody" class="container-body-bg">
+    <div class="row">
+    	<div class="col-md-12 hero-unit">
+    		<button class="btn btn-danger" type="button" ng-if="isFinish==true">
+        		已结束
+            </button>
+			
+			<button class="btn btn-danger" type="button" ng-click="deployOver()" ng-if="isFinish==false">
+        		结束发布
+            </button>
+			<button type="button" class="btn btn-default" ng-click="ngJbossPublish()" ng-if="isFinish==false  && deployType=='TURN' ">一键发布</button>	
+			
+    	</div>
+        <div class="col-md-9 hero-unit">	
+            <div class="panel panel-default panel-default-left">
+                <div class="panel-body" ng-if="isMackepackage">
+                	<div class="col-md-1">
+                		<div class="cpanel">
+						    <div class="icon">
+						        <span>打包</span>
+						    </div>
+						</div>
+						<hr style="filter:alpha(opacity=100,finishopacity=0,style=3);width:1px;background-color:#00a65a;height:85px;position:absolute;top:20px;left:32px;" />
+                	</div>
+                	<div class="col-md-11">
+                    <div class="list-group">
+                        <div class="package-title">编译打包：</div>
+                    </div>
+	                    <table class="tb-center">
+	                    	<tr>
+	                            <th>序号</th>
+								<th>状态</th>
+								<th>总时间</th>
+								<th>开始时间</th>
+								<th>结束时间</th>
+								<th>操作</th>
+	                        </tr>
+	                        <tr>
+	                            <td>1</td>
+								<td>
+									<span ng-if="buildAction.actionStatus=='W' && buildAction.startTime==null">未进行</span>
+									<span ng-if="buildAction.actionStatus=='W' && buildAction.startTime!=null">打包中</span>
+									<span ng-if="buildAction.actionStatus==150">打包成功</span>
+									<span ng-if="buildAction.actionStatus==151">打包失败</span>
+								</td>
+								<td>{{buildTotalTime}}</td>
+								<td>{{buildAction.startTime | date:'yyyy-MM-dd'}}</br>
+									{{buildAction.startTime | date:'HH:mm:ss'}}</td>
+								<td>{{buildAction.endTime | date:'yyyy-MM-dd'}}</br>
+									{{buildAction.endTime | date:'HH:mm:ss'}}</td>
+								<td>
+									<a href="{{jenkinsConsole}}" ng-if="jenkinsConsole!=null" target="_blank">打包日志</a> 
+									<a href="{{ftppath}}" ng-if="ftppath !=null " target="_blank">构件仓库</a>
+									<a href="javascript:void(0);" ng-if="isFinish==false && buildAction.actionStatus==151" ng-click="ngJbossPublish()">重试</span>
+								</td>
+	                        </tr>
+	                    </table>
+					</div>
+                </div>
+				<div class="panel-body">
+                	<div class="col-md-1">
+				        <div class="cpanel">
+						    <div class="icon-blue">
+						        <span>发布</span>
+						    </div>
+						</div>
+						<hr style="filter:alpha(opacity=100,finishopacity=0,style=3);width:1px;background-color:#337ab7;height:45px;position:absolute;top:20px;left:32px;" />
+                	</div>
+                	<div class="col-md-11">
+                		<div ng-if="webServerList!=null">
+		                    <div class="list-group">
+		                        <div class="package-title">静态发布：</div>
+		                    </div>
+		                    <table class="tb-center">
+		                    	<tr>
+		                            <th>IP地址</th>
+									<th>状态</th>
+									<th>总时间</th>
+									<th>开始时间</th>
+									<th>结束时间</th>
+									<th>操作</th>
+		                        </tr>
+								<tbody ng-repeat="item in webServerList">
+		                        <tr>
+		                        	<td style="display:none;">{{$index+1}}</td>
+		                            <td>{{item.webServerBean.macIp}}</td>
+									<td>
+										<span ng-if="item.status==null">待发布</span>
+										<span ng-if="item.status=='1' ">发布中</span>
+										<span ng-if="item.status=='150' ">发布成功</span>
+										<span ng-if="item.status=='151' ">发布失败</span>
+									</td>
+									<td>{{item.totalTime}}</td>
+									<td>{{item.startTime | date:'yyyy-MM-dd'}}</br>
+										{{item.startTime | date:'HH:mm:ss'}}</td>
+									<td>{{item.endTime | date:'yyyy-MM-dd'}}</br>
+										{{item.endTime | date:'HH:mm:ss'}}</td>
+									<td>
+										<a href="javascript:void(0);" ng-if="isFinish==false && (item.status==null || item.status=='') && deployType=='TURN' " ng-click="ngJbossPublish()">开始</a>
+										<a href="javascript:void(0);" ng-if="isFinish==false && item.status=='151' && deployType=='TURN' " ng-click="ngJbossPublish()">重试</a>
+										<a href="javascript:void(0);" ng-if="item.outMsg!=null && item.outMsg!='' " ng-click="showWebLogDetail($index)">日志</a>
+									</td>
+		                        </tr>
+								<tr style="display:none;" id="web_detail_{{$index}}">
+									<td colspan="7" class="deploy-log-detail" style="text-align:left;">
+										<div ng-bind-html="item.outMsg"></div>
+									</td>
+								</tr>
+								</tbody>
+		                    </table>
+						</div>
+					</div>
+                </div>
+				<div ng-repeat="(itemKey,itemValue) in mapNodes">
+                <div class="panel-body">
+                	<div class="col-md-1">
+						<div class="cpanel">
+						    <div class="icon-pic"></div>
+						</div>
+						<hr ng-if="currentGroups[itemKey].deployActionMap.length>6" style="filter:alpha(opacity=100,finishopacity=0,style=3);width:1px;background-color:#337ab7;height:315px;position:absolute;top:45px;left:32px;" />
+						<hr ng-if="currentGroups[itemKey].deployActionMap.length<=6" style="filter:alpha(opacity=100,finishopacity=0,style=3);width:1px;background-color:#337ab7;height:250px;position:absolute;top:45px;left:32px;" />
+                	</div>
+					
+                	<div class="col-md-11">
+                		<div>【{{itemKey}}】</div>
+                    <div class="list-group package-publish-title">
+                    	<div class="pl-10" ng-repeat="groupInfo in itemValue">
+	                    	<div ng-if="groupInfo.groupId==currentGroups[itemKey].groupId">
+								<div class="firstStepWait" style="color:#000;font-weight:bold;" ng-if="$index==0 && groupInfo.groupStatus==0" ng-click="changeGroup(groupInfo.groupId,itemKey)">{{groupInfo.groupName}}</div>
+								<div class="firstStepError" style="color:#fff;font-weight:bold;" ng-if="$index==0 && groupInfo.groupStatus==-1" ng-click="changeGroup(groupInfo.groupId,itemKey)">{{groupInfo.groupName}}</div>
+								<div class="firstStepSuccess" style="color:#fff;font-weight:bold;" ng-if="$index==0 && groupInfo.groupStatus==1" ng-click="changeGroup(groupInfo.groupId,itemKey)">{{groupInfo.groupName}}</div>
+								<div class="firstStepPublish" style="color:#fff;font-weight:bold;" ng-if="$index==0 && groupInfo.groupStatus==2" ng-click="changeGroup(groupInfo.groupId,itemKey)">{{groupInfo.groupName}}</div>
+								
+								<div class="nextStepWait" style="color:#000;font-weight:bold;" ng-if="$index!=0 && groupInfo.groupStatus==0" ng-click="changeGroup(groupInfo.groupId,itemKey)">{{groupInfo.groupName}}</div>
+								<div class="nextStepError" style="color:#fff;font-weight:bold;" ng-if="$index!=0 && groupInfo.groupStatus==-1" ng-click="changeGroup(groupInfo.groupId,itemKey)">{{groupInfo.groupName}}</div>
+								<div class="nextStepSuccess" style="color:#fff;font-weight:bold;" ng-if="$index!=0 && groupInfo.groupStatus==1" ng-click="changeGroup(groupInfo.groupId,itemKey)">{{groupInfo.groupName}}</div>
+								<div class="nextStepPublish" style="color:#fff;font-weight:bold;" ng-if="$index!=0 && groupInfo.groupStatus==2" ng-click="changeGroup(groupInfo.groupId,itemKey)">{{groupInfo.groupName}}</div>
+							</div>
+							<div ng-if="groupInfo.groupId!=currentGroups[itemKey].groupId">
+								<div class="firstStepWait" ng-if="$index==0 && groupInfo.groupStatus==0" ng-click="changeGroup(groupInfo.groupId,itemKey)">{{groupInfo.groupName}}</div>
+								<div class="firstStepError" ng-if="$index==0 && groupInfo.groupStatus==-1" ng-click="changeGroup(groupInfo.groupId,itemKey)">{{groupInfo.groupName}}</div>
+								<div class="firstStepSuccess" ng-if="$index==0 && groupInfo.groupStatus==1" ng-click="changeGroup(groupInfo.groupId,itemKey)">{{groupInfo.groupName}}</div>
+								<div class="firstStepPublish" ng-if="$index==0 && groupInfo.groupStatus==2" ng-click="changeGroup(groupInfo.groupId,itemKey)">{{groupInfo.groupName}}</div>
+								
+								<div class="nextStepWait" ng-if="$index!=0 && groupInfo.groupStatus==0" ng-click="changeGroup(groupInfo.groupId,itemKey)">{{groupInfo.groupName}}</div>
+								<div class="nextStepError" ng-if="$index!=0 && groupInfo.groupStatus==-1" ng-click="changeGroup(groupInfo.groupId,itemKey)">{{groupInfo.groupName}}</div>
+								<div class="nextStepSuccess" ng-if="$index!=0 && groupInfo.groupStatus==1" ng-click="changeGroup(groupInfo.groupId,itemKey)">{{groupInfo.groupName}}</div>
+								<div class="nextStepPublish" ng-if="$index!=0 && groupInfo.groupStatus==2" ng-click="changeGroup(groupInfo.groupId,itemKey)">{{groupInfo.groupName}}</div>
+							</div>
+                        </div>
+						<a href="#" class="list-group-item active" style="display:none;">发布</a>
+                    </div>
+                    <table >
+                    	<tr>
+                            <th>序号</th>
+                            <th>任务名称</th>
+							<th>状态</th>
+							<th>服务器数</th>
+							<th>总时间</th>
+							<th>开始时间</th>
+							<th>结束时间</th>
+							<th>操作</th>
+                        </tr>
+						<tbody ng-repeat="deployAction in currentGroups[itemKey].deployActionMap">
+	                        <tr >
+	                            <td>{{$index+1}}</td>
+	                            <td>{{deployAction.cnName}}</td>
+								<td>
+									<span ng-if="deployAction.actionStatus=='W' && deployAction.startTime==null">未进行</span>
+									<span ng-if="deployAction.actionStatus=='W' && deployAction.startTime!=null">进行中</span>
+									<span ng-if="deployAction.actionStatus==150">完成</span>
+									<span ng-if="deployAction.actionStatus==151">失败</span>
+								</td>
+								<td>{{currentGroups[itemKey].serverList.length}}</td>
+								<td>{{deployAction.totalTime}}</td>
+								<td>{{deployAction.startTime | date:'yyyy-MM-dd'}}</br>
+									{{deployAction.startTime | date:'HH:mm:ss'}}</td>
+								<td>{{deployAction.endTime | date:'yyyy-MM-dd'}}</br>
+									{{deployAction.endTime | date:'HH:mm:ss'}}</td>
+								<td>
+									<a href="javascript:void(0);" ng-if="deployAction.actionStatus!='W' || deployAction.startTime != null" ng-click="getConsoleDetial(itemKey,deployAction,currentGroups[itemKey].serverList.length,currentGroups[itemKey].groupId)">查看日志</a>
+									<a href="javascript:void(0);" ng-if="deployAction.playStart && isFinish==false" ng-click="ngJbossPublishStep(itemKey,deployAction.actionName)">开始</a>
+									<a href="javascript:void(0);" ng-if="deployAction.actionStatus==151 && isFinish==false" ng-click="passFailureAction(deployAction.actionName,itemKey,currentGroups[itemKey].groupId)">跳过</span>
+									<a href="javascript:void(0);" ng-if="deployAction.actionStatus==151 && isFinish==false" ng-click="ngJbossPublishStep(itemKey,deployAction.actionName)">重试</span>
+								</td>
+	                        </tr>
+						</tbody>
+                    </table>
+					</div>
+                </div>
+				</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+                <fieldset>
+                    <legend>
+                   		 基本信息
+                    </legend>
+					
+					 <table class="tb-noborder">
+                    	<tr style="width:200px;">
+                    		<td width="90">公文单号：</td>
+							<td width="160">{{deployHis.requestNo}}</td>
+						</tr>
+						<tr>
+                    		<td>申请人：</td>
+							<td>{{user}}</td>
+						</tr>
+						<tr>
+                    		<td>系统名称：</td>
+							<td>{{system.sysCnname}}</td>
+						</tr>
+						<tr>
+                    		<td>环境名称：</td>
+							<td>{{deployHis.envName}}</td>
+						</tr>
+						<tr>
+                    		<td>发布方式：</td>
+							<td>{{deployHis.deployPattern}}</td>
+						</tr>
+						<tr>
+                    		<td>环境参数：</td>
+							<td>{{deployHis.packageEnvParam}}</td>
+						</tr>
+						<tr>
+                    		<td>计划发布时间：</td>
+							<td>{{deployHis.planTime}}</td>
+						</tr>
+						<tr>
+                    		<td>发布分支：</td>
+							<td>{{deployHis.branchUrl}}</td>
+						</tr>
+						<tr>
+                    		<td>发布包：</td>
+							<td>{{allPackageNames}}</td>
+						</tr>
+					</table>
+                </fieldset>
+
+        </div>
+    </div>
+	</div>
+	<div id="detailBody" style="display:none;" class="container-body-bg">
+		<div class="row">
+        <div class="col-md-9 hero-unit">
+			<button class="btn btn-danger" type="button" ng-click="close()">关闭</button>
+            <div class="panel panel-default panel-default-left">
+                <div class="panel-body">
+                	<table class="tb-center">
+						<tr>
+							<th>序号</th>
+							<th>IP</th>
+							<th>状态</th>
+							<th>操作</th>
+						</tr>
+						<tbody ng-repeat="item in serverList">
+						<tr>
+							<td>{{$index+1}}</td>
+							<td>{{item.serverIP}}</td>
+							<td ng-repeat="action in item.deployActions">
+								<div ng-if="action.actionName==actionName">
+									<span ng-if="action.actionStatus=='W' && action.startTime==null">未进行</span>
+									<span ng-if="action.actionStatus=='W' && action.startTime!=null">进行中</span>
+									<span ng-if="action.actionStatus==150">完成</span>
+									<span ng-if="action.actionStatus==151">失败</span>
+								</div>
+							</td>
+							<td><a href="javascript:void(0);" ng-click="showLogDetail($index)">(查看日志详情)</a></td>
+						</tr>
+						<tr style="display:none;" id="detail_{{$index}}">
+							<td colspan="4" class="deploy-log-detail" style="text-align:left;" ng-repeat="action in item.deployActions">
+								<div ng-if="action.actionName==actionName" ng-bind-html="action.actionResult"></div>
+							</td>
+						</tr>
+						</tbody>
+					</table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <fieldset  style="height:330px;">
+                <legend>
+               		 基本信息
+                </legend>
+				
+				 <table class="tb-noborder">
+                	<tr style="width:200px;">
+                		<td width="90">公文单号：</td>
+						<td width="160">{{deployHis.requestNo}}</td>
+					</tr>
+					<tr>
+                		<td>节点名称：</td>
+						<td>{{currentAction.cnName}}</td>
+					</tr>
+					<tr>
+                		<td>状态：</td>
+						<td>
+							<span ng-if="currentAction.actionStatus=='W' && currentAction.startTime==null">未进行</span>
+							<span ng-if="currentAction.actionStatus=='W' && currentAction.startTime!=null">进行中</span>
+							<span ng-if="currentAction.actionStatus==150">完成</span>
+							<span ng-if="currentAction.actionStatus==151">失败</span>
+						</td>
+					</tr>
+					<tr>
+                		<td>服务器数：</td>
+						<td>{{currentAction.serverCount}}</td>
+					</tr>
+					<tr>
+                		<td>总时间：</td>
+						<td>{{currentAction.totalTime}}</td>
+					</tr>
+					<tr>
+                		<td>开始时间：</td>
+						<td>{{currentAction.startTime | date:'yyyy-MM-dd'}}</br>
+							{{currentAction.startTime | date:'HH:mm:ss'}}</td>
+					</tr>
+					<tr>
+                		<td>结束时间：</td>
+						<td>{{currentAction.endTime | date:'yyyy-MM-dd'}}</br>
+							{{currentAction.endTime | date:'HH:mm:ss'}}</td>
+					</tr>
+				</table>
+            </fieldset>
+        </div>
+    </div>
+	</div>
+</div>

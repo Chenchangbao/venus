@@ -1,0 +1,111 @@
+<div class="module-head paneltitle">
+	<div class="module-info">
+		<p class="title titlefont">代码评审</p>
+	</div>
+</div>
+
+<div class="container-wrapper">
+<div class="panel panel-default">
+<div class="panel-body">
+	<div class="search-con" style="padding: 15px 0;">
+	<form class="form-inline">
+	<div class="form-group">
+	<input type="text"  class="form-control" placeholder="系统英文简称" ng-model="sysName">
+	</div>
+	<div class="form-group">
+	<input type="text"  class="form-control" placeholder="版本号" ng-model="version">
+	</div>
+	<div class="form-group">
+	<!--  <input type="text"  class="form-control" placeholder="提交人" ng-model="author"> -->
+					<div  ng-repeat="userL in userLable" >
+				      <div class="log-user-select" style="width:200px"  >
+				        <input type="input" class="form-control" name="author"  autocomplete="off"  disableautocomplete id="user"  ng-model="userL.model.value" data-toggle="dropdown" required="required" aria-haspopup="true" aria-expanded="true" ng-change="queryByUser($index)" placeholder="请输入提交者姓名和工号" ng-blur="getUser($index)" >
+				        <span class="glyphicon glyphicon-chevron-down form-control-feedback" style="display:none;" aria-hidden="true"></span>
+				        <ul class="dropdown-menu" aria-labelledby="user" style="overflow:hidden;width:150px;" >
+				          <li ng-repeat="user in userList|filterEmpty:userL.model.value|filter:userL.model.value|numberLimit:20">
+				            <a href="" ng-mousedown="selectUser(user,$parent.$index)" sn-tooltip='{{user}}' ng-show="user.length > 35">{{user.substring(0,35)+'...'}}</a>
+				            <a href="" ng-mousedown="selectUser(user,$parent.$index)" ng-show="user.length <= 35">{{user}}</a>
+				          </li>
+				        </ul>
+				      </div>
+			      	</div>
+	</div>
+	<div class="form-group">
+	<select ng-model="reviewStatus" class="form-control">
+	<option value="">全部</option>
+	<option value="GREEN">通过</option>
+	<option value="RED">不通过</option>
+	<option value="YELLOW">待评审</option>
+	</select>
+	<!-- <input type="text"  class="form-control" placeholder="评审状态" ng-model="reviewStatus"> -->
+	</div>
+	<span class="glyphicon glyphicon-search search-icon" ng-click="search()" style="cursor:pointer"></span>
+	</form>
+	</div>
+	<p style="color: red ">注：在线代码评审功能仅支持相互评审，无法自己评审自己提交的代码！</p>
+	<div>
+		<table class="table" style="font-size:12px;">
+			<thead>
+				<tr>
+					<th width="5%" style="text-align:center;">全选
+					 <input  id="flag" type="checkbox" ng-model="select_all" ng-change="selectAll()">
+					</th>
+					<th width="5%" style="text-align:center;">序号</th>
+					<th width="10%" style="text-align:center;">系统</th>
+					<th width="10%" style="text-align:center;">代码库</th>
+					<th width="8%" style="text-align:center;">版本号</th>
+					<th width="12%" style="text-align:center;">提交人</th>
+					<th width="10%" style="text-align:center;">SVN(version)</th>
+					<th width="10%" style="text-align:center;">SVN提交记录</th>
+					<th width="10%" style="text-align:center;">评审状态</th>
+					<th width="10%" style="text-align:center;">备注</th>
+					<th width="10%" style="text-align:center;">操作</th>
+				</tr>
+			</thead>
+			<tbody >
+			<tr ng-repeat="review in reviewList">
+			<td  width="5%" style="text-align:center;">
+			 <input ng-if="(review.reviewStatus =='YELLOW' || review.reviewStatus =='RED') && review.author != curentuserid "  type="checkbox" ng-model="review.checked" ng-change="selectOne()">
+			</td>
+				<td  width="5%" style="text-align:center;">
+				 {{$index+1}}
+                </td>
+                <td width="10%" style="text-align:center;">
+					<span ng-if="null==review.sysParentid || review.sysParentid == '0'">{{review.sysName}}</span> 
+                    <span ng-if="null!=review.sysParentid && review.sysParentid != '0' ">{{review.sysParentName}}</span> 
+				</td>
+				<td  width="10%" style="text-align:center;">{{review.reposName}}</td>
+				<td  width="8%" style="text-align:center;">{{review.version}}</td>
+				<td  width="12%" style="text-align:center;">{{review.authorName}} ({{review.author}})</td>
+				<td  width="10%" style="text-align:center;">{{review.svnRevision}}</td>
+				<td  width="10%" style="text-align:center;">
+				<div class="text_overflow" title="{{review.svnLog}}">{{review.svnLog}}</div>
+				</td>
+				<td  width="10%" style="text-align:center;">
+				<span ng-if="review.reviewStatus =='YELLOW' || review.reviewStatus =='RED'"  style="color: red">{{review.reviewStatus |svnCodeReviewResultFilter　}}</span>
+				<span ng-if="review.reviewStatus =='GREEN'" >{{review.reviewStatus |svnCodeReviewResultFilter　}}</span>
+				</td>
+				<td  width="10%" style="text-align:center;">
+				<div class="text_overflow" title="{{review.reviewLog}}">{{review.reviewLog}}</div>
+				</td>
+				<td  width="10%" style="text-align:center;">
+				<a ng-if="(review.reviewStatus =='YELLOW' || review.reviewStatus =='RED') && review.author != curentuserid " ng-click="ReviewOneVersion(review.id)" style="cursor:pointer">评审</a>
+				</td>
+			</tr>
+			</tbody>
+		</table>
+	</div>
+   <div>
+    
+   <button  class="btn btn-primary" ng-click="ReviewSomeVersion()" ng-disabled="submit">批量评审</button>
+   </div>
+</div>
+</div>
+	 <footer class="ft-pager clearfix">
+        <div sn-pager itemsPerPage="{{pager.pageSize}}" totalItems="{{pager.totalCount}}" listSize="{{pager.pageSize}}"
+             class="text-right">
+        </div>
+    </footer>
+    
+</div>
+

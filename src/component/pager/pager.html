@@ -1,0 +1,33 @@
+<ul ng-class="ulClass" ng-hide="hidePager">
+    <li ng-if="prev" ng-class="prev.liClass">
+        <a href="javascript: void(0)"
+            ng-click="selectPage(prev.value)">
+            <i ng-class="prev.iconClass" ng-if="prev.iconClass"></i>{{prev.text}}
+        </a>
+    </li>
+    <li ng-repeat="item in list" ng-class="item.liClass" >
+        <a href="javascript:void(0)"
+            ng-click="selectPage(item.value)">
+            <i ng-class="item.iconClass" ng-if="item.iconClass"></i>{{item.text}}    
+        </a>
+    </li>
+    <li ng-if="next" ng-class="next.liClass">
+        <a href="javascript: void(0)"
+            ng-click="selectPage(next.value)">
+            {{next.text}}<i ng-class="next.iconClass" ng-if="next.iconClass"></i>
+        </a>
+    </li>
+</ul>
+<div ng-class="infoClass" ng-hide="hidePager">
+    <span ng-bind="textTotalPages"></span>
+    <form ng-submit="goToPage()" ng-hide="hideGoToPage">
+        <span ng-bind="textGoToPageLeft"></span>
+        <input type="text" ng-model="targetPage" class="form-control">
+        <span ng-bind="textGoToPageRight"></span>
+        <button ng-class="btnClass">
+            <i ng-class="iconGoToPageBtnClass" ng-if="iconGoToPageBtnClass"></i>
+            {{textGoToPageBtn}}
+        </button>
+    </form>
+</div>
+

@@ -1,0 +1,137 @@
+<div class="modal fade in" ng-controller="SystemActiveCtrl">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" ng-click="close()"
+					data-dismiss="modal">
+					<span aria-hidden="true"><i class="suningicon">x</i></span><span
+						class="sr-only">Close</span>
+				</button>
+
+				<h4 ng-if="step == '1'" class="modal-title">激活系统{{sys.sysCnname}}第一步:</h4>
+				<h4 ng-if="step == '2'" class="modal-title">激活系统{{sys.sysCnname}}第二步:</h4>
+			</div>
+			<form name="activeStep1Form" class="form-horizontal">
+				<div class="modal-body" ng-show="step =='1'">
+					<div class="modal-body">
+						<div class="form-group col-xs-12">
+							<label class="col-xs-4 form-control-static">开发语言：</label>
+							<div class="col-xs-8">
+								<select ng-model="devTech" class="form-control"
+									required="required"
+									ng-options="devTech.itemCode as devTech.itemName for  devTech in  devTechList ">
+									<option value="">请选择开发语言</option>
+								</select>
+							</div>
+						</div>
+					</div>
+					<div class="text-center">
+						<button class="btn btn-default" ng-click="nextStep(activeStep1Form.$invalid);"
+							type="submit">下一步</button>
+					</div>
+				</div>
+			</form>
+
+			<form name="activeStep2Form" class="form-horizontal">
+				<div class="modal-body" ng-show="step =='2'">
+					<div class="modal-body">
+						<div class="form-group col-xs-12"
+							ng-show="devTech != ''">
+							<label class="col-xs-4 form-control-static">系统管理员：</label>
+							<div class="col-xs-8">
+								<input type="text" id="sysCmo" name="sysCmo" placeholder="系统管理员"
+									class="form-control" ng-model="sysCmo" required>
+							</div>
+						</div>
+					
+						<div class="form-group col-xs-12"
+							ng-show="devTech != '' && devTech != 'SAP' ">
+							<label class="col-xs-4 form-control-static">技术框架：</label>
+							<div class="col-xs-8">
+								<select class="form-control" ng-model="devFw" ng-required="devTech != '' && devTech != 'SAP'"
+									ng-options="devFw.itemCode as devFw.itemName for  devFw in  devFwList ">
+									<option value="">请选择技术框架</option>
+								</select>
+							</div>
+						</div>
+
+						
+
+
+						<div class="form-group col-xs-12"
+							ng-show="devTech != '' && devTech == 'SAP' ">
+							<div class="col-xs-6">
+								<input type="text" id="devName" name="devName"
+									placeholder="请输入DEV系统名" class="form-control" ng-model="sapSysEnv.devName"
+									ng-required="devTech != '' && devTech == 'SAP'">
+							</div>
+							<div class="col-xs-6">
+								<input type="text" id="qasName" name="qasName"
+									placeholder="请输入QAS系统名" class="form-control" ng-model="sapSysEnv.qasName"
+									ng-required="devTech != '' && devTech == 'SAP'">
+							</div>
+						</div>
+						<div class="form-group col-xs-12"
+							ng-show="devTech != '' && devTech == 'SAP' ">
+							<div class="col-xs-6">
+								<input type="text" id="preName" name="preName"
+									placeholder="请输入PRE系统名" class="form-control" ng-model="sapSysEnv.preName"
+									ng-required="devTech != '' && devTech == 'SAP'">
+							</div>
+							<div class="col-xs-6">
+								<input type="text" id="prdName" name="prdName"
+									placeholder="请输入PRD系统名" class="form-control" ng-model="sapSysEnv.prdName"
+									ng-required="devTech != '' && devTech == 'SAP'">
+							</div>
+						</div>
+
+						<div class="text-center">
+							<button class="btn btn-default" ng-click="close()">取 消</button>
+							<button class="btn btn-default" ng-click="activeSystem(activeStep2Form.$invalid)" type="submit">激活</button>
+						</div>
+					</div>
+				</div>
+		</div>
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h1 class="panel-title">系统主数据</h1>
+			</div>
+			<div class="panel-body">
+				<table class="table table-bordered table-hover">
+					<tbody>
+						<tr>
+							<td>系统中文全称：</td>
+							<td>{{system.sysCnname}}</td>
+							<td>系统英文名称：</td>
+							<td>{{system.sysEnname}}</td>
+						</tr>
+						<tr>
+							<td>系统英文简称：</td>
+							<td>{{system.sysName}}</td>
+							<td>一级中心：</td>
+							<td>{{system.orgName}}</td>
+						</tr>
+						<tr>
+							<td>二级中心：</td>
+							<td>{{system.orgTwoName}}</td>
+							<td>技术总监：</td>
+							<td>{{system.techChief}}</td>
+						</tr>
+						<tr>
+							<td>产品总监：</td>
+							<td>{{system.prdChief}}</td>
+							<td>技术负责人：</td>
+							<td>{{system.techManager}}</td>
+						</tr>
+						<tr>
+							<td>产品负责人：</td>
+							<td>{{system.prdManager}}</td>
+							<td>ITPcode：</td>
+							<td>{{system.sysItpCode}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,40 @@
+<div class="modal fade in" ng-controller="QrcodeCtrl">
+	<div class="modal-dialog" style="width:750px">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" ng-click="close()"
+					data-dismiss="modal">
+					<span aria-hidden="true"><i class="suningicon">x</i></span><span
+						class="sr-only">Close</span>
+				</button>
+				<h4 class="modal-title" style="font-weight:bold;">通知：</h4>
+			</div>
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<div style="margin-bottom:10px;">各位亲爱的同学，按照IT总部PMO及CTO办公室的要求，为规范发布流程及提升系统开发质量，从2017年1月1日起，对发布流程及质量控制做如下要求：</div>
+					<div style="margin-bottom:3px;">1、质量控制方面</div>
+					<div style="margin-left:20px;margin-bottom:3px;">1.1 所有一级系统都需要做单元测试，执行成功率达到100%，“新增”代码覆盖率达到60%。（目前工具只检查能够在CD进行编译打包发布的Java类型一级系统）</div>
+					<div style="margin-left:20px;margin-bottom:3px;">1.2 所有代码提交均需要做代码评审，评审人可以线下评审，然后在CD记录评审信息</div>
+					<div style="margin-bottom:3px;">2、发布流程方面</div>
+					<div style="margin-left:20px;margin-bottom:3px;">2.1 所有的PRE环境及PRD环境发布必须走ITP审批后才能发布</div>
+					<div style="margin-left:20px;margin-bottom:3px;">2.2 PRE及PRD需要先在CD进行自助构建包，然后在ITP提交发布单，选择相应的包，发布流程审批通过后会下传至ITSM平台，发布操作启动在ITSM平台操作</div>
+					<div style="margin-left:20px;margin-bottom:3px;">2.3 其它非CD发布的，仅在CD打包构建的，发布流程不变</div>
+					<div style="margin-bottom:3px;">3、实施策略</div>
+					<div style="margin-left:20px;margin-bottom:3px;">3.1 2017年1月1日前，相关阀值控制数据均设置为0，对质量不做控制</div>
+					<div style="margin-left:20px;margin-bottom:3px;">3.2 2017年1月1日后，将按照规范设置质量控制阈值</div>
+					<div style="margin-bottom:3px;">4、 咨询及反馈</div>
+					<div style="margin-left:20px;margin-bottom:3px;">4.1 ITP平台对接人员：王海朋（10065664）18651669280</div>
+				    <div style="margin-left:20px;margin-bottom:3px;">4.2 ITSM平台对接人员：陈庆通（10073130）18651665734  蒋云娟（08040700）18651669574</div>
+				    <div style="margin-left:20px;margin-bottom:3px;">4.3 CD平台对接人员：郭新伟（16072448）18551601875  陈军（10111065）18651663182</div>
+					<div style="margin-left:20px;margin-bottom:10px;">4.4 总体发布流程，质量规范：吴宏志（16010558）13585108290</div>
+					<div>相关操作步骤及帮助 请点击：<a href="http://wiki.cnsuning.com/collector/pages.action?key=SNCDITSMITP" target="_blank">http://wiki.cnsuning.com/collector/pages.action?key=SNCDITSMITP</a></div>
+				</div>
+				
+			</div>
+			<div style="width:100%;text-align:right;padding-right:20px;padding-bottom:15px;">
+			 	<button type="button" class="btn btn-primary" ng-click="close()" >关闭</button>
+			</div>
+		</div>
+		
+	</div>
+</div>

@@ -1,0 +1,105 @@
+<div class="module-head paneltitle">
+    <div class="module-info">
+        <p class="title titlefont">
+            可视化管理
+        </p>
+        <p class="sub-title titlecolor">
+        	提供可视化界面，给予运维检查环境实例中各项状态，并提供功能，供运维操作重启及停启控制台及Server服务
+        </p>
+    </div>
+</div>
+<div class="container-wrapper">
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="search-con" style="padding: 15px 0;">
+                <form class="form-inline">
+                    <div class="form-group">
+                        <select class="form-control" ng-model="searchParam.orgId" name="org" ng-options="org.orgId as  org.orgName for org in orgs">
+                            <option value="">-- 请选择研发中心 --</option>
+                        </select>
+                    </div>
+					<div class="form-group">
+                        <input type="text" class="form-control" placeholder="系统英文名称" ng-model="searchParam.sysEnName">
+                    </div>
+                    <div class="form-group">
+                        <select class="form-control" ng-model="searchParam.sysStatus" name="sysStatus" ng-options="sysStatus.status as sysStatus.name for sysStatus in sysStatusList">
+                            <option value="">-- 系统状态 --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <select class="form-control" ng-model="searchParam.envType" name="envType" ng-options=" envType.envType as  envType.envName for envType in envTypes">
+                            <option value="">-- 选择环境类型 --</option>
+                        </select>
+                    </div>
+                    <button type="button" class="btn btn-default" ng-click="search()">搜索</button>
+                </form>
+            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th width="5%" style="text-align:center;">
+                            序号
+                        </th>
+                        <th width="15%" style="text-align:center;">
+                            系统简称
+                        </th>
+						<th width="15%" style="text-align:center;">
+                            环境实例名
+                        </th>
+                        <th width="5%" style="text-align:center;">
+                            环境类型
+                        </th>
+                        <th width="10%" style="text-align:center;">
+                            应用类型
+                        </th>
+                        <th width="10%" style="text-align:center;">
+                            集群名称
+                        </th>
+                        <th width="10%" style="text-align:center;">
+                            部署类型
+                        </th>
+                        <th width="10%" style="text-align:center;">
+                            操作
+                        </th>
+                    </tr>
+                </thead>
+                <tbody ng-repeat="item in list">
+                    <tr>
+                        <td align="center">
+                            {{$index+1}}
+                        </td>
+                        <td align="center">
+                        	{{item.sysCnname}}({{item.sysEnname}})
+                        </td>
+						<td align="center">
+                        	{{item.envName}}
+                        </td>
+                        <td align="center">
+                           {{item.envType|envTypeFilter}}
+                        </td>
+                        <td align="center">
+                           {{item.appServerType}}
+                        </td>
+                        <td align="center">
+                           {{item.dmName}}
+                        </td>
+                        <td align="center">
+                           <span ng-if="item.wasType=='distributed'">分布式</span>
+                           <span ng-if="item.wasType=='standalone'">standalone</span>
+                        </td>
+                        <td align="center">
+                       		 <span class="loadingIcon" style="display:none;"></span>
+							 <a href="#" ng-click="reStartDM({item:item})">重启集群</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <footer class="ft-pager clearfix">
+            <div sn-pager itemsPerPage="{{pager.pageSize}}" totalItems="{{pager.totalCount}}" listSize="{{pager.pageSize}}" class="text-right">
+            </div>
+        </footer>
+		<div id="mask"></div>
+    </div>
+</div>
+</div>

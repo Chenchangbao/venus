@@ -1,0 +1,110 @@
+<div class="module-head paneltitle">
+	<div class="module-info">
+		<p class="title titlefont">公司级质量配置</p>
+	</div>
+</div>
+<div class="container-wrapper" width="1150px;">
+	<div class="panel panel-default">
+		<div class="panel-body">
+			<form name="" class="form-horizontal">
+				<div class="panel panel-noborder">
+				
+					<div class="col-sm-8">
+						<div class="bottom10">
+							<span>代码静态检查</span> 
+						</div>
+						<table class="table table-bordered">
+							<thead>
+								<th item-width="50%">参数</th>
+								<th item-width="50%">指标</th>
+							</thead>
+							<tbody>
+							
+								<tr ng-repeat="item in companyQualityConfigBos" ng-show="item.paramKey=='BLOCKER_VIOLATIONS' || item.paramKey=='CRITICAL_VIOLATIONS' || item.paramKey=='MAJOR_VIOLATIONS'">		
+									<td>{{item.paramName}}</td>
+									<td><span>{{item.isGreaterLess | greateLessFilter}}</span> <span ng-if="!staticEdit">{{item.paramValue}}</span>
+										<input type="text" class="width30" ng-if="staticEdit"
+										ng-model="item.paramValue"> <span>{{item.unit}}</span>
+									</td>									
+								</tr>
+							</tbody>
+						</table>
+					</div>
+	
+					<div class="col-sm-8">
+						<div class="bottom10">
+							<span>单元测试</span> 
+						</div>
+						<table class="table table-bordered">
+							<thead>
+								<th item-width="50%">参数</th>
+								<th item-width="50%">指标</th>
+							</thead>
+							<tbody>
+								<tr ng-repeat="item in companyQualityConfigBos2" ng-show="item.paramKey=='TEST_SUCCESS_DENSITY' || item.paramKey=='COVERAGE' || item.paramKey=='NEW_COVERAGE'">
+									<td>{{item.paramName}}</td>
+									<td><span>{{item.isGreaterLess | greateLessFilter}}</span> <span ng-if="!staticEdit">{{item.paramValue}}</span>
+										<input type="text" class="width30" ng-if="staticEdit"
+										ng-model="item.paramValue"> <span>{{item.unit}}</span>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+					<div class="col-sm-8">
+						<div class="bottom10">
+							<span>蛙测</span> 
+						</div>
+						<table class="table table-bordered">
+							<thead>
+								<th item-width="50%">参数</th>
+								<th item-width="50%">指标</th>
+							</thead>
+							<tbody>
+							
+								<tr ng-repeat="item in companyQualityConfigBos3" ng-show="item.paramKey=='SCTS_SUCCESS_RATE' || item.paramKey=='SCTS_AUTO_RATE'">		
+									<td>{{item.paramName}}</td>
+									<td><span>{{item.isGreaterLess | greateLessFilter}}</span> <span ng-if="!staticEdit">{{item.paramValue}}</span>
+										<input type="text" class="width30" ng-if="staticEdit"
+										ng-model="item.paramValue"> <span>{{item.unit}}</span>
+									</td>									
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+					<div class="col-sm-8">
+						<div class="bottom10">
+							<span>安全扫描</span> 
+						</div>
+						<table class="table table-bordered">
+							<thead>
+								<th item-width="50%">参数</th>
+								<th item-width="50%">指标</th>
+							</thead>
+							<tbody>
+							
+								<tr ng-repeat="item in companyQualityConfigBos4" ng-show="item.paramKey=='TRACKER_HIGH_WARNINGS' || item.paramKey=='TRACKER_NORMAL_WARNINGS'">		
+									<td>{{item.paramName}}</td>
+									<td><span>{{item.isGreaterLess | greateLessFilter}}</span> <span ng-if="!staticEdit">{{item.paramValue}}</span>
+										<input type="text" class="width30" ng-if="staticEdit"
+										ng-model="item.paramValue"> <span>{{item.unit}}</span>
+									</td>									
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					
+					<div class="form-group">
+						<div class="col-sm-offset-3 col-sm-10">
+							<button class="btn btn-default" ng-if="!staticEdit && (null != roles && null != roles.ROLE_COMPANY)" ng-click="editStatic()">修改指标</button>
+							<button ng-if="staticEdit" class="btn btn-default" ng-click="cancleEdit()">取消</button>
+							<button ng-if="staticEdit" class="btn btn-default" ng-click="changeStatic()">确认</button>
+						</div>
+					</div>				
+				</div>
+			</form>
+		</div>
+	</div>
+</div>

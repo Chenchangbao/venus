@@ -1,0 +1,133 @@
+
+<div class="module-head paneltitle">
+    <div class="module-info">
+        <p class="title titlefont">发布统计</p>
+    </div>
+    
+</div>
+<div class="container-wrapper">
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="search-con" style="padding: 15px 0;">
+                <form class="form-inline" ng-show='formData.quaLevel==1'>
+                    <div class="form-group">
+                        <select class="form-control" ng-model="orgId" name="org" ng-options="org.orgId as  org.orgName for org in orgs">
+                            <option value="">-- 全部 --</option>
+                        </select>
+                    </div>
+                    <div  class="form-group">
+                        <input type="text" class="form-control" placeholder="系统中文名称/英文简称" ng-model="sysName">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="代码库名称" ng-model="reposName">
+                    </div>
+                    <div class="form-group">
+                        <div sn-datetimepicker show-time="false" ng-model="buildTimeStart" 
+  						placeholder="请选择开始时间" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div sn-datetimepicker show-time="false" ng-model="buildTimeEnd"  
+                         placeholder="请选择结束时间" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-default" ng-click="search()" ng-disabled="search_button_clicked">搜索</button>
+                    <button ng-if='formData.quaLevel==1' class="btn btn-default" ng-click="exportDeployExcel()" ng-disabled="button_clicked">导出</button>
+                </form>
+            </div>
+
+          		<div class="form-group pull-left search">
+ 					<button class="btn btn-default" ng-if="formData.quaLevel!=1" ng-click="backQuaComp()">返回</button>
+           		 </div>
+                <div>
+                    <table class="table" style="font-size:12px;">
+                        <thead>
+                        <tr>
+                           <th>序号</th>
+                            <th ng-if='formData.quaLevel==1'>一级中心</th>
+                            <th ng-if='formData.quaLevel==1'>二级中心</th>
+                            <th>系统名称</th>
+                            <th ng-if='formData.quaLevel==1'>系统中文名称</th>
+                            <th>代码库</th>
+                            <th ng-if='formData.quaLevel==1'>发布次数</th>
+                            <th ng-if='formData.quaLevel==1'>成功率</th>
+                           <!--  <th ng-if='formData.quaLevel==2'>SYS_ITP_CODE</th> -->
+                            <th ng-if='formData.quaLevel==2'>发布单号</th>
+                            <th ng-if='formData.quaLevel==2'>版本名称</th>
+                            <th style="display:none;" ng-if='formData.quaLevel==2'>版本号</th>
+                            <th style="display:none;" ng-if='formData.quaLevel==2'>构建日期</th>
+                            <th ng-if='formData.quaLevel==2'>代码总行数</th>
+                            <th ng-if='formData.quaLevel==2'>新增代码数</th>
+                            <th ng-if='formData.quaLevel==2'>阻断问题</th>
+                            <th ng-if='formData.quaLevel==2'>严重问题</th>
+                            <th ng-if='formData.quaLevel==2'>主要问题</th>
+                            <th ng-if='formData.quaLevel==2'>总问题</th>
+                            <th ng-if='formData.quaLevel==2'>代码注释率</th>
+                            <th ng-if='formData.quaLevel==2'>代码行重复率</th>
+                            <th ng-if='formData.quaLevel==2'>测试覆盖率</th>
+                            <th ng-if='formData.quaLevel==2'>新增代码测试覆盖率</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="cq in deployqualitybo">
+                             <td>
+                                {{$index+1}}
+                            </td>
+                            <td ng-if='formData.quaLevel==1'>
+                                {{cq.orgName}}
+                            </td>
+                            <td ng-if='formData.quaLevel==1'>
+                                {{cq.orgtwoName||""}}
+                            </td>
+                            <td ng-if='formData.quaLevel==1'>
+                                <a class="link-cursor"  ng-click="getSysVersionQualityInfo(cq.sysId)"> 
+                               <span nf-if="null==sysParentid || sysParentid == '0'">{{cq.sysName}}</span> 
+                               <span nf-if="null!=sysParentid && sysParentid != '0'">{{cq.sysParentName}}</span> 
+                                </a>
+                        	</td>
+                            <td ng-if='formData.quaLevel==2'>
+                                {{cq.sysName}}
+                        	</td>
+                            <td ng-if='formData.quaLevel==1'>
+                                {{cq.sysCnname||""}}
+                            </td>
+                            <td>
+                                {{cq.reposName||""}}
+                            </td>
+                            <td ng-if='formData.quaLevel==1'>
+                                {{cq.deployAllSum||""}}
+                            </td>
+                            <td ng-if='formData.quaLevel==1'>
+                                {{cq.deploySucPercent||""}}
+                            </td>
+                           <!--  <td ng-if='formData.quaLevel==2'>{{cq.sysItpCode||""}}</td>-->
+                            <td ng-if='formData.quaLevel==2'>
+                            <div class="text_overflow" title="{{cq.requestNo}}">{{cq.requestNo||""}}</div></td>
+                            <td ng-if='formData.quaLevel==2'>
+                            <div  class="text_overflow" title="{{cq.branchName}} 构建时间:{{cq.buildEndtime}}"> {{cq.branchName||""}}</div>
+                            </td>
+                            <td style="display:none;" ng-if='formData.quaLevel==2'>{{cq.version||""}}</td>
+                            <td style="display:none;" ng-if='formData.quaLevel==2'>
+                            <div   class="text_overflow" title="{{cq.buildEndtime}}">{{cq.buildEndtime||""}}</div></td>
+                            <td ng-if='formData.quaLevel==2'>{{cq.codeLines||"0"}}</td>
+                            <td ng-if='formData.quaLevel==2'>{{cq.NewCodeLines||"0"}}</td>
+                            <td ng-if='formData.quaLevel==2'>{{cq.blockerViolations||"0"}}</td>
+                            <td ng-if='formData.quaLevel==2'>{{cq.criticalViolations||"0"}}</td>
+                            <td ng-if='formData.quaLevel==2'>{{cq.majorViolations||"0"}}</td>
+                            <td ng-if='formData.quaLevel==2'>{{cq.violations||"0"}}</td>
+                            <td ng-if='formData.quaLevel==2'>{{cq.commentRate||"0%"}}</td>
+                            <td ng-if='formData.quaLevel==2'>{{cq.repetRate||"0%"}}</td>
+                            <td ng-if='formData.quaLevel==2'>{{cq.coverage ||"0"}}%</td>
+                            <td ng-if='formData.quaLevel==2'>{{cq.NewCoverage ||"0"}}%</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+        </div>
+    </div>
+	 <footer class="ft-pager clearfix">
+        <div sn-pager itemsPerPage="{{pager.pageSize}}" totalItems="{{pager.totalCount}}" listSize="{{pager.pageSize}}"
+             class="text-right">
+        </div>
+    </footer>
+</div>

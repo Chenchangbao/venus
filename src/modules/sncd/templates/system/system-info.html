@@ -1,0 +1,29 @@
+
+<div class="module-head ng-scope paneltitle headtitle">
+    <div >
+        <p class="title" ng-if="sys.sysParentid != null && sys.sysParentid != '0'">{{sys.sysCnname}}【 {{sys.sysParentName}} 】</p>
+        <p class="title" ng-if="sys.sysParentid == null || (sys.sysParentid != null && sys.sysParentid == '0')">{{sys.sysCnname}}【 {{sys.sysName}} 】</p>
+<!--         <p class="sub-title">提供系统相关信息及功能的配置</p> -->
+    </div>
+    <ul class="nav nav-tabs newtab">
+        <li ng-class="{'active active2': selectedTab =='SysDetail'}"><a class="link-cursor" ng-click="selectTab('SysDetail')">系统版本</a></li>
+        <li ng-class="{'active': (selectedTab == 'CodeRepository' || selectedTab == 'CreateCodeRepository')}">
+			<a class="link-cursor"  ng-click="selectTab('CodeRepository')"  ng-if="repos !=null && repos !='' && sys.sysType!='1'">代码库</a>
+	        <a class="link-cursor" ng-if=" (repos==null || repos =='')&& sys.sysType!='1'" ng-click="selectTab('CreateCodeRepository')">代码库</a>
+       </li>
+        <!--<li ng-class="{'active': selectedTab =='SystemVersion'}"><a class="link-cursor" ng-click="selectTab('SystemVersion')">版本</a></li>-->
+        <li ng-class="{'active': selectedTab =='SystemPackage'}"><a class="link-cursor" ng-click="selectTab('SystemPackage')" ng-if="sys.sysType!='1'">应用包</a></li>
+        <li ng-class="{'active': selectedTab =='SystemBuildConfig'}"><a class="link-cursor" ng-click="selectTab('SystemBuildConfig')" ng-if="sys.sysType!='1'">系统交付流程配置</a></li>
+        <li ng-class="{'active': selectedTab =='PackageConfig'}"><a class="link-cursor" ng-click="selectTab('PackageConfig')" ng-if="sys.sysType!='1'">打包配置</a></li>
+        <li ng-class="{'active': selectedTab =='SystemEnv'}"><a class="link-cursor" ng-click="selectTab('SystemEnv')" ng-if="sys.sysType!='1'">应用部署环境</a></li>
+        <li ng-class="{'active': (selectedTab =='SystemTeamDetail' || selectedTab =='SystemPermission')}"><a class="link-cursor" ng-click="selectTab('SystemTeamDetail')">团队及权限</a></li>
+        
+
+        <a class="pull-right" style="margin-top: 20px;" ui-sref="SystemManage">返回系统管理</a>
+    </ul>
+</div>
+
+    
+
+    <div class="container-wrapper ng-scope" ui-view></div>
+

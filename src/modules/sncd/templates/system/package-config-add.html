@@ -1,0 +1,448 @@
+<div class="panel panel-default">
+	    <div class="panel-heading">
+	        <h1 class="panel-title"  ng-if="editType!='1'">添加打包配置</h1>
+	        <h1 class="panel-title"  ng-if="editType =='1'">编辑打包配置</h1>
+	    </div>
+	
+	
+<form name="packageForm" class="form-horizontal"
+	ng-show="showType && (showType == '2' || showType == '1')">
+	<BR>
+		  <div class="panel-heading">
+	        <h1 class="panel-title"  >基本配置信息</h1>
+	    </div>
+	   <BR>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="formGroupInputSmall"><i
+			style="color: red">*</i>系统类型：</label>
+		<div class="col-sm-6">
+	 		{{system.sysType|sysTypeFilter}}
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><i style="color: red">*</i>JOB名称：</label>
+		<div class="col-sm-6">
+			<input type="text" id="ciJobName" name="ciJobName"
+				class="form-control" ng-model="jenkinsConfigItem.ciJobName" required>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><i style="color: red">*</i>测试URL：</label>
+		<div class="col-sm-6">
+			<select ng-model="jenkinsConfigItem.branchUrl" name="org"
+				class="form-control" required="required"
+				ng-options="branch.branchUrl as branch.branchUrl for branch in branchs">
+				<option value="">--请选择 --</option>
+			</select>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><i style="color: red">*</i>包存放地址：</label>
+		<div class="col-sm-6">
+			<input type="text" id="packagePath" name="packagePath"
+				class="form-control" ng-model="jenkinsConfigItem.packagePath"
+				required="required">
+		</div>
+	</div>
+	<BR>
+	<div class="panel-heading">
+	        <h1 class="panel-title"  >高级配置信息</h1>
+	 </div>
+	 <BR>
+	<div class="form-group" >
+		<label class="col-sm-2 control-label"> <i style="color: red">*</i>构建类型：
+		</label>
+		<div class="col-sm-6" >
+			<label class="radio-inline" ng-show="system.sysType=='0'||system.sysType=='99'"> 
+			<input type="radio"
+				name="packageType" value="MAVEN" ng-model="jenkinsConfigItem.packageType" ng-click="choosePkgTypeMaven();">
+				MAVEN
+				</label>
+			 <label class="radio-inline" ng-show="system.sysType=='0' || system.sysType=='4'||system.sysType=='99'">
+			 <input type="radio"
+				name="packageType" value="ANT" ng-model="jenkinsConfigItem.packageType" ng-click="chooseAnt();">
+				ANT
+			</label>
+			<label class="radio-inline" ng-show="system.sysType=='5'">
+			<input type="radio"
+				name="packageType" value="GRADLE" ng-model="jenkinsConfigItem.packageType">
+				GRADLE
+			</label> 
+			<label class="radio-inline" ng-show="system.sysType=='6'">
+			<input type="radio"
+				name="packageType" value="SHELL" ng-model="jenkinsConfigItem.packageType">
+				SHELL
+			</label> 
+			<label class="radio-inline" ng-show="system.sysType=='3'">
+			<input type="radio"
+				name="packageType" value="PC" ng-model="jenkinsConfigItem.packageType">
+				PC
+			</label> 
+			</div>
+	</div>
+	<!-- gradle -->
+	<div class="form-group"
+		ng-show="jenkinsConfigItem.packageType=='GRADLE'">
+		<label class="col-sm-2 control-label"> <i style="color: red">*</i>GRADLE打包命令：
+		</label>
+		<div class="col-sm-6">
+			<input type="text" id="gradlebuildCmd" name="gradlebuildCmd"
+				class="form-control" ng-model="jenkinsConfigItem.gradlebuildCmd"
+				value="clean build" ng-required="jenkinsConfigItem.packageType =='GRADLE'">
+		</div>
+	</div>
+	<div class="form-group" ng-show="system.sysType=='4' ">
+<label class="col-sm-2 control-label"><i style="color: red">*</i>Linux版本：</label>
+ <div data-ng-repeat="(key,val) in osMap">
+                <div>
+                    <input type="checkbox" id={{key}} name="targetOses"  ng-checked="isSelected(key)" ng-click="updateSelection($event,key)">
+                    {{val}}
+                </div>
+        </div>
+</div>
+	<div class="form-group" ng-show="jenkinsConfigItem.packageType =='GRADLE'">
+		<label class="col-sm-2 control-label">build文件地址：</label>
+		<div class="col-sm-6">
+			<input type="text" id="buildPath" name="gradlebuildFilePath"
+				ng-model="jenkinsConfigItem.gradlebuildFilePath" class="form-control"
+				value="./build.gradle" />
+		</div>
+	</div>
+	<!-- shell -->
+	<div class="form-group"
+		ng-show="jenkinsConfigItem.packageType=='SHELL'">
+		<label class="col-sm-2 control-label"> <i style="color: red">*</i>SHELL命令：
+		</label>
+		<div class="col-sm-6">
+				<textarea  style="width:500px;height:100px;" id="shellCmd" name="shellCmd"
+				ng-model="jenkinsConfigItem.shellCmd" ng-required="jenkinsConfigItem.packageType =='SHELL'">
+				</textarea>
+		</div>
+	</div>
+	<!-- maven -->
+	<div class="form-group"
+		ng-show="jenkinsConfigItem.packageType=='MAVEN'">
+		<label class="col-sm-2 control-label"> <i style="color: red">*</i>MAVEN打包命令：
+		</label>
+		<div class="col-sm-6">
+			<input type="text" id="mavenCommand" name="mavenCommand"
+				class="form-control" ng-model="jenkinsConfigItem.mavenCommand"
+				readonly="readonly"
+				value="clean install -Dmaven.test.skip=true -Dfile.encoding=UTF-8">
+		</div>
+	</div>
+	<div class="form-group"
+		ng-show="jenkinsConfigItem.packageType=='MAVEN'">
+		<label class="col-sm-2 control-label"><i style="color: red">*</i>pom文件地址：</label>
+		<div class="col-sm-6">
+			<input type="text" id="pomPath" name="pomPath" class="form-control"
+				ng-model="jenkinsConfigItem.pomPath" ng-required="jenkinsConfigItem.packageType =='MAVEN'" />
+		</div>
+	</div>
+	
+	<div class="form-group" 
+		ng-if="system.sysType== '0' ||system.sysType== '99' ">
+		<label class="col-sm-2 control-label"><i style="color: red" ng-show="jenkinsConfigItem.packageType=='MAVEN'">*</i>JDK：</label>
+		<div class="col-sm-6">
+			<select ng-model="jenkinsConfigItem.jdk" name="org"
+				class="form-control" ng-required="jenkinsConfigItem.packageType =='MAVEN'||(jenkinsConfigItem.packageType =='ANT'&&system.sysType!='4')"
+				ng-options="jdk for jdk in jenkinsConfigItem.jdkList">
+				<option value="">--请选择 --</option>
+			</select>
+			<span style="color: red" > 注意：部署环境为jboss Standalone 时jdk版本要选择openjdk-1.8</span>
+		</div>
+		
+	</div>
+	<div class="form-group" ng-show="jenkinsConfigItem.packageType=='ANT'|| jenkinsConfigItem.packageType=='SHELL'">
+		<label class="col-sm-2 control-label"><i style="color: red">*</i>编码：</label>
+		<div class="col-sm-6">
+			<label class="radio-inline"> <input type="radio" name="code"
+				value="UTF-8" ng-model="jenkinsConfigItem.code"> UTF-8
+			</label> <label class="radio-inline"> <input type="radio" name="code"
+				value="GBK" ng-model="jenkinsConfigItem.code"> GBK
+			</label>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label"> <i style="color: red">*</i>构建是否依赖环境：
+		</label>
+		<div class="col-sm-6">
+			<label class="radio-inline"> <input type="radio"
+				name="parastat" value="Y" ng-model="jenkinsConfigItem.parastat" ng-click="paraStatY();">
+				是
+			</label> <label class="radio-inline"> <input type="radio"
+				name="parastat" value="N" ng-model="jenkinsConfigItem.parastat" ng-click="paraStatN();">
+				否
+			</label>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label class="col-sm-2 control-label"> <i style="color: red">*</i>环境参数：
+		</label>
+		<div class="col-sm-6" ng-show="jenkinsConfigItem.parastat=='Y'">
+			<table class="table table-hover">
+				<tbody>
+					<tr>
+						<th width="100px">环境类型</th>
+						<th>环境参数</th>
+						<th>参数说明</th>
+					</tr>
+					
+					<tr ng-repeat="dev in jenkinsConfigItem.devList track by $index" class="td-border-footer td-border-top">
+						<td>开发环境</td>
+						<td>
+							<div class="filter-list btn-group pull-left">
+								<div class="btn-group btn-group-sm ng-scope" >
+									<button type="button" class="btn btn-default ng-binding">{{dev.paraInfo}}</button>
+									<button type="button" class="btn btn-warning"
+										ng-click="removeCommand('dev',$index)">
+										<span class="">X</span>
+									</button>
+								</div>
+						</td>
+						<td>
+							<div style="position: relative; float: left; margin-left: 10px; height: 30px;">
+								<input type="text" disabled value="{{dev.paraDescription}}">
+									<!--<button type="button" class="btn btn-default ng-binding">{{dev}}</button>-->
+							</div>
+						</td>
+						
+					</tr>
+					<tr class="td-border-top">
+						<td>开发环境</td>
+						<td class="no-padding">
+							<div style="position: relative; float: left; margin-left: 10px; height: 30px;">
+									<input type="text" class="packageInput" id="filterInput"
+										ng-model="jenkinsConfigItem.newMavenDevCommand" ng-keydown="confirmInput($event)"
+										data-toggle="dropdown" aria-haspopup="false"
+										aria-expanded="true" ng-maxlength="20" ng-pattern="/^[a-zA-Z0-9]*$/"
+										class=" dropdown-toggle ng-pristine ng-untouched ng-valid placeholder"
+										placeholder="请输入环境参数"> <button type="button" class="btn btn-warning packageBtn"
+										ng-click="addCommand('dev')">
+										<span class="">√</span>
+									</button>
+								</div>
+						</td>
+						<td>
+							<div style="position: relative; float: left; margin-left: 10px; height: 30px;">
+									<input type="text" style="height: 100%" id="filterInput"
+										ng-model="jenkinsConfigItem.newMavenDevDesp" ng-keydown="confirmInput($event)"
+										data-toggle="dropdown" aria-haspopup="false"
+										aria-expanded="true" 
+										class=" dropdown-toggle ng-pristine ng-untouched ng-valid placeholder"
+										placeholder="请输入参数说明"> 
+								</div>
+						</td>
+					</tr>
+					
+					<tr ng-repeat="sit in jenkinsConfigItem.sitList track by $index" class="td-border-footer td-border-top">
+						<td>集成测试</td>
+						<td>
+							<div class="filter-list btn-group pull-left">
+								<div class="btn-group btn-group-sm ng-scope" >
+									<button type="button" class="btn btn-default ng-binding">{{sit.paraInfo}}</button>
+									<button type="button" class="btn btn-warning"
+										ng-click="removeCommand('sit',$index)">
+										<span class="">X</span>
+									</button>
+								</div>
+						</td>
+						<td>
+							<div style="position: relative; float: left; margin-left: 10px; height: 30px;">
+								<input type="text" disabled value="{{sit.paraDescription}}">
+							</div>
+						</td>
+						
+					</tr>
+					<tr class="td-border-top">
+						<td>集成测试</td>
+						<td class="no-padding">
+							<div style="position: relative; float: left; margin-left: 10px; height: 30px;">
+									<input type="text" class="packageInput" id="filterInput"
+										ng-model="jenkinsConfigItem.newMavenSitCommand" ng-keydown="confirmInput($event)"
+										data-toggle="dropdown" aria-haspopup="false"
+										aria-expanded="true" ng-maxlength="20" ng-pattern="/^[a-zA-Z0-9]*$/"
+										class=" dropdown-toggle ng-pristine ng-untouched ng-valid placeholder"
+										placeholder="请输入环境参数"> <button type="button" class="btn btn-warning packageBtn"
+										ng-click="addCommand('sit')">
+										<span class="">√</span>
+									</button>
+								</div>
+						</td>
+						<td>
+							<div style="position: relative; float: left; margin-left: 10px; height: 30px;">
+									<input type="text" style="height: 100%" id="filterInput"
+										ng-model="jenkinsConfigItem.newMavenSitDesp" ng-keydown="confirmInput($event)"
+										data-toggle="dropdown" aria-haspopup="false"
+										aria-expanded="true"
+										class=" dropdown-toggle ng-pristine ng-untouched ng-valid placeholder"
+										placeholder="请输入参数说明"> 
+								</div>
+						</td>
+					</tr>
+					
+					<tr ng-repeat="pre in jenkinsConfigItem.preList track by $index" class="td-border-footer td-border-top">
+						<td>预生产</td>
+						<td>
+							<div class="filter-list btn-group pull-left">
+								<div class="btn-group btn-group-sm ng-scope" >
+									<button type="button" class="btn btn-default ng-binding">{{pre.paraInfo}}</button>
+									<button type="button" class="btn btn-warning"
+										ng-click="removeCommand('pre',$index)">
+										<span class="">X</span>
+									</button>
+								</div>
+						</td>
+						<td>
+							<div style="position: relative; float: left; margin-left: 10px; height: 30px;">
+								<input type="text" disabled value="{{pre.paraDescription}}">
+							</div>
+						</td>
+						
+					</tr>
+					<tr class="td-border-top">
+						<td>预生产</td>
+						<td class="no-padding">
+							<div style="position: relative; float: left; margin-left: 10px; height: 30px;">
+									<input type="text" class="packageInput" id="filterInput"
+										ng-model="jenkinsConfigItem.newMavenPreCommand" ng-keydown="confirmInput($event)"
+										data-toggle="dropdown" aria-haspopup="false"
+										aria-expanded="true" ng-maxlength="20" ng-pattern="/^[a-zA-Z0-9]*$/"
+										class=" dropdown-toggle ng-pristine ng-untouched ng-valid placeholder"
+										placeholder="请输入环境参数"> 
+										<button type="button" class="btn btn-warning packageBtn"
+										ng-click="addCommand('pre')">
+										<span class="">√</span>
+									</button>
+								</div>
+						</td>
+						<td>
+							<div style="position: relative; float: left; margin-left: 10px; height: 30px;">
+									<input type="text" style="height: 100%" id="filterInput"
+										ng-model="jenkinsConfigItem.newMavenPreDesp" ng-keydown="confirmInput($event)"
+										data-toggle="dropdown" aria-haspopup="false"
+										aria-expanded="true"
+										class=" dropdown-toggle ng-pristine ng-untouched ng-valid placeholder"
+										placeholder="请输入参数说明"> 
+								</div>
+						</td>
+					</tr>
+					
+					
+				<!--  
+					<tr>
+						<td>生产环境</td>
+						<td><input
+				class="form-control" type="text" id="mavenDevCommand"
+				name="mavenPrdCommand" ng-required="jenkinsConfigItem.parastat=='Y'"
+				ng-model="jenkinsConfigItem.mavenPrdCommand" style="width: 135px;" /></td>
+						<td></td>
+					</tr>
+					
+					-->
+					<tr ng-repeat="prd in jenkinsConfigItem.prdList track by $index" class="td-border-footer td-border-top">
+						<td>生产环境</td>
+						<td>
+							<div class="filter-list btn-group pull-left">
+								<div class="btn-group btn-group-sm ng-scope" >
+									<button type="button" class="btn btn-default ng-binding">{{prd.paraInfo}}</button>
+									<button type="button" class="btn btn-warning"
+										ng-click="removeCommand('prd',$index)">
+										<span class="">X</span>
+									</button>
+								</div>
+						</td>
+						<td>
+							<div style="position: relative; float: left; margin-left: 10px; height: 30px;">
+								<input type="text" disabled value="{{prd.paraDescription}}">
+									<!--<button type="button" class="btn btn-default ng-binding">{{dev}}</button>-->
+							</div>
+						</td>
+						
+					</tr>
+					<tr class="td-border-top">
+						<td>生产环境</td>
+						<td class="no-padding">
+							<div style="position: relative; float: left; margin-left: 10px; height: 30px;">
+									<input type="text" class="packageInput" id="filterInput"
+										ng-model="jenkinsConfigItem.newMavenPrdCommand" ng-keydown="confirmInput($event)"
+										data-toggle="dropdown" aria-haspopup="false"
+										aria-expanded="true" ng-maxlength="20" ng-pattern="/^[a-zA-Z0-9]*$/"
+										class=" dropdown-toggle ng-pristine ng-untouched ng-valid placeholder"
+										placeholder="请输入环境参数"> <button type="button" class="btn btn-warning packageBtn"
+										ng-click="addCommand('prd')">
+										<span class="">√</span>
+									</button>
+								</div>
+						</td>
+						<td>
+							<div style="position: relative; float: left; margin-left: 10px; height: 30px;">
+									<input type="text" style="height: 100%" id="filterInput"
+										ng-model="jenkinsConfigItem.newMavenPrdDesp" ng-keydown="confirmInput($event)"
+										data-toggle="dropdown" aria-haspopup="false"
+										aria-expanded="true"
+										class=" dropdown-toggle ng-pristine ng-untouched ng-valid placeholder"
+										placeholder="请输入参数说明"> 
+								</div>
+						</td>
+					</tr>
+					<tr>
+						<span id="reviewtips" style="color:red" class="ng-binding">{{errorMsg}}</span>
+					</tr>
+				</tbody>
+			</table>
+		
+	</div><div class="col-sm-6" ng-show="jenkinsConfigItem.parastat=='N'">构建不依赖环境</div>
+	</div>
+
+
+
+	<!-- ant -->
+	<div class="form-group" ng-show="jenkinsConfigItem.packageType=='ANT'">
+		<label class="col-sm-2 control-label"></i>shell命令：</label>
+		<div class="col-sm-6">
+			<textarea  style="width:500px;height:100px;" id="shellCommend" name="shellCommend"
+				ng-model="jenkinsConfigItem.shellCommend" ></textarea>
+			<p style="color:red">注意-shell命令内的可用变量：$SVN_URL 要打包的分支url,$WORKSPACE 当前构建工程工作空间的绝对地址;
+			<span ng-show="jenkinsConfigItem.parastat=='Y'">$env 对应的环境参数</span></p>
+		</div>
+	</div>
+
+	<div class="form-group" ng-show="jenkinsConfigItem.packageType =='ANT'">
+		<label class="col-sm-2 control-label">build文件地址：</label>
+		<div class="col-sm-6">
+			<input type="text" id="buildPath" name="buildPath"
+				ng-model="jenkinsConfigItem.buildPath" class="form-control"/>
+			<p style="color:red"  ng-show="jenkinsConfigItem.parastat=='Y'">注意：ant的配置文件中可以使用参数${env} 表示对应的环境参数，此参数在ant命令中以-Denv=对应的环境参数 方式传入，优先级最高,配置文件中如有env作为变量名，则以本处环境参数取值为准</p>
+		</div>
+	</div>
+
+	<div class="form-group" ng-show="jenkinsConfigItem.packageType=='ANT'">
+		<label class="col-sm-2 control-label">target：</label>
+		<div class="col-sm-6">
+			<input type="text" id="antTarget" name="antTarget"
+				ng-model="jenkinsConfigItem.antTarget"/>
+		</div>
+	</div>
+	<div class="form-group" ng-show="jenkinsConfigItem.packageType=='ANT' && system.sysType=='4'">
+		<label class="col-sm-2 control-label">自定义参数：</label>
+		<div class="col-sm-6">
+			<input type="text" id="properties" name="properties"
+				ng-model="jenkinsConfigItem.properties"/>
+		</div>
+	</div>
+	
+
+
+	<div class="form-group">
+		<div class="col-sm-offset-2 col-sm-10">
+			<button type="submit" class="btn btn-default" ng-click="createJob(packageForm.$invalid)" ng-if="hasPermissionMap[sys.sysId]['7008'] !=null && hasPermissionMap[sys.sysId]['7008']">确定</button>
+		</div>
+	</div>
+</form>
+</div>
+
+

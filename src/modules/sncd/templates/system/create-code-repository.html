@@ -1,0 +1,88 @@
+
+<div ng-if="repos.status == '112'" class="content">代码库申请中...</div>
+<div ng-if="repos.status == '113' && repos.createSvnFlg !=4" class="content">正在努力为您创建代码库，创建过程大约需要2-3分钟。请稍后刷新本页面查看代码库信息，或者在收到代码库创建成功的提醒邮件后，回平台查看代码库信息。</div>
+
+<div  class="panel-body"  ng-if="repos==null">
+	<h4>该系统没有代码库</h4>
+	<p ng-if="sys.sysType==null || sys.sysType==''" style="color:red"> 》》该系统尚未初始化,请到系统详情页面维护“系统类型”信息。</p>
+	<p ng-if="hasPermissionMap[sys.sysId]['7008'] == null || !hasPermissionMap[sys.sysId]['7008']" style="color:red" > 》》您当前没有创建代码库的权限,请联系有“打包配置管理”权限的人员(技术总监/技术负责人/系统管理员)创建代码库。</p>	
+		
+</div>
+
+
+<div class="panel panel-default" ng-if="hasPermissionMap[sys.sysId]['7008'] !=null && hasPermissionMap[sys.sysId]['7008'] && repos==null && sys.sysType ">
+	<div class="panel-heading">
+		<h1 class="panel-title">创建代码库</h1>
+	</div>
+
+	<div class="panel-body" ng-if = "step =='1'" >
+		<form name="createForm" class="form-horizontal">
+			<div class="form-group">
+				<label class="col-sm-2 control-label"  >系统类型：</label>
+				<label  class="col-sm-6">{{sys.sysType |sysTypeFilter}}</label>
+				<!-- 
+				<div class="col-sm-6">
+					<select ng-model="userData.devTech" name="org" ng-change ="changeNextDesc();"
+						class="form-control" required="required"
+						ng-options="dictItem.itemCode as dictItem.itemName for dictItem in dictItemList ">
+						<option value="">-- 请选择开发语言 --</option>
+					</select>
+				</div>
+				 -->
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label" >系统管理员：</label>
+				<label class="col-sm-6" ng-if="system.sysCmo">{{system.sysCmo}}</label>
+				<div class="col-sm-6" ng-if="!system.sysCmo">
+				<div class="form-group" ng-repeat="userL in userLable">
+		          <label for="user" >{{userL.name}}</label>
+			      <div class="log-user-select"  >
+			        <input type="input" class="form-control" autocomplete="off"  disableautocomplete id="user" ng-model="userL.model.value" data-toggle="dropdown" required="required" aria-haspopup="true" aria-expanded="true" ng-change="queryByUser($index)" placeholder="请输入系统管理员" ng-blur="getUser($index)" >
+			        <span class="glyphicon glyphicon-chevron-down form-control-feedback" style="display:none;" aria-hidden="true"></span>
+			        <ul class="dropdown-menu" aria-labelledby="user" style="overflow:hidden;" >
+			          <li ng-repeat="user in userList|filterEmpty:userL.model.value|filter:userL.model.value|numberLimit:20">
+			            <a href="" ng-mousedown="selectUser(user,$parent.$index)" sn-tooltip='{{user}}' ng-show="user.length > 35">{{user.substring(0,35)+'...'}}</a>
+			            <a href="" ng-mousedown="selectUser(user,$parent.$index)" ng-show="user.length <= 35">{{user}}</a>
+			          </li>
+			          <li></li>
+			        </ul>
+			      </div>
+			      </div>
+				</div>
+				</div>
+			<div class="form-group">
+			<label class="col-sm-2 control-label"><i style="color: red">*</i>是否安全加强型:</label>
+			<div class="col-sm-6">
+				<label class="radio-inline">
+				<input type="radio" name="svnServerFlag" value="1" ng-model="system.svnServerFlag">
+				是</label>
+				<label class="radio-inline">
+				<input type="radio" name="svnServerFlag" value="0" ng-model="system.svnServerFlag">
+				否</label>
+				<p style="color:red">注意：安全加强型代码库提供高级别的代码安全保护，只有云桌面能访问！</p>
+			</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">代码库名称：</label>
+				<div class="col-sm-6">{{sys.sysName | lowercase}}
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-10">
+					<button type="submit" class="btn btn-default"
+						ng-click="createCodeRepository(createForm.$invalid);" ng-disabled="issubmit">{{nextDesc}}</button>
+					<button type="submit" class="btn btn-default" ng-click="goBack()">取消</button>
+				</div>
+			</div>
+		</form>
+	</div>
+	
+	
+	
+	
+	<div class="panel panel-default" style="height:1200px" ng-if = "step =='2'">
+        <div class="panel-body" style="height:1200px">
+                <div  iframe-loader src="url" style="height:1200px"></div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,52 @@
+<div class="modal fade in" ng-controller="RestartCtrl">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" ng-click="close()"
+					data-dismiss="modal">
+					<span aria-hidden="true"><i class="suningicon">x</i></span><span
+						class="sr-only">Close</span>
+				</button>
+
+				<h4 class="modal-title">{{dmName}}集群重启</h4>
+			</div>
+			 <div class="container-wrapper">
+		        <div class="panel panel-default">
+		           
+			        <div class="panel-body">
+						<table>
+							<tbody>
+								<tr>
+									<td width="150">系统名：</td><td>{{sysCnname}}</td>
+									<td width="150" style="padding-left:15px;">环境类型：</td><td>{{envType|envTypeFilter}}</td>
+								</tr>
+								<tr>
+									<td width="150">应用Server：</td><td>{{appServerType}}</td>
+									<td width="150" style="padding-left:15px;">环境实例：</td><td>{{envName}}</td>
+								</tr>
+								<tr>
+									<td width="150">集群名：</td><td>{{dmName}}</td>
+									<td width="150" style="padding-left:15px;">部署类型：</td>
+									<td>
+										<span ng-if="wasType=='distributed'">分布式</span>
+                           				<span ng-if="wasType=='standalone'">standalone</span>
+									</td>
+								</tr>		
+							</tbody>
+						</table>
+			        </div>
+		        </div>
+				<div>
+					【重启集群<span ng-if="appServerType=='jboss'">CLI</span><span ng-if="appServerType!='jboss'">DM</span>】
+				<a href="javascript:void(0);" ng-if="isCanRestart==true" ng-click="restartDM()" class="btn btn-default" >重启集群</a>
+				<a href="javascript:void(0);" ng-if="isCanRestart!=true" ng-click="restartDMStop()" class="btn btn-default" >关闭</a>
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-body" style="height:150px; overflow:scroll;">
+						{{logMsg}}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

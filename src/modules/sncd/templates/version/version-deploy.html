@@ -1,0 +1,47 @@
+<!--<h4><a ui-sref="VersionProcess">我的版本</a> > <i class="lightgray">发布单</i></h4>-->
+<div class="panel panel-default ng-scope">
+	<!--<div class="panel-heading">
+		<h3 class="panel-title">发布单</h3>
+	</div>-->
+	
+	<div class="panel-body">
+		<div class="pull-right">
+			<button class="btn btn-default" ui-sref="CreateDeployReq({envType:'019',vtab:'CreateDeployReq'})" ng-if="sitCanDeploy&&isVersionActive&&hasPermissionMap['7021'] !=null && hasPermissionMap['7021']">SIT发布</button>
+			<button class="btn btn-default" ui-sref="CreateDeployReq({envType:'020',vtab:'CreateDeployReq'})" ng-if="preCanDeploy&&isVersionActive&&hasPermissionMap['7021'] !=null && hasPermissionMap['7021']">PRE发布</button>
+			<button class="btn btn-default" ui-sref="CreateDeployReq({envType:'021',vtab:'CreateDeployReq'})" ng-if="prdCanDeploy&&isVersionActive&&hasPermissionMap['7021'] !=null && hasPermissionMap['7021']">PRD发布</button>
+		</div><div>
+		<input type="checkbox" id="inlineCheckbox1" ng-model="flag" ng-click="showDeployReq();">仅显示此分支进行中发布单</div>
+		<br/>
+		<table class="table table-bordered table-hover">
+			<thead>
+				<tr>
+					<th>发布单号</th>
+					<th>申请人</th>
+					<th>发布环境</th>
+					<th>计划发布时间</th>
+					<th>发布单状态</th>
+					<th>发布结果</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="deployReq in deployReqList">
+					<td><a href="deployReq/deployReqDetail.htm?opFlag=detail&requestNo={{deployReq.requestNo}}&version=true&isnew=true" target="_blank"> {{deployReq.requestNo}}</a></td>
+					<td>{{deployReq.applyUser}}</td>
+					<td>{{deployReq.envType |envTypeFilter}}</td>
+					<td>{{deployReq.planTime.substring(0,19)}}</td>
+					<td>{{deployReq.deployStatus | deployStatusFilter}}</td>
+					<td>{{deployReq.deployFlg| deployFlagFilter}}</td> 
+					<td>{{deployReq.sysType}}
+						<a href="publish.html#/publish-monitor?deployId={{deployReq.deployId}}" target="_blank" ng-if="deployReq.appServerType =='ngjboss' && deployReq.deployStatus != '132' ">查看</a>
+                        <a href="deployReq/deploymonitorpage.htm?deployid={{deployReq.deployId}}" target="_blank" ng-if="deployReq.appServerType !='ngjboss' && deployReq.deployStatus != '132' ">查看</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div> <footer class="ft-pager clearfix">
+        <div sn-pager itemsPerPage="{{pager.pageSize}}" totalItems="{{pager.totalCount}}" listSize="{{pager.pageSize}}"
+             class="text-right">
+        </div>
+    </footer>
+</div>

@@ -1,0 +1,107 @@
+<div class="panel panel-default" ng-if="authtype=='show'">
+    <div class="panel-heading">
+        <h3 class="panel-title">分支权限</h3>
+    </div>
+    <div class="panel-body" >
+         <table class="table table-bordered table-hover">
+            <tbody>
+                <tr>
+                    <td width="20%">
+                    版本只读权限：
+                    </td>
+                    <td>
+                        {{oldrUser}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                    版本读写权限：
+                    </td>
+                    <td>
+                        {{oldrwUser}}
+                    </td>
+                </tr>
+                <!--<tr>
+                <tr>
+                    <td>
+                    版本发布权限：
+                    </td>
+                    <td>
+                        {{oldDeployer}}
+                    </td>
+                </tr>
+                <tr>
+                <tr>
+                    <td>
+                    版本静态发布权限：
+                    </td>
+                    <td>
+                        {{oldStaticDeployer}}
+                    </td>
+                </tr>-->
+                </tbody>
+            </table>
+            <table class="table table-bordered table-hover">
+                <tbody>
+                    <tr ng-repeat="item in permissionUsers">
+                        <td width="20%">{{item.name | roleFilter}}</td>
+                        <td><span ng-repeat="value in item.value">{{value}}</span></td>
+                    </tr>
+                </tbody>
+            </table>    
+            <div class="form-group pull-right">
+          		  <button type="submit" class="btn btn-default" 
+					
+						ng-click="editVersionAuth();">修改</button>
+            
+            </div>
+    </div>
+</div>
+
+
+
+<div class="panel panel-default" ng-if="authtype=='edit'" onkeydown="if(event.keyCode==13){return false;}">
+    
+    <div class="panel-heading">
+        <h3 class="panel-title">分支权限修改</h3>
+    </div>
+    <div class="panel-body" >
+	<form name="packageForm" class="form-horizontal">
+		 <div class="form-group">
+			<label class="col-sm-2 control-label" for="formGroupInputSmall" style="width: 20%">版本只读权限：</label>
+			<div class="col-sm-6">
+				<div class="optionedUsers" filter-list-input option="newrUsers"></div>
+				<!-- <p ng-repeat="rUser in rUsers">{{rUser}} <a href="javascript:;" ng-click="removeAuth('r',$index)">x</a></p>
+				<textarea ng-model="viewData.newrUsers" rows="3" cols="3"  class="form-control"></textarea> -->
+			</div>
+		</div> 
+	
+				
+	 <div class="form-group">
+			<label class="col-sm-2 control-label" for="formGroupInputSmall" style="width: 20%">版本读写权限：</label>
+			<div class="col-sm-6">
+			<div class="optionedUsers" filter-list-input option="newrwUsers"></div>
+				<!--  <p ng-repeat="rwUser in rwUsers">{{rwUser}} <a href="javascript:;" ng-click="removeAuth('rw',$index)">x</a></p>
+				 <textarea  ng-model="viewData.newrwUsers" rows="3" cols="3"  class="form-control"></textarea> -->
+			</div>
+		</div> 
+		 <div class="form-group" ng-repeat="role in roleList">
+            <label class="col-sm-2 control-label" for="formGroupInputSmall" style="width: 20%">{{role.name | roleFilter}}：</label>
+            <div class="col-sm-6">
+                <div class="optionedUsers" filter-list-input option="role" required>
+                </div>
+            </div>
+         </div>
+        
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-10">
+				<button type="submit" class="btn btn-default" ng-click="saveVersionAuth();">确定</button>
+				<button  class="btn btn-default" ng-click="exitEdit();">取消</button>
+			</div>
+		</div>
+	</form>
+	</div>
+
+    </div>
+
+

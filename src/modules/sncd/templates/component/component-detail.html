@@ -1,0 +1,97 @@
+<div class="module-head paneltitle">
+    <div class="module-info">
+        <p class="title titlefont">构件详情</p>
+		<p class="sub-title titlecolor">{{component.componentTitle}}_{{component.sysEnName}}_{{component.version}}_{{component.appName}}_{{component.updateTime | date:'yyyyMMddHHmmss'}}.{{component.svnRevision}}</p>
+    </div>
+	<a class="pull-right" style="margin-top:40px;" href="javascript:history.go(-1);">返回</a>
+</div>
+<div class="panel panel-default">
+	<div class="panel-body">
+        <table class="table table-hover">
+            <tbody>
+            <tr>
+            <th width="25%" style="text-align:center;border-top:none">项
+            </th>
+            <th width="75%" style="text-align:center;border-top:none">说明
+            </th>
+            </tr>
+			<tr>
+                 <td style="text-align:center;">构件标题</td>
+                 <td style="text-align:center;">{{component.componentTitle}}_{{component.sysEnName}}_{{component.version}}_{{component.appName}}_{{component.updateTime | date:'yyyyMMddHHmmss'}}.{{component.svnRevision}}</td>
+            </tr>
+			<tr>
+                 <td style="text-align:center;">构件描述</td>
+                 <td style="text-align:center;">{{component.componentDesc}}</td>
+            </tr>
+            <tr>
+                 <td style="text-align:center;">构件创建时间</td>
+                 <td style="text-align:center;">{{component.createTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+            </tr>
+            <tr>
+                 <td style="text-align:center;">构件系统</td>
+                 <td style="text-align:center;">{{component.sysEnName}}</td>
+            </tr>
+			<tr>
+                 <td style="text-align:center;">构件环境类型</td>
+                 <td style="text-align:center;">{{component.envType|envTypeFilter}}</td>
+            </tr>
+			<tr>
+                 <td style="text-align:center;">构件环境名称</td>
+                 <td style="text-align:center;">{{component.envName}}</td>
+            </tr>
+            <tr>
+                 <td style="text-align:center;">构件环境参数</td>
+				 <td align="center"><span ng-if="component.envParam!=''">{{component.envParam}}</span><span ng-if="component.envParam==''">无</span></td>
+            </tr>
+			<tr>
+                 <td style="text-align:center;">构件人</td>
+                 <td style="text-align:center;">{{component.userName}}</td>
+            </tr>
+			<tr>
+                 <td style="text-align:center;">构件版本</td>
+                 <td style="text-align:center;">{{component.componentVersion}}</td>
+            </tr>
+			<tr>
+                 <td style="text-align:center;">版本状态</td>
+                 <td style="text-align:center;">{{component.versionStatus|versionStatusFilter}}</td>
+            </tr>
+            <tr>
+                 <td style="text-align:center;">Tag名称</td>
+                 <td style="text-align:center;">{{component.tagName}}</td>
+            </tr>
+			<tr>
+                 <td style="text-align:center;">构件应用名</td>
+                 <td style="text-align:center;">{{component.appName}}</td>
+            </tr>
+			<tr>
+                 <td style="text-align:center;">Revision</td>
+                 <td style="text-align:center;">{{component.svnRevision}}</td>
+            </tr>
+			<tr>
+                 <td style="text-align:center;">构件日志</td>
+                 <td style="text-align:center;">{{component.logPath}}</td>
+            </tr>
+            <tr>
+                 <td style="text-align:center;">构件存放路径</td>
+                 <td style="text-align:center;">{{component.componentPath}}</td>
+            </tr>
+			<tr>
+                 <td style="text-align:center;">构件是否被部署</td>
+                 <td style="text-align:center;">{{component.isDeploy|isdeployFilter}}</td>
+            </tr>
+			<tr>
+                 <td style="text-align:center;">构件部署结果</td>
+                 <td style="text-align:center;">{{component.isDeploy|deployResultFilter}}</td>
+            </tr>
+			<tr>
+                 <td style="text-align:center;">CD公文单号</td>
+                 <td style="text-align:center;">{{component.cdNumber}}</td>
+            </tr>
+			<tr>
+                 <td style="text-align:center;">ITP发布单号</td>
+                 <td style="text-align:center;">{{component.itpNumber}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

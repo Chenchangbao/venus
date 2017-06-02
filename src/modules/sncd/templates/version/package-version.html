@@ -1,0 +1,232 @@
+<!--<h4><a ui-sref="VersionProcess">我的版本</a> > <i class="lightgray">打包地址</i></h4>-->
+<div class="panel">
+	<!-- 	 <ul class="nav nav-tabs"> -->
+	<!--         <li ng-class="{'active': envType == '019'}"><a  class="link-cursor" ng-click="selectEnv('019')">SIT打包</a></li> -->
+	<!--         <li ng-class="{'active': envType == '020'}"><a class="link-cursor" ng-click="selectEnv('020')">PRE打包</a></li> -->
+	<!--         <li ng-class="{'active': envType == '021'}"><a class="link-cursor" ng-click="selectEnv('021')">PRD打包</a></li> -->
+	<!--         <li ng-class="{'active': envType == '171'}"><a class="link-cursor" ng-click="selectEnv('171')">DEV打包</a></li> -->
+	<!--     </ul> -->
+
+	<!--<div class="panel-heading">-->
+		<!--<h3 class="panel-title" ng-if="envType == '019'">SIT打包</h3>
+		<h3 class="panel-title" ng-if="envType == '020'">PRE打包</h3>
+		<h3 class="panel-title" ng-if="envType == '021'">PRD打包</h3>
+		<h3 class="panel-title" ng-if="envType == '171'">DEV打包</h3>-->
+		<!--<h3 class="panel-title">
+			<span >打包地址</span>
+			<span ng-show="packagePending">【当前为{{currentBuildBM.deployEnv|envTypeFilter}}环境的{{currentBuildBM.envParam}}参数打包情况】</span>
+			<a href="#" ng-click="prdPath(branch.branchId)"><span style="position:absolute;right:50px;">生成线上构件地址</span></a>
+		</h3>
+	</div>-->
+	<div class="panel-body" ng-if="message!=null && message!=''"><span ng-bind-html="message"></span></div>
+	<div class="panel-body" ng-if="message == null || message == ''">
+		<table class="table table-bordered table-hover">
+			<tbody>
+				<tr>
+					<td style="width: 150px;">系统中文名称:</td>
+					<td>{{systemBean.sysCnname}}</td>
+				</tr>
+				<tr>
+					<td>系统英文名称：</td>
+					<td>{{systemBean.sysEnname}}</td>
+				</tr>
+				<tr>
+					<td>版本URL：</td>
+					<td>{{branch.branchUrl}}</td>
+				</tr>
+				<!--<tr>
+					<td>发布环境：</td>
+					<td><select ng-model="postData.envType"
+						ng-options="envType.envType as envType.envName for envType in envTypes"
+						ng-change="changeEnv();">
+					</select></td>-->
+					<!-- 					<td>{{bmBuildHis.deployEnv|envTypeFilter}}</td> -->
+			<!--	</tr>
+				<tr ng-if="packageType != 'ANT' &&  paraStat == 'Y' ">
+					<td>环境参数：</td>
+					<td><span ng-if="envType == '021' ">{{postData.envParam}}</span>
+						<select ng-if="envType != '021' " ng-model="postData.envParam"
+						ng-options="envParam for envParam in envParams">
+					</select></td>
+				</tr>
+				<tr>
+					<td>打包入口：</td>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;
+						<button type="submit"
+							ng-if="isVersionActive && freezeMsg  == '' || freezeMsg == null && hasPermissionMap[sys.sysId]['7001'] !=null && hasPermissionMap[sys.sysId]['7001']"
+							class="btn btn-default"
+							ng-click="packageVersion(bmBuildHis,systemBean,packageType)">打包</button>&nbsp;&nbsp;&nbsp;&nbsp;
+							<span ng-if="freezeMsg  == '' || freezeMsg == null && hasPermissionMap[sys.sysId]['7001'] !=null && hasPermissionMap[sys.sysId]['7001']"
+						class="sys-tip">如需执行手动发布，点击打包后，从FTP取得发布包后执行手动发布。</span> <span
+						ng-if="freezeMsg != ''"><span ng-bind-html="freezeMsg"></span></span>
+					</td>
+				</tr>
+				<tr>
+					<td>打包地址：</td>
+					<td> <a style="padding-right: 20px;" href ="{{pageVersionUrl}}">{{pageVersionUrl}}</span>  -->
+					<!-- <a	class="btn btn-default" ng-click="cpoyUrl()">复制</a> -->
+					<!-- <a class="btn btn-default" clip-copy="pageVersionUrl" clip-click="doSomething()" style="margin-left:10px">复制</a>
+					</td>
+				</tr>-->
+				<tr>
+					<td colspan="2">
+						<div>
+						下表为各环境及参数具体的打包地址<span style="color:red"> 打包测试仅验证是否能正常打包，不能生成发布包，请点击【生成构件】生成发布包</span>
+						</div>
+						<table class="table table-package">
+							<thead>
+								<tr>
+									<th style="text-align:center;">环境类型</th>
+									<th style="text-align:center;">参数值</th>
+									<th style="text-align:center;">打包地址</th>
+									<th width="58px"></th>
+									<th width="185px" style="text-align:center;">操作</th>
+								</tr>
+								</thead>
+								<tr ng-repeat="item in bmBuildHisParamList track by $index">
+									<td style="text-align:center;">{{item.deployEnv|envTypeFilter}}环境</td>
+									<td style="text-align:center;"><span ng-if="item.envParam!=null && item.envParam!=''">{{item.envParam}}</span><span ng-if="item.envParam==null || item.envParam==''">无</span></td>
+									<td style="text-align:center;" class="text-overflow">{{genPackageURL(item)}}</td>
+									<td><button class="btn btn-default" clip-copy="genPackageURL(item)" ng-click="doSomething(item.deployEnv,item.envParam)">复制</button></td>
+									<td class="text-overflow">
+									<button class="btn btn-default" 
+									 ng-disabled="packagePending"
+									 ng-if="showPackageBtn(item, bmBuildHis)"
+									 ng-click="packageVersionTest(item,systemBean,packageType)">打包测试</button>
+									<button class="btn btn-default" 
+									 ng-disabled="packagePending"
+									 ng-if="showPackageBtn(item, bmBuildHis)"
+									 ng-click="generateComponent(item)">生成构件</button>
+									 </td>
+								</tr>
+						</table>
+					</td>
+				</tr>
+				<tr style="display:none;">
+					<td>Jenkins日志地址：</td>
+					<td><a href="{{jenkinsPath}}" target="_blank">{{jenkinsPath}}</a>
+					</td>
+				</tr>
+
+			</tbody>
+		</table>
+
+		<div class="mt15"
+			ng-if="packageType=='PC' &&  bmBuildHis.buildId!='' &&   pcPackageLog && pcPackageLog!='' ">
+			<h3>【构建日志】</h3>
+			<div id="pcDeployArea"
+				style="width: 100%; height: 200px; overflow-y: auto;"></div>
+		</div>
+	</div>
+	
+	<ul class="nav nav-tabs nav-new" style="margin-top:0px;">
+      <li ng-class="{'active': selectedChildTab==1}" class=""><a ng-class="{'active2': selectedChildTab==1}" ng-click="selectChildTab(1)" class="">构件列表</a></li>
+      <li ng-class="{'active': selectedChildTab==2}" class=""><a ng-class="{'active2': selectedChildTab==2}" ng-click="selectChildTab(2); " class="">构建日志</a></li>
+    </ul>
+	
+	<div ng-show="selectedChildTab == 1">
+		<div class="panel-heading">
+			<h3 class="panel-title">构件记录：</h3>
+		</div>
+		<div class="panel-body">
+			<table class="table">
+				<thead>
+                    <tr>
+                        <th width="5%" style="text-align:center;">序号</th>
+                        <th width="15%" style="text-align:center;">应用包名</th>
+                        <th width="5%" style="text-align:center;">版本号</th>
+						<th width="10%" style="text-align:center;">环境类型</th>
+						<th width="7%" style="text-align:center;">环境参数</th>
+						<th width="7%" style="text-align:center;">是否被部署</th>
+						<th width="13%" style="text-align:center;">申请人</th>
+						<th width="13%" style="text-align:center;">创建时间</th>
+                        <th width="10%" style="text-align:center;">操作</th>
+                    </tr>
+                </thead>
+                <tbody ng-repeat="item in componentList">
+                    <tr>
+                        <td align="center">
+                            {{$index+1}}
+                        </td>
+                        <td align="center"><div ng-repeat="appItem in item.appName|inputSplitFilter"><a href="javascript:void(0)" ng-click="download({id:item.componentId,appName:appItem})">{{appItem}}</a></div></td>
+                        <td align="center">{{item.componentVersion}}</td> 
+                        <td align="center">{{item.envType|envTypeFilter}}</td>
+                        <td align="center"><span ng-if="null!=item.envParam && item.envParam!=''">{{item.envParam}}</span><span ng-if="item.envParam==null || item.envParam==''">无</span></td>
+						<td align="center">{{item.isDeploy|isdeployFilter}}</td>
+						<td align="center">{{item.userName}}</td>
+						<td align="center">{{item.createTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                        <td align="center">
+                        	<a ui-sref="ComponentDetail({id:item.componentId})" >详情</a>
+							<a target="_blank" ng-if="item.appName!=null" ng-href="{{item.componentPath}}"> | FTP</a>
+							<a ng-if="item.envType==021" clip-copy="genDeployPackageURL(item)" ng-click="doSomething(item.envType,item.envParam,item.svnRevision)" style="cursor:pointer;"> | 上线构件地址</a>
+							<a ng-if="(item.envType==019&&item.sitCanDeploy!=1)||(item.envType==020&&item.preCanDeploy!=1)||(item.envType==021&&item.prdCanDeploy!=1)" ui-sref="CreateDeployReq({envType:item.envType,componentId:item.componentId,vtab:'CreateDeployReq'})"> | 发布</a>
+                        </td>
+                    </tr>
+                </tbody>
+	
+			</table>
+			<footer class="ft-pager clearfix">
+            <div sn-pager itemsPerPage="{{pager.pageSize}}" totalItems="{{pager.totalCount}}" listSize="{{pager.pageSize}}"
+                class="text-right">
+            </div>
+        </footer>
+		</div>
+	</div>
+	
+	<div ng-show="selectedChildTab == 2">
+		<div class="panel-heading">
+			<h3 class="panel-title">最近记录：</h3>
+		</div>
+		<div class="panel-body">
+			<table class="table">
+				<thead>
+					<tr>
+						<th width="150">打包人</th>
+						<th width="120">环境</th>
+						<th width="180">开始时间</th>
+						<th width="100">结果</th>
+						<th>Jenkins日志地址</th>
+						<th>FTP地址</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="result  in  queryResult">
+						<td>{{result.buildUser}}</td>
+						<td>{{result.deployEnv | envTypeFilter}}</td>
+						<td>{{result.startTime|date:'yyyy-MM-dd HH:mm:ss'}}</td>
+						<td>{{result.buildFlg | buildFlagFilter}}</td>
+						<td>
+							<a href="{{jeckinsPath}}/job/{{jobname}}/{{result.buildNumber}}/console" target="_blank" ng-if="result.buildNumber!=null">查看Jenkins日志</a>
+						</td>
+						<td><a href="{{result.ftpPath}}" target="_blank"
+							ng-if="!!result.ftpPath">{{result.ftpPath}}</a></td>
+					</tr>
+				</tbody>
+	
+			</table>
+		</div>
+	</div>
+	
+	<div ng-show="selectedChildTab == 3">
+		<div class="panel-heading">
+			<h3 class="panel-title">最近一次记录：</h3>
+		</div>
+		<div class="panel-body">
+			<table class="table">
+				<thead>
+					<tr>
+						<th width="550">时间</th>
+						<th>上线构件地址</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>{{lastProdComponent.createTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+						<td>{{lastProdPath}}</td>
+					</tr>
+				</tbody>
+	
+			</table>
+		</div>
+	</div>
+</div>

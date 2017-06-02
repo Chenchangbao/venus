@@ -1,0 +1,89 @@
+ <div class="panel panel-noborder panelcolor">
+    <ul class="nav nav-tabs">
+        <li ng-class="{'active': selectedTab==1}"><a ng-class="{'active2': selectedTab==1}" ng-click="selectTab('1')">团队人员</a></li>
+        <li ng-class="{'active': selectedTab==2}"><a ng-class="{'active2': selectedTab==2}" ng-click="selectTab('2');">角色权限</a></li>
+    </ul>
+ </div>
+	
+<div class="panel panel-default panel-noborder">
+   
+    <div class="panel-body" ng-if="type == 'show'">
+        <!--<a href="" class="createtitle"  ng-click="createNewRole()">+自定义角色</a>-->
+        <table class="table table-hover">
+        	<thead>
+        		 <tr>
+		            <th width="25%" style="text-align:center;border-top:none">角色
+		            </th>
+		            <th width="50%" style="text-align:center;border-top:none">人员
+		            </th>
+		            <th width="25%" style="text-align:center;border-top:none">操作
+		            </th>
+	            </tr>
+        	</thead>
+            <tbody>
+            <tr  ng-repeat="dt in dtmList">
+                 <td style="text-align:center;">
+                 {{dt.roleName | developRoleNameFilter}} 
+                </td>
+                 <td style="text-align:center;">
+                  {{dt.dtm_rolename}}
+                </td>
+                <td style="text-align:center;">
+                    <!--{{dt.dtm_system_responsibilities}}-->
+                    <a href="" ng-click="queryPermission('2',dt)">查看权限</a>
+                    <a href="" ng-if="dt.type == 1" ng-click="deleteRole(dt)">删除</a>
+                </td>
+            </tr>
+            <tr ng-if="createflag">
+                <td><input type="text" placeholder="请输入角色名"></td>
+                <td>
+                  <div class="optionedUsers" filter-list-input option="newRoleName"></div>
+                  <a ng-click="addRole()" >保存</a>
+                  <a class="btn btn-default" ng-click="cancle()" >取消</a>
+                </td>
+                <td></td>
+            </tr>
+            </tbody>
+        </table>
+        
+        <div class="form-group pull-right">
+			  <button type="submit" class="btn btn-default" ng-click="editTeam();" ng-if="hasPermissionMap[system.sysId]['7004'] !=null && hasPermissionMap[system.sysId]['7004']">修改</button>
+		</div>
+    </div>
+    
+    
+     <div class="panel-body" ng-if="type == 'edit'">
+        <table class="table table-hover">
+            <tbody>
+            <tr>
+            <th width="25%" style="text-align:center;border-top:none">角色
+            </th>
+            <th width="45%" style="text-align:center;border-top:none">人员
+            </th>
+            <th width="20%" style="text-align:center;border-top:none">操作
+            </th>
+            </tr>
+            <tr  ng-repeat="dt in dtmList">
+                 <td style="text-align:center;">
+                 {{dt.roleName | developRoleNameFilter}} 
+                </td>
+                 <td style="text-align:center;">
+                  <span ng-if="index != $index">{{dt.new_rolename}}</span>
+                  
+                  <div class="optionedUsers" filter-list-input option="newRoleName" ng-if="index == $index"></div>
+                  <!--<a ng-if="dt.roleName!='045'&& dt.roleName!='046' && dt.roleName != '165'  && index != $index" ng-click="editDeveloper($index)" >修改</a>-->
+                </td>
+                <td style="text-align:center;">
+                    <a ng-if="dt.roleName!='045'&& dt.roleName!='046' && dt.roleName != '165'  && index != $index" ng-click="editDeveloper($index)" >修改</a>
+                    <a ng-if="dt.roleName!='045'&& dt.roleName!='046' && dt.roleName != '165'  && index == $index" ng-click="saveNewRoleName($index);" >确定</a>
+                </td>
+            </tr>
+            
+            </tbody>
+        </table>
+         
+        <div class="form-group pull-right">
+			  <button type="submit" class="btn btn-default" ng-click="updateTeam();" >确定</button>
+		</div>
+    </div>
+</div>

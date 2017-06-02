@@ -1,0 +1,154 @@
+<div class="panel panel-default" ng-if="type=='show'">
+	<div class="panel-heading">
+		<h3 class="panel-title">版本质量分析</h3>
+	</div>
+	<div class="panel-body">
+		<table class="table table-bordered table-hover">
+			<tbody>
+				<tr>
+					<td width="15%">定时计划：</td>
+					<td><span width="4%" style="font-size: 14px">{{version.branchBuildInfoBo.frequencyRate |buildFilter 	}}</span></td>
+				</tr>
+				<tr>
+					<td>扩展分析：</td>
+					<td>
+						<span ng-repeat="dt in analysisExtList" width="4%" style="font-size: 14px">{{dt
+						| analysisExtFilter}}&nbsp;</span>
+					</td>
+				</tr>
+				<tr>
+					<td>邮件通知触发器:</td>
+					<td>
+						<span ng-repeat="dt in mailTriggerList" width="4%" style="font-size: 14px;">{{dt
+						| mailTriggerFilter}}&nbsp;</span>
+					</td>
+				</tr>
+				<tr>
+					<td>邮件发送角色:</td>
+					<td>
+						<span ng-repeat="dt in recipentList" width="4%" style="font-size: 14px;">{{dt
+						| developRoleNameFilter}}&nbsp;</span>
+					</td>
+				</tr>
+				<tr>
+					<td>邮件抄送角色:</td>
+					<td>
+						<span ng-repeat="dt in ccList" width="4%" style="font-size: 14px;">{{dt
+						| developRoleNameFilter}}&nbsp;</span>
+					</td>
+				</tr>
+				<tr ng-if="version.branchBuildInfoBo!=null && version.packaageType == 'ANT'">
+					<td>工程属性：</td>
+					<td>{{version.branchBuildInfoBo.projectType}}</td>
+				</tr>
+
+				<tr ng-if="version.branchBuildInfoBo!=null && version.branchBuildInfoBo.projectType=='2'">
+					<td>工程名称：
+					</td>
+					<td>{{version.branchBuildInfoBo.projectNames}}
+					</td>
+				</tr>
+
+			</tbody>
+		</table>
+		<div class="form-group pull-right">
+			<button type="submit" class="btn btn-default" ng-if="!isVersionFreezen && isVersionActive && hasPermissionMap['7019'] !=null && hasPermissionMap['7019']"
+				ng-click="editVersionJob();">修改</button>
+		</div>
+	</div>
+</div>
+
+
+<div class="panel panel-default" ng-if="type=='edit'">
+	<div class="panel-heading">
+		<h3 class="panel-title">版本质量分析设置</h3>
+	</div>
+	<div class="panel-body">
+		<form name="versionJobForm" class="form-horizontal">
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="formGroupInputSmall" style="width: 20%">定时计划：</label>
+				<div class="col-sm-6" style="width: 200px;margin-left: 10px;">
+					<select ng-model="version.branchBuildInfoBo.frequencyRate" name="org" required="required" class="form-control" ng-options="frequencyRate.frequencyRate as frequencyRate.frequencyRateDesc for frequencyRate in frequencyRates">
+						<option value="">--请选择 --</option>
+						</select>
+				</div>
+				<div class="col-xs-2 form-control-static"  style="position:relative">
+					<span class="fa fa-question-circle"></span>
+					<div class="tool-tip-content">
+								* * * * * 一到五位分别代表：<br>
+								分钟 （0-59） <br>
+								小時 （0-23） <br>
+								日期 （1-31） <br>
+								月份 （1-12） <br>
+								星期 （0-7）//0和7代表星期天<br> 
+								除了数字还有几个特殊的符号就是"*"、"/"、"-"、","、"H"，*代表所有的取值范围内的数字，"/"代表每的意思,"*/5"表示每5个单位，"-"代表从某个数字到某个数字,","分开几个离散的数字,"H"代表某个时间,可以跟时间范围同时使用比如H H(0-7) * * * 表示在每天0点到7点59中的某个时间执行。
+							</div>
+				</div>
+			</div>
+			
+			<div class="form-group" ng-show="version.branchBuildInfoBo.frequencyRate === '-1'">
+				<label class="col-sm-2 control-label"  style="width: 20%">自定义表达式：</label>
+				<div class="col-sm-6" style="width: 200px;margin-left: 10px;">
+					<input type="text"  class="form-control" ng-model="version.branchBuildInfoBo.frequencyRateCustom" placeholder="例：H H * * *"/>
+				</div>
+			</div>
+
+			<div class="form-group ">
+				<label class="col-sm-2 control-label" for="formGroupInputSmall" style="width: 20%">扩展质量分析：</label>
+				<div class="col-sm-6">
+					<label ng-repeat="model in dtmListAnalysisExt" class=" checkbox-inline" style="width: 200px;margin-left: 10px;">
+							<input type="checkbox" ng-model="model.checked">{{model.itemName}}
+						</label>
+				</div>
+
+			</div>
+
+			<div class="form-group ">
+				<label class="col-sm-2 control-label " for="formGroupInputSmall" style="width: 20%">邮件通知触发器：</label>
+				<div class="col-sm-6">
+					<label ng-repeat="model in dtmListTrigger" class=" checkbox-inline" style="width: 200px;margin-left: 10px;">
+							<input type="checkbox" ng-model="model.checked">{{model.itemName}}
+						</label>
+				</div>
+			</div>
+			<div class="form-group ">
+				<label class="col-sm-2 control-label" for="formGroupInputSmall" style="width: 20%">邮件发送人员：</label>
+				<div class="col-sm-6">
+					<label ng-repeat="model in dtmListRecipent" class=" checkbox-inline" style="width: 200px;margin-left: 10px;">
+							<input type="checkbox" ng-model="model.checked">{{model.roleName|developRoleNameFilter}}
+						</label>
+				</div>
+			</div>
+			<!--<div class="form-group ">
+				<label class="col-sm-2 control-label" for="formGroupInputSmall" style="width: 20%">邮件抄送人员：</label>
+				<div class="col-sm-6">
+					<label ng-repeat="model in dtmListCc" class=" checkbox-inline" style="width: 200px;margin-left: 10px;">
+							<input type="checkbox" ng-model="model.checked">{{model.roleName|developRoleNameFilter}}
+						</label>
+				</div>
+			</div>-->
+			<div class="form-group" ng-if="version.branchBuildInfoBo!=null && version.packaageType == 'ANT'">
+				<label class="col-sm-2 control-label" for="formGroupInputSmall">工程属性：</label>
+				<div class="col-sm-6">
+					<select ng-model="version.branchBuildInfoBo.projectType" name="org" required="required" class="form-control" ng-options="projectType.projectType as projectType.projectTypeDesc for projectType in projectTypes">
+						<option value="">--请选择 --</option>
+						</select>
+				</div>
+			</div>
+			<div class="form-group" ng-if="version.branchBuildInfoBo!=null && version.packaageType == 'ANT'" ng-show="version.branchBuildInfoBo!=null && version.branchBuildInfoBo.projectType=='2'">
+				<label class="col-sm-2 control-label" for="formGroupInputSmall">工程名称：</label>
+				<div class="col-sm-6">
+					<textarea ng-model="version.branchBuildInfoBo.projectNames">
+						
+					</textarea>多工程名请用逗号隔开
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-offset-4 col-sm-10">
+					<button type="submit" class="btn btn-default" ng-click="saveVersionJob(versionJobForm.$invalid);" ng-if="isVersionActive&&hasPermissionMap['7019'] !=null && hasPermissionMap['7019']">确定</button>
+					<a class="btn btn-default" ng-click="exitEdit();" ng-if="isVersionActive &&hasPermissionMap['7019'] !=null && hasPermissionMap['7019']">返回</a>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>

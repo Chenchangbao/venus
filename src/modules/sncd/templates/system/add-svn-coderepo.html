@@ -1,0 +1,95 @@
+<div class="modal fade in" ng-controller="addSvnCodeRepoCtr">
+<div class="modal-dialog">
+<div class="modal-content">
+<div class="modal-header">
+<h4 class="modal-titel">新建代码库</h4>
+</div>
+<form name="addSvnForm">
+<div class="modal-body"  style="height: 300px;padding:15px">
+ 			   <div class="form-group col-xs-12" style="height: 55px;" >
+ 			   <div class="col-xs-4">
+               <label>系统类型：</label>
+               </div>
+               <div class="col-xs-8"  ng-show="type=='0'">
+                    <select  name ="systypeselect" ng-model="system.sysType"  style="width:200px;height:30px;" required>
+                    	<option value="" >请选择</option>
+                       	<option value="{{type}}" ng-selected="type == system.sysType" ng-repeat="type in sysTypelist" >{{type |sysTypeFilter}}</option>
+                    </select>
+                     <p class="error" ng-if="(addSvnForm.systypeselect.$touched && addSvnForm.systypeselect.$invalid) || (addSvnForm.systypeselect.$untouched && checkvalue)" style="color:#a10;">
+                系统类型不能为空</p>
+                </div>
+                <div class="col-xs-8" ng-show="type=='1'">
+                <span>{{system.sysType |sysTypeFilter}}</span>
+                </div>
+                </div>
+				<div class="col-xs-12 form-group" style="height: 55px;" >
+				<label class="col-xs-4 ">系统管理员：</label>
+				<div class="col-xs-8" ng-show="type=='0'" >
+					<div  ng-repeat="userL in userLable" >
+				      <div class="log-user-select"  >
+				        <input type="input" name="sysCmo"  autocomplete="off"  disableautocomplete id="user"  ng-model="userL.model.value" data-toggle="dropdown" required="required" aria-haspopup="true" aria-expanded="true" ng-change="queryByUser($index)" placeholder="请输入系统管理员" ng-blur="getUser($index)" style="width:200px;height:30px;">
+				        <span class="glyphicon glyphicon-chevron-down form-control-feedback" style="display:none;" aria-hidden="true"></span>
+				        <ul class="dropdown-menu" aria-labelledby="user" style="overflow:hidden;width:150px;" >
+				          <li ng-repeat="user in userList|filterEmpty:userL.model.value|filter:userL.model.value|numberLimit:20">
+				            <a href="" ng-mousedown="selectUser(user,$parent.$index)" sn-tooltip='{{user}}' ng-show="user.length > 35">{{user.substring(0,35)+'...'}}</a>
+				            <a href="" ng-mousedown="selectUser(user,$parent.$index)" ng-show="user.length <= 35">{{user}}</a>
+				          </li>
+				        </ul>
+			      	<p class="error" ng-if="(addSvnForm.sysCmo.$error.required &&
+            addSvnForm.sysCmo.$touched)  || (addSvnForm.sysCmo.$untouched && checkvalue)" style="color:#a10;">
+                系统管理员不能为空</p>
+				      </div>
+			      	</div>
+				</div>
+				<div class="col-xs-8" ng-show="type=='1'">
+				<span>{{username}}</span>
+				</div>
+			</div>
+			<div  class="form-group col-xs-12" style="height: 55px;" >
+			<label class="col-xs-4 "><i style="color: red">*</i>是否安全加强型:</label>
+			<div ng-show="type=='0'" class="col-sm-8">
+				<label class="radio-inline">
+				<input type="radio" name="svnServerFlag" value="1" ng-model="svnServerFlag">
+				是</label>
+				<label class="radio-inline">
+				<input type="radio" name="svnServerFlag" value="0" ng-model="svnServerFlag">
+				否</label>
+				<p style="color:red">注意：安全加强型代码库提供高级别的代码安全保护，只有云桌面能访问！</p>
+			</div>
+			<div  class="col-xs-8" ng-show="type=='1'">
+                <span>{{svnServerFlag | radioCheckOrNotFilter　}}</span>
+             </div>
+			</div>
+                <div class="form-group col-xs-12" style="height: 55px;" >
+                <div class="col-xs-4"  >
+                 <label>代码库名称：</label>
+                </div>
+                   <div class="col-xs-8" ng-show="type=='0'" style="width: 300px;" >
+                    <span   >{{sysName}}_</span>
+                    <input type="text" ng-pattern="/^[a-zA-Z0-9]*$/"  name="newrepoName" id="newrepoName"  ng-model="repo" ng-minlength="9-sysName.length>0?9-sysName.length:1" ng-maxlength="32" style="width:200px;height:30px;"  required>
+           			 <p class="error" ng-if="addSvnForm.newrepoName.$error.pattern && addSvnForm.newrepoName.$touched" style="color:#a10;">
+                代码库名称只能为英文字母或数字</p>
+           			 <p class="error" ng-if="(addSvnForm.newrepoName.$error.minlength ||
+addSvnForm.newrepoName.$error.maxlength) && addSvnForm.newrepoName.$touched" style="color:#a10;">
+                应输入的数据长度应该在{{9-sysName.length>0?9-sysName.length:1}} - {{32-sysName.length}}之间</p>
+                    <p class="error" ng-if="(addSvnForm.newrepoName.$error.required &&
+            addSvnForm.newrepoName.$touched) || (addSvnForm.newrepoName.$untouched && checkvalue)" style="color:#a10;">
+                代码库名称不能为空</p>
+                    <p class="error" ng-if="reposrepeat" style="color:#a10;">
+                代码库名称重复</p>
+                    </div>
+                    <div class="col-xs-8" ng-show="type=='1'">
+                    <span>{{sysName}}_{{repo}}</span>
+                    </div>
+                </div>
+</div>
+<div class="modal-footer" style="height:60px;">
+                <button type="button" class="btn btn-default" ng-click="close()">取消</button>
+                <button type="button" class="btn btn-primary" ng-click="addSvnCodeRepos(addSvnForm.$invalid)" ng-disabled="submit" >
+                  	  {{des}}
+                </button>
+</div>
+</form>
+</div>
+</div>	
+</div>

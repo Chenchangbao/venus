@@ -1,0 +1,71 @@
+<!--判斷是否是團隊人員-->
+<!-- 	<#assign isTechManager=0 /> -->
+<!-- 	<@udmp.IsTeamMember sysId='${system.sysId}' userName='${userName}' role="117,045"> -->
+<!-- 		<#assign isTechManager=1 /> -->
+<!-- 	</@udmp.IsTeamMember> -->
+<!--判斷是否有發佈包-->
+
+<div ng-if="packageList.length == 0">
+	<div ng-if="repos==null" class="content">
+		该系统尚无代码库，请先维护代码库信息再登记发布包。&nbsp;<a ng-if="hasPermissionMap[sysId]['7006'] !=null && hasPermissionMap[sysId]['7006']" ui-sref="CreateCodeRepository({sysId:sysId,tab:'CreateCodeRepository'})" ">点击维护代码库</a>
+<!-- 	  	 该系统尚无发布包，请联系一下角色维护发布包信息：技术总监、技术负责人。-->
+		</div> 
+	  	<div ng-if="repos.status=='112' " class="content ">正在努力为您初始化发布包，请您稍后刷新该页面查看发布包信息，或者在收到代码库创建成功的提醒邮件后，回平台查看发布包信息。</div>
+	  	<div ng-if="repos.status=='113' && repos.createSvnFlg !=4 " class="content ">正在努力为您初始化发布包，请您稍后刷新该页面查看发布包信息，或者在收到代码库创建成功的提醒邮件后，回平台查看发布包信息。</div>
+	  </div>
+<!-- 	<#if 	packageList?size==0  > -->
+<!-- 	 <#if isTechManager=0 > -->
+	   
+<!--      <#elseif  !repos  > -->
+<!--       该系统尚无代码库，请先维护代码库信息再登记发布包。&nbsp;<a href="${base}/repository/getReposPermission.htm?sysId=${system.sysId} " >点击维护代码库</a> -->
+<!--       無包，如果代码库申请中 -->
+<!--       <#elseif  repos.status == '112'  > -->
+	   
+<!-- 	  <!--無包，如果代码库申请，且創建中，技術負責人-->
+<!-- 	  <#elseif  repos.status == '113' && isTechManager!=0 && repos.createSvnFlg !=4  > -->
+<!-- 	   正在努力为您初始化发布包，请您稍后刷新该页面查看发布包信息，或者在收到代码库创建成功的提醒邮件后，回平台查看发布包信息。 -->
+<!-- 	  </#if> -->
+<!-- 	  </#if> -->
+<!-- 	  <#if (packageList?size>0) || (repos!=null && repos.status == '113' && isTechManager!=0 && repos.createSvnFlg==4 )> -->
+
+		
+		<div class="panel panel-default " ng-if="packageList.length>0 || (repos!=null && repos.status == '113' && repos.createSvnFlg
+		== 4)">
+		<!--         <h1 class="panel-title"><a href="#/workbench/system/{{sysId}}/package/add">创建应用包</a></h1> -->
+		<button type="submit" class="btn btn-default buttonRight" ui-sref="SystemPackageAdd" ng-if="hasPermissionMap[sys.sysId]['7007'] !=null && hasPermissionMap[sys.sysId]['7007']">创建应用包</button>
+		<div class="content">
+			<table class="table table-bordered table-hover">
+				<thead>
+					<tr>
+						<th>发布包名称</th>
+						<th>发布包类型</th>
+						<th>发布包功能类型</th>
+						<th>发布包功能简述</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="package in packageList">
+						<td>
+							{{package.packageName}}
+						</td>
+						<td>
+							{{package.packageType|packageFilter}}
+						</td>
+						<td>
+							<span ng-show="package.packageUseType !== '294'">{{package.packageUseType|packageUseFilter}}</span>
+							<span ng-show="package.packageUseType === '294'">{{package.packageUseTypeName}}</span>
+						</td>
+						<td>
+							{{package.packageDesc}}
+						</td>
+						<td>
+							<a href="javascript:void(0)" ng-click="updatePackage(sysId,package)" ng-if="hasPermissionMap[sys.sysId]['7007'] !=null && hasPermissionMap[sys.sysId]['7007']">编辑</a>
+							<!--                    <a href="#/workbench/system/{{sysId}}/package/add?packageId={{package.packageId}}">编辑</a> -->
+							<a href="javascript:void(0)" ng-click="delPackage(package,$index)" ng-if="hasPermissionMap[sys.sysId]['7007'] !=null && hasPermissionMap[sys.sysId]['7007']">删除</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>

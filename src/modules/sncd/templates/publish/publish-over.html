@@ -1,0 +1,39 @@
+<div class="modal fade in" ng-controller="publishDialogCtrl">
+	<div class="modal-dialog" style="width:500px">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" ng-click="close()"
+					data-dismiss="modal">
+					<span aria-hidden="true"><i class="suningicon">x</i></span><span
+						class="sr-only">Close</span>
+				</button>
+				<h4 class="modal-title" style="font-weight:bold;">结束发布</h4>
+			</div>
+			<div class="panel">
+				<div class="panel-body">
+					<div class="form-group">
+						<label class="col-sm-3 control-label">发布结果：</label>
+						<div class="col-sm-9">
+							<input type="radio" name="deployFlag" value="150" ng-model="deployResult">成功
+							<input type="radio" name="deployFlag" value="151" ng-model="deployResult">失败
+							<input type="radio" name="deployFlag" value="152" ng-model="deployResult">终止
+						</div>
+					</div>
+				</div>
+				<div class="panel-body">
+					<div class="form-group">
+						<label class="col-sm-3 control-label">备注：</label>
+						<div class="col-sm-9">
+							<textarea class="form-control" rows="5" placeholder="请输入备注信息" ng-model="coments"></textarea>
+						</div>
+					</div>
+				</div>
+			</div>
+			 <div class="modal-footer">
+                <button type="button" class="btn btn-primary " ng-click="deployOver()">确定</button>
+                <button type="button" class="btn btn-primary " ng-click="close()">取消</button>
+            </div>
+		</div>
+		
+	</div>
+</div>

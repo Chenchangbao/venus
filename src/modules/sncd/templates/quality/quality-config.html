@@ -1,0 +1,128 @@
+<div class="module-head paneltitle">
+	<div class="module-info">
+		<p class="title titlefont">中心级质量配置</p>
+	</div>
+</div>
+
+<div class="container-wrapper" width="1150px;">
+	<div class="panel panel-default">
+		<div class="panel-body">
+			<!--交付配置-->
+			<form name="versionJobForm" class="form-horizontal">
+				<div class="form-group">
+					<label class="col-sm-2 control-label" for="formGroupInputSmall"
+						style="width: 20%">中心：</label>
+					<div class="col-sm-3">
+						<select ng-model="current_option" required class="form-control"							
+							ng-options="org.orgId as org.orgName for org in orgs"
+							ng-change="getCQconfig(current_option)">
+							<option value="">--请选择 --</option>
+						</select> <!-- <label class="text-danger" ng-show="false">中心不可为空</label> -->
+					</div>
+				</div>
+				<div class="panel panel-noborder" ng-if="current_option!=null">
+						<div class="col-sm-8">
+							<div class="bottom10">
+								<span>代码静态检查</span> 
+							</div>
+							<table class="table table-bordered">
+								<thead>
+									<th item-width="50%">参数</th>
+									<th item-width="50%">指标</th>
+									<!-- <th item-width="34%">设为入口条件</th> -->
+								</thead>
+								<tbody>
+									<tr ng-repeat="item in centerQualityConfigBos" ng-show="item.paramKey=='BLOCKER_VIOLATIONS' || item.paramKey=='CRITICAL_VIOLATIONS' || item.paramKey=='MAJOR_VIOLATIONS'">
+										<td>{{item.paramName}}</td>
+									<td><span>{{item.isGreaterLess | greateLessFilter}}</span> <span ng-if="!staticEdit">{{item.paramValue}}</span>
+										<input type="text" class="width30" ng-if="staticEdit"
+										ng-model="item.paramValue"> <span>{{item.unit}}</span>
+									</td>
+									<!-- <td><input type="checkbox" ng-true-value="1"
+											ng-false-value="0" ng-model="item.isEntrance"></td> -->
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div class="col-sm-8">
+							<div class="bottom10">
+								<span>单元测试</span>
+							</div>
+							<table class="table table-bordered">
+								<thead>
+									<th item-width="50%">参数</th>
+									<th item-width="50%">指标</th>
+									<!-- <th item-width="34%">设为入口条件</th> -->
+								</thead>
+								<tbody>
+									<tr ng-repeat="item in centerQualityConfigBos2" ng-show="item.paramKey=='TEST_SUCCESS_DENSITY' || item.paramKey=='COVERAGE' || item.paramKey=='NEW_COVERAGE'">
+										<td>{{item.paramName}}</td>
+									<td><span>{{item.isGreaterLess | greateLessFilter}}</span> <span ng-if="!staticEdit">{{item.paramValue}}</span>
+										<input type="text" class="width30" ng-if="staticEdit"
+										ng-model="item.paramValue"> <span>{{item.unit}}</span>
+									</td>
+										<!-- <td><input type="checkbox" ng-true-value="1"
+											ng-false-value="0" ng-model="item.isEntrance"></td> -->
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div class="col-sm-8">
+							<div class="bottom10">
+								<span>蛙测</span> 
+							</div>
+							<table class="table table-bordered">
+								<thead>
+									<th item-width="50%">参数</th>
+									<th item-width="50%">指标</th>
+									<!-- <th item-width="34%">设为入口条件</th> -->
+								</thead>
+								<tbody>
+									<tr ng-repeat="item in centerQualityConfigBos3" ng-show="item.paramKey=='SCTS_SUCCESS_RATE' || item.paramKey=='SCTS_AUTO_RATE'">
+										<td>{{item.paramName}}</td>
+									<td><span>{{item.isGreaterLess | greateLessFilter}}</span> <span ng-if="!staticEdit">{{item.paramValue}}</span>
+										<input type="text" class="width30" ng-if="staticEdit"
+										ng-model="item.paramValue"> <span>{{item.unit}}</span>
+									</td>
+										<!-- <td><input type="checkbox" ng-true-value="1"
+											ng-false-value="0" ng-model="item.isEntrance"></td> -->
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div class="col-sm-8">
+							<div class="bottom10">
+								<span>安全扫描</span> 
+							</div>
+							<table class="table table-bordered">
+								<thead>
+									<th item-width="50%">参数</th>
+									<th item-width="50%">指标</th>
+									<!-- <th item-width="34%">设为入口条件</th> -->
+								</thead>
+								<tbody>
+									<tr ng-repeat="item in centerQualityConfigBos4" ng-show="item.paramKey=='TRACKER_HIGH_WARNINGS' || item.paramKey=='TRACKER_NORMAL_WARNINGS'">
+										<td>{{item.paramName}}</td>
+									<td><span>{{item.isGreaterLess | greateLessFilter}}</span> <span ng-if="!staticEdit">{{item.paramValue}}</span>
+										<input type="text" class="width30" ng-if="staticEdit"
+										ng-model="item.paramValue"> <span>{{item.unit}}</span>
+									</td>
+										<!-- <td><input type="checkbox" ng-true-value="1"
+											ng-false-value="0" ng-model="item.isEntrance"></td> -->
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					<div class="form-group">
+						<div class="col-sm-offset-3 col-sm-10">
+							<button class="btn btn-default" ng-if="!staticEdit && (null != roles && null != roles.ROLE_CENTER)" ng-click="editStatic()">修改指标</button>
+							<button ng-if="staticEdit" class="btn btn-default" ng-click="cancleEdit(current_option)">取消</button>
+							<button ng-if="staticEdit" class="btn btn-default" ng-click="changeStatic(current_option)">确认</button>
+						</div>
+					</div>				
+						
+				</div>
+			</form>
+		</div>
+	</div>
+</div>

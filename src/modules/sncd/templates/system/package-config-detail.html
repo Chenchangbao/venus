@@ -1,0 +1,245 @@
+<div class="panel fontcolor">
+	<div class="content" ng-if="showType == '3'">{{tips}}</div>
+	<div class="content" ng-if="showType == '1'">
+		
+		<div class="panel-body">
+			<table class="table table-hover" id="packagetable">
+
+				<thead>
+					<th width="10%"></th>
+					<th width="10%"></th>
+					<th width="10%"></th>
+					<th width="60%"></th>
+				</thead>
+				<tbody>
+					<tr>
+						<td colspan="4" style="border-top: 10px"><B>基本配置信息</B></td>
+					</tr>
+					<tr>
+
+						<td>构建类型:</td>
+						<td colspan="3">{{jenkinsConfigItem.packageType}}</td>
+					</tr>
+					<tr>
+						<td>JOB名称:</td>
+						<td colspan="3">{{jenkinsConfigItem.ciJobName}}</td>
+					</tr>
+					<tr>
+						<td>测试URL：</td>
+						<td colspan="3">{{jenkinsConfigItem.branchUrl}}</td>
+					</tr>
+
+					<tr>
+						<td>包存放地址：</td>
+						<td colspan="3">{{jenkinsConfigItem.packagePath}}</td>
+					</tr>
+					<tr>
+						<td colspan="4" style="border-top: 10px"><B>高级配置信息</B></td>
+					</tr>
+					<!-- gradle -->
+					<tr
+						ng-hide="jenkinsConfigItem && jenkinsConfigItem.packageType!='GRADLE'">
+						<td>GRADLE打包命令：</td>
+						<td colspan="3">{{jenkinsConfigItem.gradlebuildCmd}}</td>
+					</tr>
+					<tr
+						ng-hide="jenkinsConfigItem && jenkinsConfigItem.packageType!='GRADLE'">
+						<td>build文件地址：</td>
+						<td colspan="3">{{jenkinsConfigItem.gradlebuildFilePath}}</td>
+					</tr>
+					<!-- shell -->
+					<tr
+						ng-hide="jenkinsConfigItem && jenkinsConfigItem.packageType!='SHELL'">
+						<td>SHELL命令：</td>
+						<td colspan="3">{{jenkinsConfigItem.shellCmd}}</td>
+					</tr>
+
+					<!-- maven -->
+					<tr
+						ng-hide="jenkinsConfigItem && jenkinsConfigItem.packageType!='MAVEN'">
+						<td>MAVEN打包命令：</td>
+						<td colspan="3">{{jenkinsConfigItem.mavenCommand}}</td>
+					</tr>
+					<tr
+						ng-show="jenkinsConfigItem && jenkinsConfigItem.packageType!='ANT' && jenkinsConfigItem.parastat =='N'">
+						<td colspan="4">构建不依赖环境</td>
+					</tr>
+					<div
+						ng-show="jenkinsConfigItem  && jenkinsConfigItem.parastat =='Y'">
+						<tr ng-show="jenkinsConfigItem && jenkinsConfigItem.parastat =='Y'">
+						<td>环境配置：</td>
+						<td>环境类型</td>
+						<td>环境参数</td>
+						<td>参数说明</td>
+						</tr>
+						<tr ng-repeat="dev in jenkinsConfigItem.devList track by $index">
+							<td></td>
+							<td>开发环境</td>
+							<td>{{dev.paraInfo}}</td>
+							<td>{{dev.paraDescription}}</td>
+						</tr>
+						<tr ng-repeat="sit in jenkinsConfigItem.sitList track by $index">
+							<td></td>
+							<td>集成环境</td>
+							<td>{{sit.paraInfo}}</td>
+							<td>{{sit.paraDescription}}</td>
+						</tr>
+						<tr ng-repeat="pre in jenkinsConfigItem.preList track by $index">
+							<td></td>
+							<td>预生产环境</td>
+							<td>{{pre.paraInfo}}</td>
+							<td>{{pre.paraDescription}}</td>
+						</tr>
+						<tr ng-repeat="prd in jenkinsConfigItem.prdList track by $index">
+							<td></td>
+							<td>生产环境</td>
+							<td>{{prd.paraInfo}}</td>
+							<td>{{prd.paraDescription}}</td>
+						</tr>
+					</div>
+					<tr
+						ng-hide="jenkinsConfigItem && jenkinsConfigItem.packageType!='MAVEN'">
+						<td>pom文件地址：</td>
+						<td colspan="3">{{jenkinsConfigItem.pomPath}}</td>
+					</tr>
+					<!-- ant -->
+					<tr
+						ng-hide="jenkinsConfigItem && jenkinsConfigItem.packageType!='ANT'">
+						<td>shell命令：</td>
+						<td colspan="3">{{jenkinsConfigItem.shellCommend}}</td>
+					</tr>
+					<tr
+						ng-show="jenkinsConfigItem && jenkinsConfigItem.packageType=='ANT'">
+						<td>build文件地址：</td>
+						<td colspan="3">{{jenkinsConfigItem.buildPath}}</td>
+					</tr>
+					<tr
+						ng-show="jenkinsConfigItem && jenkinsConfigItem.packageType=='ANT'">
+						<td>target：</td>
+						<td colspan="3">{{jenkinsConfigItem.antTarget}}</td>
+					</tr>
+
+					
+					<tr
+						ng-show="jenkinsConfigItem && (jenkinsConfigItem.packageType=='SHELL' ||jenkinsConfigItem.packageType=='ANT')">
+						<td>编码：</td>
+						<td colspan="3">{{jenkinsConfigItem.code}}</td>
+					</tr>
+					<!-- pc -->
+					<tr
+						ng-hide="jenkinsConfigItem && jenkinsConfigItem.packageType!='PC'">
+						<td>环境配置：</td>
+						<td colspan="3"><span
+							ng-hide="jenkinsConfigItem && jenkinsConfigItem.parastat=='N' "><label>开发：{{jenkinsConfigItem.devEnvPath}}</br>
+								<label>集成：{{jenkinsConfigItem.sitEnvPath}}</br>
+									<label>预生产：</label>{{jenkinsConfigItem.preEnvPath}}</br>
+									<label>生产：</label>{{jenkinsConfigItem.prdEnvPath}}</span> <span
+							ng-hide="jenkinsConfigItem && jenkinsConfigItem.parastat =='Y'">构建不依赖环境</span>
+						</td>
+					</tr>
+					<tr
+						ng-hide="jenkinsConfigItem && jenkinsConfigItem.packageType!='PC'">
+						<td>数字签名（苏宁专用）：</td>
+						<td colspan="3">{{jenkinsConfigItem.signPath}}</td>
+					</tr>
+					<tr
+						ng-hide="jenkinsConfigItem && jenkinsConfigItem.packageType!='PC'">
+						<td>打包脚本路径：</td>
+						<td colspan="3">{{jenkinsConfigItem.packageShellPath}}</td>
+					</tr>
+
+					<tr
+						ng-hide="jenkinsConfigItem && jenkinsConfigItem.packageType!='PC'">
+						<td>修改包属性脚本路径：</td>
+						<td colspan="3">{{jenkinsConfigItem.mergePackagePath}}</td>
+					</tr>
+					<tr
+						ng-hide="jenkinsConfigItem && jenkinsConfigItem.packageType!='PC'">
+						<td>Microsoft Visual Studio版本:</td>
+						<td colspan="3">{{jenkinsConfigItem.mvStudio}}</td>
+					</tr>
+					<tr
+						ng-hide="jenkinsConfigItem && jenkinsConfigItem.packageType!='PC'">
+						<td>工程文件存放路径:</td>
+						<td colspan="3">{{jenkinsConfigItem.projectPath}}</td>
+					</tr>
+					<tr
+						ng-show="jenkinsConfigItem &&  (jenkinsConfigItem.packageType == 'MAVEN' ||( system.sysType!='4 ' && jenkinsConfigItem.packageType == 'ANT') )">
+						<td>JDK：</td>
+						<td colspan="3">{{jenkinsConfigItem.jdk}}</td>
+					</tr>
+					<tr class="form-group "
+						ng-show="jenkinsConfigItem && jenkinsConfigItem.packageType=='ANT' && system.sysType=='4' ">
+						<td>自定义参数：</td>
+						<td colspan="3">{{jenkinsConfigItem.properties}}</td>
+					</tr>
+					<tr class="form-group "
+						ng-show="jenkinsConfigItem && jenkinsConfigItem.packageType=='ANT' && system.sysType=='4' ">
+						<td>Linux版本：</td>
+						<td data-ng-repeat="os in jenkinsConfigItem.targetOses"
+							colspan="3"><input type="checkbox" id="{{os}}"
+							name="targetOses " ng-checked="true" disabled /> {{os}}</td>
+					</tr>
+
+				</tbody>
+				<!--<div class="form-group ">
+                <button type="submit " class="btn btn-default " ng-click="deletePackageConfig(jenkinsConfigItem)
+                        " ng-if="hasPermissionMap[sys.sysId][ '7008'] !=null && hasPermissionMap[sys.sysId][ '7008'] ">删除</button>
+                        <button type="submit " class="btn btn-default " ng-click="testPackageConfig(jenkinsConfigItem)
+                        " ng-if="hasPermissionMap[sys.sysId][ '7008'] !=null && hasPermissionMap[sys.sysId][ '7008'] ">打包测试</button>
+                        <button type="submit " class="btn btn-default " ng-click="editPackageConfig(); " ng-if="jenkinsConfigItem.packageType=='MAVEN'
+                        && hasPermissionMap[sys.sysId][ '7008'] !=null && hasPermissionMap[sys.sysId][ '7008'] ">修改</button>
+              
+            </div>-->
+			</table>
+			<div>
+			<button type="button" class="btn btn-warning packageBtn><a href="" ng-click="deletePackageConfig(jenkinsConfigItem)"
+				ng-if="hasPermissionMap[sys.sysId]['7008'] !=null && hasPermissionMap[sys.sysId]['7008']" ng-disabled="testing">删除</a></button>
+			<button type="button" class="btn btn-warning packageBtn><a href="" class="left20"
+				ng-click="testPackageConfig(jenkinsConfigItem)"
+				ng-if="hasPermissionMap[sys.sysId]['7008'] !=null && hasPermissionMap[sys.sysId]['7008']" ng-disabled="testing">打包测试</a></button>
+			<button type="button" class="btn btn-warning packageBtn> <a href="" class="left20" 
+				ng-click="editPackageConfig();"
+				ng-if="jenkinsConfigItem.packageType != 'PC' && hasPermissionMap[sys.sysId]['7008'] !=null && hasPermissionMap[sys.sysId]['7008']" ng-disabled="testing">修改</a>
+				</button>
+		   </div>
+			<table  class="table table-hover" id="lastPackageInfoTable">
+				<tbody>
+					<tr>
+						<td colspan="4" style="border-top: 10px"><b>最近一次打包记录</b></td>
+					</tr>
+					<tr>
+						<td style="background-color: #f4f4f4"><B>打包人</B></td>
+						<td style="background-color: #f4f4f4"><B>开始时间</B></td>
+						<td style="background-color: #f4f4f4"><B>日志地址</B></td>
+						<td style="background-color: #f4f4f4"><B>结果</B></td>
+					</tr>
+					<tr>
+						<td style="width:20%">{{lasthistory.buildUser}}</td>
+						<td style="width:20%">{{lasthistory.startTime|date:'yyyy-MM-dd HH:mm:ss'}}</td>
+						<td style="width:40%"><a href="{{jenkinsPath}}" target="_blank">{{jenkinsPath}}</a></td>
+						<td style="width:10%">{{lasthistory.buildFlg | buildFlagFilter}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<!--         <div class="top50 "> -->
+		<!--             <h3>最近一次打包记录：</h3> -->
+		<!--             <div class="form-group packagelog "> -->
+		<!--                 <p> -->
+		<!--                     <label class="font12 ">打包人：</label> -->
+		<!--                     <span>{{lasthistory.buildUser}}</span> -->
+		<!--                 </p> -->
+		<!--                 <p> -->
+		<!--                     <label class="font12 ">开始时间：</label> -->
+		<!--                     <span>{{lasthistory.startTime|date:'yyyy-MM-dd HH:mm:ss'}}</span> -->
+		<!--                 </p> -->
+		<!--                 <p> -->
+		<!--                     <label class="font12 ">结果：</label> -->
+		<!--                     <span>{{lasthistory.buildFlg | buildFlagFilter}}</span> -->
+		<!--                 </p> -->
+		<!--             </div> -->
+		<!--         </div> -->
+
+	</div>
+</div>

@@ -1,0 +1,4 @@
+<li ng-class="{'active': active, 'readonly': readonly}">
+  <a ng-click="gotoState($event)" ng-href="{{readonly ? '' : href}}"></a>
+  <div class="menu3-detail" ng-transclude></div>
+</li>

@@ -1,0 +1,71 @@
+<div class="module-head paneltitle">
+    <div class="module-info">
+        <p class="title titlefont">上线构件地址 -- {{branchInfo.branchName}}</p>
+        <p class="sub-title titlecolor"></p>
+    </div>
+</div>
+
+<div class="container-wrapper">
+    <div class="panel panel-default">
+       <table class="table table-bordered table-hover">
+       		<tr>
+				<td style="width:150px;">系统中文名称：</td>
+				<td style="width:200px;">{{system.sysCnname}}</td>
+				<td style="width:150px;">发布环境：</td>
+				<td>生产环境</td>
+			</tr>
+			<tr>
+				<td>系统英文名称：</td>
+				<td>{{system.sysEnname}}</td>
+				<td>环境参数：</td>
+				<td>PRD</td>
+			</tr>
+			<tr>
+				<td>分支URL：</td>
+				<td>{{branchInfo.branchUrl}}</td>
+				<td></td>
+				<td></td>
+			</tr>
+					
+		</table>
+        <div class="panel-body">
+        		<span>生产类型当前{{branchInfo.version}}版本的Revison：{{revision}} 构件列表   </span>
+				<a href="javascript:void(0)" ng-click="saveDeployReq()" style="position:absolute;right:50px;" ng-show="GrantedElementisShow" if-any-granted="ROLE_DEPLOYER">自动化发布</a>
+        </div>
+		
+		<table class="table table-bordered table-hover">
+			<thead>
+                    <tr>
+                        <th width="5%" style="text-align:center;">序号</th>
+                        <th width="15%" style="text-align:center;">应用包名</th>
+                        <th width="5%" style="text-align:center;">版本号</th>
+						<th width="10%" style="text-align:center;">环境类型</th>
+						<th width="10%" style="text-align:center;">环境参数</th>
+						<th width="10%" style="text-align:center;">是否被部署</th>
+						<th width="10%" style="text-align:center;">申请人</th>
+						<th width="10%" style="text-align:center;">创建时间</th>
+                        <th width="10%" style="text-align:center;">操作</th>
+                    </tr>
+                </thead>
+                <tbody ng-repeat="item in prdList">
+                    <tr>
+                        <td align="center">
+                            {{$index+1}}
+                        </td>
+                        <td align="center"><div ng-repeat="appItem in item.appName|inputSplitFilter"><a href="javascript:void(0)" ng-click="download({id:item.componentId,appName:appItem})">{{appItem}}</a></div></td>
+                        <td align="center">{{item.componentVersion}}</td> 
+                        <td align="center">{{item.envType|envTypeFilter}}</td>
+                        <td align="center"><span ng-if="item.envParam!=''">{{item.envParam}}</span><span ng-if="item.envParam==''">无</span></td>
+						<td align="center">{{item.isDeploy|isdeployFilter}}</td>
+						<td align="center">{{item.userName}}</td>
+						<td align="center">{{item.createTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                        <td align="center">
+                        	<a ui-sref="ComponentDetail({id:item.componentId})" >详情</a>
+							<a target="_blank" ng-if="item.appName!=null" ng-href="{{item.componentPath}}"> | FTP</a>
+                        </td>
+                    </tr>
+                </tbody>
+
+			</table>
+	</div>
+</div>

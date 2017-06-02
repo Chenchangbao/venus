@@ -1,0 +1,90 @@
+
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">解版</h3>
+	</div>
+	<div class="panel-body">
+<form class="form-horizontal" name="unfreezenForm">
+	<div class="form-group">
+        <label class="col-sm-2 control-label">一级中心：</label>
+        <div class="col-sm-6 log-user-select">{{version.orgName}}
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">系统名称：</label>
+        <div class=" log-user-select col-sm-6">
+            {{version.sysCnname}}
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">解版分支：</label>
+        <div class="log-user-select col-sm-6">
+           {{version.branchName}}
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">解版人：</label>
+        <div class="  log-user-select col-sm-6">
+            {{userName}}
+        </div>
+    </div>
+<!--     <div class="form-group"> -->
+<!--         <label class="col-sm-2 control-label">解版责任人：</label> -->
+<!--         <div class="col-sm-6"> -->
+<!--             <input class="form-control" type="text"  placeholder="解版责任人" ng-model="unfreezen.connactUser" required="required"> -->
+<!--         </div> -->
+<!--     </div> -->
+    
+     <div class="form-group" ng-repeat="userL in userLable">
+					<label for="user" class="col-sm-2 control-label"><i style="color: red">*</i>{{userL.name}}：</label>
+					<div class="log-user-select col-sm-6">
+						<input type="input" class="form-control" id="user" required="required" AUTOCOMPLETE="off"
+							ng-model="userL.model.value" data-toggle="dropdown"
+							aria-haspopup="true" aria-expanded="true"
+							ng-change="queryByUser($index)" placeholder="请输入姓名或工号"
+							ng-blur="getUser($index)"> <span
+							class="glyphicon glyphicon-chevron-down form-control-feedback"
+							style="display: none;" aria-hidden="true"></span>
+						<ul class="dropdown-menu" aria-labelledby="user"
+							style="overflow: hidden;">
+							<li
+								ng-repeat="user in userList|filterEmpty:userL.model.value|filter:userL.model.value|numberLimit:20">
+								<a href="" ng-mousedown="selectUser(user,$parent.$index)"
+								sn-tooltip='{{user}}' ng-show="user.length > 35">{{user.substring(0,35)+'...'}}</a>
+								<a href="" ng-mousedown="selectUser(user,$parent.$index)"
+								ng-show="user.length <= 35">{{user}}</a>
+							</li>
+							<li></li>
+						</ul>
+					</div>
+				</div>
+    
+    <div class="form-group">
+        <label class="col-sm-2 control-label"><i style="color: red">*</i>解版原因：</label>
+        <div class="col-sm-6 log-user-select">
+            <select class="form-control" ng-model="unfreezen.unfrezenReason" required="required" ng-options="reason.id as  reason.reasonDesc for reason in unfreezenReasons">
+            	<option value="">请选择解版原因</option>
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label"><i style="color: red">*</i>解版问题简述：</label>
+        <div class="col-sm-6 log-user-select">
+            <textarea class="form-control" type="text"  placeholder="解版问题简述" required="required" ng-model="unfreezen.problemDesc"></textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label"><i style="color: red">*</i>读写人员：</label>
+        <div class="col-sm-6 log-user-select">
+            <div class="optionedUsers" filter-List-Input option="newrwUsers"></div>
+           <p class="error" ng-if="!rwinfo&&newrwUsers.pickedList.length == 0" style="color:#a10;">
+                读写人员信息不能为空</p>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10" style="height:136px;">
+            <button type="submit" class="btn btn-default" ng-click="unfreezenVersion()" ng-if="hasPermissionMap['7012'] !=null && hasPermissionMap['7012']">确定</button>
+        </div>
+    </div>
+</form>
+</div>

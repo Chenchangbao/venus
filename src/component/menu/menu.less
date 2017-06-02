@@ -1,0 +1,219 @@
+@import (reference) '../../business/style/uxc.less';
+
+.sn-menu-item, .sn-menu-item2, .sn-menu-item3 {
+  > a {
+    cursor: pointer
+  }
+
+  &.readonly > a {
+    cursor: default;
+    color: @font-disabled-color !important;
+  }
+}
+
+.sn-menu.horizontal {
+  .sn-menu-item {
+    > a {
+      > i.fa {
+        display: none;
+      }
+      > t {
+        font-size: @font-size-base;
+      }
+    }
+    &.dropdown {
+      &:hover ul.dropdown-menu {
+        visibility: visible;
+      }
+      ul.dropdown-menu {
+        box-shadow: @box-boxshadow;
+        border-radius: 0;
+        padding: 26px 54px 54px;
+        display: flex;
+        visibility: hidden;
+
+        .sn-menu-item2 {
+          min-width: 100px;
+          & + li {
+            margin-left: 40px;
+          }
+          > a {
+            font-weight: 700;
+            color: @font-base-color;
+            padding-left: 0;
+            &:hover, &.active {
+              background: none;
+            }
+            i.fa {
+              display: none;
+            }
+          }
+          &.active > a {
+            background: inherit;
+            color: @brand-primary;
+          }
+          > hr {
+            margin: 10px 0 0;
+          }
+          > ul {
+            list-style: none;
+            margin-top: 38px;
+            padding-left: 0;
+
+            li + li {
+              margin-top: 22px;
+            }
+          }
+
+          .sn-menu-item3 {
+            > a {
+              white-space: nowrap;
+              color: @font-title-color;
+            }
+            
+            &.active > a {
+              color: @brand-primary;
+            }
+
+            > .menu3-detail {
+              color: @font-disabled-color;
+              font-size: @font-size-small;
+            }
+          }
+        }
+      }
+
+      &.vertical ul.dropdown-menu {
+        @dropdownWidth: 160px;
+        padding: 30px 0px 26px 30px;
+        background: #eee;
+        width: @dropdownWidth;
+        display: block;
+        
+        .sn-menu-item2 {
+          min-width: 80px;
+          & + li {
+            margin-left: 0;
+            padding-top: 20px;
+          }
+          > a {
+            font-weight: 100;
+            padding-right: 0;
+            color: @font-title-color;
+            i.fa {
+              display: inline-block;
+              margin-top: 2px;
+              float: right;
+            }
+          }
+          > hr {
+            display: none;
+          }
+          > ul {
+            list-style: none;
+            display: none;
+            position: absolute;
+            background: #fff;
+            top: 0;
+            left: @dropdownWidth - 2;
+            margin: 0;
+            padding: 30px;
+            min-width: @dropdownWidth*2;
+          }
+
+          &.active{
+            background: inherit;
+            > a {
+              background: inherit;
+              color: @brand-primary;
+            }
+            > ul {
+              box-shadow: @box-boxshadow;
+              display: block;
+            }
+          } 
+        }
+      }
+    }
+  }
+  .right-align.dropdown ul.dropdown-menu {
+    right: 0;
+    left: auto;
+  }
+}
+
+.sn-menu.vertical {
+  > .navbar-menu > ul.nav.navbar-nav {
+    float: none;
+    > .sn-menu-item {
+      display: list-item;
+      float: none;
+      > a {
+        > i.fa-angle-down {
+          position: relative;
+          right: -2px;
+        }
+        > t > i:first-child {
+          width: 20px;
+          vertical-align: middle;
+        }
+        padding-top: 10px;
+        padding-bottom: 10px;
+        color: @font-title-color;
+        &:hover {
+          background: @panel-item-hover;
+        }
+      }
+      &.active > a {
+        > i {
+          position: relative;
+          // right: -3px;
+          // &.fa-angle-down {
+          //   right: -5px;
+          // }
+        }
+        color: @brand-primary;
+        border-right: 3px solid @brand-primary;
+      }
+      &.active.hasChildren > a {
+        border-right: none;
+      }
+      > ul {
+        display: none;
+        padding: 0;
+        list-style: none;
+        > .sn-menu-item2 {
+          > hr {
+            display: none;
+          }
+          > a {
+            padding: 10px 15px 10px 35px;
+            display: block;
+            > i.fa.fa-angle-right {
+              display: none;
+            }
+            color: @font-text-color;
+            &:hover {
+              background: @panel-item-hover;
+            }
+          }
+          &.active > a {
+            color: @brand-primary;
+            border-right: 3px solid @brand-primary;
+          }
+          &.active.hasChildren > a {
+            border-right: none;
+          }
+        }
+
+        > ul {
+          display: none;
+        }
+      }
+      &.open > ul {
+        display: block;
+      }
+    }
+  }
+  
+}

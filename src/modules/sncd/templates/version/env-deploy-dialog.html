@@ -1,0 +1,31 @@
+<div class="modal fade in" ng-controller="EnvListDialogCtrl">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" ng-click="deployClose()"
+					data-dismiss="modal">
+					<span aria-hidden="true"><i class="suningicon">x</i></span><span
+						class="sr-only">Close</span>
+				</button>
+
+				<h4 class="modal-title">上线构建地址:</h4>
+			</div>
+			 <div class="container-wrapper">
+		        <div class="panel panel-default">
+		           
+			        <div class="panel-body">
+			        	请选择生产环境：
+						<select id="selectDetectUnit" class="form-control" style="width:400px;margin-top:-25px;margin-left :110px;" ng-model="envId" ng-change="envDeployChange()">
+						        <option value="">请选择</option>
+							<option ng-repeat="envPrd in envPrdList" value="{{envPrd.envId}}">{{envPrd.envName}}</option>
+						</select>
+						<div>{{envDeployPrdPath}}
+							<button class="btn btn-default" ng-if="envDeployPrdPath!=undefined" clip-copy="genDeployPackageURL(item)" clip-click="clipCopyDeployPath()">复制</button>
+						</div>
+		        	</div>
+					
+		        </div>
+			</div>
+		</div>
+	</div>
+</div>

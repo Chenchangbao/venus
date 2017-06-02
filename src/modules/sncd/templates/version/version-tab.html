@@ -1,0 +1,14 @@
+
+<div class="module-head ng-scope paneltitle headtitle">
+    <div >
+        <p class="title"></p>
+<!--         <p class="sub-title">提供系统相关信息及功能的配置</p> -->
+    </div>
+    <ul class="nav nav-tabs newtab">
+        <li ng-class="{'active': selectedTab =='VersionProcess'}"><a class="link-cursor" ng-click="selectTab('VersionProcess')">进行中</a></li>
+        <li ng-class="{'active': selectedTab =='VersionFinish'}"><a class="link-cursor" ng-click="selectTab('VersionFinish')">已结束</a></li>
+    </ul>
+</div>
+
+<div class="container-wrapper" ui-view></div>
+

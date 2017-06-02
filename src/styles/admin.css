@@ -1,0 +1,31 @@
+body {
+    font-family: Microsoft Yahei,Hiragino Sans GB,WenQuanYi Micro Hei,sans-serif;
+}
+
+
+ul.toolbar {
+    margin: 0;
+    padding: 0;
+    display: block;
+}
+
+ul.toolbar>li {
+    float: left;
+    display: list-item;
+    list-style: none;
+    margin: 0 5px 10px 0;
+}
+
+.log-user-select {
+  position: relative;
+  display: inline-block;
+  margin-left: 10px;
+  width: 300px;
+}
+.log-user-select input:focus + span + ul,
+.log-user-select:active ul {
+  display: block;
+  right: 0;
+  left: 0;
+  top: 90%;
+}

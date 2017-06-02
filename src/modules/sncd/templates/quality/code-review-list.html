@@ -1,0 +1,111 @@
+<div class="module-head">
+    <div class="module-info">
+        <p class="title">我的质量</p>
+        <p class="sub-title">{{branch.branchName}}代码评审请求列表</p>
+    </div>
+</div>
+
+<div class="container-wrapper">
+	<div class="panel-body" style="padding:0px;">
+	   	 <a  class="form-group pull-right" ng-if="branch.branchId!=0" ui-sref="QualityCenter({sysId:formData.sysId,type:4})">返回</a>
+   	     <a  class="form-group pull-right" ng-if="branch.branchId==0" ui-sref="QualityCenter()">返回</a>
+   	</div>
+    <div class="panel panel-default">
+        <table class="table table-bordered table-hover">
+	        <th>【基本信息】</th>
+	        <tr>
+	        	<td>分支版本号</td>
+	        	<td>{{branch.version}}</td>
+	        	<td>分支路径</td>
+	        	<td>{{branch.branchUrl}}</td>
+	        	<td>待评审总数</td>
+	        	<td>{{notReviewNumbers}}</td>
+	        	<td>已评审总数</td>
+	        	<td>{{haveReviewedNumbers}}</td>
+	        </tr>
+       </table>
+    </div>
+    
+    <div class="panel panel-default" >
+	  	<div class="search-con" style="padding: 15px 0;">
+	       <form class="form-inline">
+	       <div class="form-group">
+		        <select class="form-control" ng-model="formData.status" ng-options="a.status as a.name for a in states"> <option value="">请选择评审状态</option></select>
+	       </div>
+		        
+		          <div class="form-group" ng-repeat="userL in userLable">
+		          <label for="user" ></label> 
+			      <div class="log-user-select"  style="width: 170px" >
+			        <input style="width: 150px" type="input" class="form-control" id="user" ng-model="userL.model.value" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" ng-change="queryByUser($index)" placeholder="{{userL.name}}" ng-blur="getUser($index)"  autocomplete="off"  disableautocomplete>
+			        <span class="glyphicon glyphicon-chevron-down form-control-feedback" style="display:none;" aria-hidden="true"></span>
+			        <ul class="dropdown-menu" aria-labelledby="user" style="overflow:hidden;" >
+			          <li ng-repeat="user in userList|filterEmpty:userL.model.value|filter:userL.model.value|numberLimit:20">
+			            <a href="" ng-mousedown="selectUser(user,$parent.$index)" sn-tooltip='{{user}}' ng-show="user.length > 35">{{user.substring(0,35)+'...'}}</a>
+			            <a href="" ng-mousedown="selectUser(user,$parent.$index)" ng-show="user.length <= 35">{{user}}</a>
+			          </li>
+			          <li></li>
+			        </ul>
+			      </div>
+			      </div>
+			    
+		          <div class="form-group">
+		       	<div ng-model="formData.startTime"  sn-datetimepicker show-time="false"  max-date="formData.endTime" placeholder="请选择开始时间"> </div>
+		    	</div>
+		    	  <div class="form-group">
+		    	<div ng-model="formData.endTime"  sn-datetimepicker show-time="false"  min-data="formData.startTime" placeholder="请选择结束时间"></div>
+		        </div>
+		        
+		        <button type="submit" class="btn btn-default" ng-click="searchReview()">搜索</button>
+	        </form>
+	      </div>
+        <div class="panel-body" ng-repeat="reviewRequest in reviewRequestList">
+            <table class="table table-align-center">
+                <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>摘要<span style="color:DarkCyan">（点击链接可查看详情）</span></th>
+                    <th>提交人</th>
+                    <th>评审人</th>
+                    <th>创建时间</th>
+                    <th>状态</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                	<td>
+                   		 {{$index+1}}  
+                    </td>
+                    <td>
+                    	<a href="{{reviewRequest.absoluteUrl}}">{{reviewRequest.summary}}</a>
+                    </td>
+                    <td>
+                    	{{reviewRequest.submitter.username}}
+                    </td>
+                    <td>
+                    	<span ng-repeat="reviewer in reviewRequest.targetPeopleList ">
+                   			{{reviewer.username}}
+                    	</span>
+                    </td>
+                    <td>
+                   	 	{{reviewRequest.timeAdded|date:'yyyy-MM-dd HH:mm:ss'}}  {{reviewRequest.status}} {{reviewRequest.shipitCount}}
+                    </td>
+                    <td ng-if="reviewRequest.status=='P' && reviewRequest.shipitCount==0">
+                   	 	待评审
+                    </td>
+                     <td ng-if="reviewRequest.status=='D' || reviewRequest.status=='S' || (reviewRequest.shipitCount=='P' && reviewRequest.shipitCount>0)">
+                   	 	已评审
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+   
+
+   
+    <footer class="ft-pager clearfix">
+        <div sn-pager itemsPerPage="{{pager.pageSize}}" totalItems="{{pager.totalCount}}" listSize="{{pager.pageSize}}"
+             class="text-right">
+        </div>
+    </footer>
+</div>

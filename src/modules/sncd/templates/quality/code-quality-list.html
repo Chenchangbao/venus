@@ -1,0 +1,327 @@
+<div class="module-head">
+    <div class="module-info">
+        <p class="title">我的质量</p>
+        <p class="sub-title">优先展示进行中版本的质量，已结束的排在后面</p>
+    </div>
+</div>
+
+<div class="container-wrapper">
+	<div class="panel-body" style="padding:0px;">
+	   	 <a  class="form-group pull-right" ng-if="branchId!=0" ui-sref="QualityCenter({sysId:formData.sysId,type:4})">返回</a>
+   	     <a  class="form-group pull-right" ng-if="branchId==0" ui-sref="QualityCenter()">返回</a>
+   	</div>
+   <div class="panel panel-default">
+        <table class="table table-bordered table-hover">
+	        <th>【基本信息】</th>
+	        <tr>
+	        	<td>分支版本号</td>
+	        	<td>{{branchBuildInfoBo.branchversion}}</td>
+	        	<td>定时计划</td>
+	        	<td>{{branchBuildInfoBo.frequencyRate|buildFilter}}</td>
+	        	<td>上次成功构建结果</td>
+	        	<td ng-if="branchBuildInfoBo.groupId!=null">
+	        		<span ng-if="branchBuildInfoBo.artifactId!=null && branchBuildInfoBo.artifactId!=''">
+	        			<a href="{{sonarUrl}}{{branchBuildInfoBo.groupId}}:{{branchBuildInfoBo.artifactId}}:{{branchBuildInfoBo.branchversion}}" target="_blank">查看</a>
+					</span>
+					<span ng-if="branchBuildInfoBo.artifactId==null || branchBuildInfoBo.artifactId==''">
+	        			<a href="{{sonarUrl}}{{branchBuildInfoBo.groupId}}:{{branchBuildInfoBo.branchversion}}" target="_blank">查看</a>
+					</span>
+				</td>
+				<td ng-if="branchBuildInfoBo.groupId==null">无成功构建记录</td>
+	        </tr>
+	        <tr >
+	        	<td>分支路径</td>
+	        	<td>{{branchBuildInfoBo.branchUrl}}</td>
+	        </tr>
+       </table>
+    </div>
+    
+    <div class="panel panel-default" ng-if="branchId!=0">
+        <div class="panel-heading">
+            <h3 class="panel-title">基线(trunk)质量参数
+            </h3>
+        </div>
+        <div class="panel-body" ng-repeat="qua in sonarBaseBoList">
+            <table class="table table-align-center">
+                <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>构建时间</th>
+                    <th>构建结果</th>
+                    <th>质量趋势</th>
+                    <th>代码行数</th>
+                    <th>文件数</th>
+                    <th>重复率</th>
+                    <th>千行bug率</th>
+                    <th>技术债务率</th>
+                    <th>注释率</th>
+                    <th>阻碍问题</th>  
+                    <th>严重问题</th>
+                    <th>主要以上问题量</th>    
+                    <th>问题总数量</th>
+                    <th>技术债务</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                	<td>
+                   		 {{$index+1}}  
+                    </td>
+                    <td>
+                    	{{qua.buildEndTime|date:'yyyy-MM-dd HH:mm:ss'}}
+                    </td>
+                    <td>
+                    	{{qua.buildResult|buildResultFilter}}
+                    </td>
+                    <td>
+                    	{{qua.permillagetBugTrend}}
+                    </td>
+                    <td>
+                   	 	{{qua.codeLines||"0"}}
+                    </td>
+                     <td>
+                        {{qua.filesNum||"0"}}
+                    </td>
+                     <td>
+                        {{qua.repetRate||"0"}}
+                    </td>
+                    
+                    <td>
+                        {{qua.permillageBugRate}}
+                    </td>
+                    <td>
+                         {{qua.technicalDebtRate}}
+                    </td>
+                    <td>
+                        {{qua.commentRate}} 		
+                    </td>
+                    <td>
+                        {{qua.blockerViolations}}
+                    </td>
+                    <td>
+                        {{qua.criticalViolations}}
+                    </td>
+                    <td>
+                        {{qua.majoronViolations||"0"}}
+                    </td>
+                    <td>
+                        {{qua.violations||"0"}}
+                    </td>
+                      <td>
+                        {{qua.technicalDebt||"0"}}
+                    </td>
+                      <td>
+                      	<a href="{{jenkinsUrl}}job/{{qua.jobName}}/{{qua.buildNumber}}/console" target="_blank"">日志查看</a> &nbsp;
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="panel panel-default"  >
+     	<div class="panel-heading">
+            <h3 class="panel-title" ng-if="branchId!=0">【分支构建质量列表】代码质量趋势为构建分支与基线主要以上问题数比较获得
+            </h3>
+            <h3 class="panel-title" ng-if="branchId==0">【主干构建质量列表】代码质量趋势为主干与上次构建主要以上问题数比较获得
+            </h3>
+        </div>
+        <div class="panel-body" ng-repeat="qua in quaList track by $index">
+            <table class="table table-align-center">
+                <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>构建时间</th>
+                    <th>构建结果</th>
+                    <th>质量趋势</th>
+                    <th>代码行数</th>
+                    <th>文件数</th>
+                    <th>重复率</th>
+                    <th>千行bug率</th>
+                    <th>技术债务率</th>
+                    <th>注释率</th>
+                    <th>阻碍问题</th>  
+                    <th>严重问题</th>
+                    <th>主要以上问题量</th>    
+                    <th>问题总数量</th>
+                    <th>技术债务</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-if="qua.buildResult=='02' ||  qua.buildResult=='2'">
+                	<td>
+                   		 {{$index+1}}  
+                    </td>
+                    <td>
+                    	{{qua.buildEndtime|date:'yyyy-MM-dd HH:mm:ss'}}
+                    </td>
+                    <td>
+                    	{{qua.buildResult|buildResultFilter}}
+                    </td>
+                    <td>
+                    	——
+                    </td>
+                    <td>
+                   	 	——
+                    </td>
+                     <td>
+                       ——
+                    </td>
+                     <td>
+                        ——
+                    </td>
+                    
+                    <td>
+                       ——
+                    </td>
+                    <td>
+                        ——
+                    </td>
+                    <td>
+                        —— 		
+                    </td>
+                    <td>
+                        ——
+                    </td>
+                    <td>
+                        ——
+                    </td>
+                    <td>
+                       ——
+                    </td>
+                    <td>
+                        ——
+                    </td>
+                      <td>
+                       ——
+                    </td>
+                    <td ng-if="qua.logFlag=='1'">
+                      <a href="javascript:void(0);" ng-click="pushQuaList($index,qua.sonarBaseId)">基线查看</a>
+                    </td>
+                    <td ng-if="qua.logFlag==null">
+                    	<a ng-if="qua.buildNumber!=null && branchId ==0 && $index<5 " href="{{jenkinsUrl}}job/{{qua.jobName}}/{{qua.buildNumber}}/console" target="_blank">日志查看</a>
+                    	<a ng-if="qua.buildNumber!=null  && branchId !=0" href="{{jenkinsUrl}}job/{{qua.jobName}}/{{qua.buildNumber}}/console" target="_blank">日志查看</a>
+                     	<a ng-if="branchId!=0" href="javascript:void(0);" ng-click="pushQuaList($index,qua.sonarBaseId)">基线查看</a>
+                    </td>
+                </tr>
+                
+                 <tr ng-if="qua.buildResult=='01' ||  qua.buildResult=='1'">
+                	<td>
+                   		 {{$index+1}}  
+                    </td>
+                    <td>
+                    	{{qua.buildEndtime|date:'yyyy-MM-dd HH:mm:ss'}}
+                    </td>
+                    <td>
+                    	{{qua.buildResult|buildResultFilter}}
+                    </td>
+                    <td>
+                    	{{qua.permillagetBugTrend}}
+                    </td>
+                    <td>
+                   	 	{{qua.codeLines}}
+                    </td>
+                     <td>
+                        {{qua.filesNum}}
+                    </td>
+                     <td>
+                        {{qua.repetRate}}
+                    </td>
+                    
+                    <td>
+                        {{qua.permillageBugRate}}
+                    </td>
+                    <td>
+                         {{qua.technicalDebtRate}}
+                    </td>
+                    <td>
+                        {{qua.commentRate}} 		
+                    </td>
+                    <td>
+                        {{qua.blockerViolations}}
+                    </td>
+                    <td>
+                        {{qua.criticalViolations}}
+                    </td>
+                    <td>
+                        {{qua.majoronViolations}}
+                    </td>
+                    <td>
+                        {{qua.violations}}
+                    </td>
+                      <td>
+                        {{qua.technicalDebt}}
+                    </td>
+                    <td ng-if="qua.logFlag=='1'">
+                      <a href="javascript:void(0);" ng-click="pushQuaList($index,qua.sonarBaseId)">基线查看</a>
+                    </td>
+                    <td ng-if="qua.logFlag==null">
+                    	<a ng-if="qua.buildNumber!=null && branchId ==0 && $index<5 " href="{{jenkinsUrl}}job/{{qua.jobName}}/{{qua.buildNumber}}/console" target="_blank">日志查看</a>
+                    	<a ng-if="qua.buildNumber!=null  && branchId !=0" href="{{jenkinsUrl}}job/{{qua.jobName}}/{{qua.buildNumber}}/console" target="_blank">日志查看</a>
+                     	<a ng-if="branchId!=0" href="javascript:void(0);" ng-click="pushQuaList($index,qua.sonarBaseId)">基线查看</a>
+                    </td>
+                  
+                    </tr>
+                    <tr ng-if="(formData.indexInfo==$index) && (formData.flag==1)" >
+	                   	 		<td>
+			                    </td>
+			                    <td>
+			                    	{{sonarBase.buildEndtime|date:'yyyy-MM-dd HH:mm:ss'}}
+			                    </td>
+			                    <td>
+			                    	{{sonarBase.buildResult|buildResultFilter}}
+			                    </td>
+			                    <td>
+			                    	{{sonarBase.permillagetBugTrend}}
+			                    </td>
+			                    <td>
+			                   	 	{{sonarBase.codeLines}}
+			                    </td>
+			                     <td>
+			                        {{sonarBase.filesNum}}
+			                    </td>
+			                     <td>
+			                        {{sonarBase.repetRate}}
+			                    </td>
+			                    
+			                    <td>
+			                        {{sonarBase.permillageBugRate}}
+			                    </td>
+			                    <td>
+			                         {{sonarBase.technicalDebtRate}}
+			                    </td>
+			                    <td>
+			                        {{sonarBase.commentRate}} 		
+			                    </td>
+			                    <td>
+			                        {{sonarBase.blockerViolations}}
+			                    </td>
+			                    <td>
+			                        {{sonarBase.criticalViolations}}
+			                    </td>
+			                    <td>
+			                        {{sonarBase.majoronViolations}}
+			                    </td>
+			                    <td>
+			                        {{sonarBase.violations}}
+			                    </td>
+			                      <td>
+			                        {{sonarBase.technicalDebt}}
+			                    </td>
+			                    <td>
+			                      <a href="javascript:void(0);" ng-click="hideQuaList($index+1)">隐藏基线</a>
+			                    </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+   
+    <footer class="ft-pager clearfix">
+        <div sn-pager itemsPerPage="{{pager.pageSize}}" totalItems="{{pager.totalCount}}" listSize="{{pager.pageSize}}"
+             class="text-right">
+        </div>
+    </footer>
+</div>

@@ -1,0 +1,138 @@
+
+<div class="panel panel-default">
+    <div class="panel-body">
+      <ul class="nav nav-tabs">
+        <li ng-class="{'active': selectedTab=='unit'}"><a ng-class="{'active2': selectedTab=='unit'}" ng-click="selectTab('unit');showCheckResult()">单元测试</a></li>
+        <li ng-class="{'active': selectedTab=='staticCheck'}"><a ng-class="{'active2': selectedTab=='staticCheck'}"  ng-click="selectTab('staticCheck');showCheckResult()">静态检查</a></li>
+        <li ng-class="{'active': selectedTab=='security'}"><a  ng-class="{'active2': selectedTab=='security'}"  ng-click="selectTab('security');showCheckResult()">安全扫描</a></li>
+        <li ng-class="{'active': selectedTab=='scts'}"><a  ng-class="{'active2': selectedTab=='scts'}"  ng-click="selectTab('scts');showCheckResult();">蛙测</a></li>
+    </ul>
+    
+    
+      <form class="form-horizontal" >
+				<div class="panel panel-noborder">
+					<ul class="nav nav-tabs nav-new" ng-show="selectedTab!='scts' && selectedTab!='security'">
+						<li ng-class="{'active': selectedTab2=='sit'}"><a
+							ng-class="{'active2': selectedTab2=='sit'}" 
+							ng-click="selectTab2('sit');showCheckResult()">SIT</a></li>
+						<li ng-class="{'active': selectedTab2=='pre'}"><a
+							ng-class="{'active2': selectedTab2=='pre'}"
+							ng-click="selectTab2('pre');showCheckResult() ">PRE</a></li>
+						<li ng-class="{'active': selectedTab2=='prd'}"><a
+							ng-class="{'active2': selectedTab2=='prd'}"
+							ng-click="selectTab2('prd');showCheckResult() ">PRD</a></li>
+					</ul>
+					<ul class="nav nav-tabs nav-new"  ng-show="selectedTab=='scts'||selectedTab=='security'" >
+						<li ng-repeat="item in envList" 
+							ng-class="{'active': selectedTab2==item.envId}"><a
+							ng-class="{'active2':selectedTab2==item.envId}" 
+							ng-click="selectTab2(item.envId);showCheckResult(item.envId,item.envType)">{{item.envName}}</a>
+						</li>
+					</ul>
+					<div>
+						<div class="col-sm-12" ng-if="flag==true">
+							<table class="table table-bordered"  ng-show="selectedTab!='scts' && selectedTab!='security'">
+								<thead>
+									<th >指标名称</th>
+									<th >基础阀值</th>
+									<th >当前质量</th>
+									<th >指标单位</th>
+									<th >检查项</th>
+									<th >结果</th>
+								</thead>
+								<tbody >
+									<tr ng-repeat="item in vqTrendInfos">
+										<td>{{item.paramName}}</td>
+										<td>{{item.beCompareValue}}</td>
+										<td>{{item.paramValue || '无'}}</td>
+										<td>{{item.unit}}</td>
+										<td ng-if="item.isEntrance==1" style="color:red">是</td>
+										<td ng-if="item.isEntrance==0">否</td>
+										<td ng-if="item.vqualityTrend==2" style='color:block'>←→</td>
+										<td ng-if="item.vqualityTrend==1"><span ng-if="item.isGreaterLess==1" style='color:red'>↓</span><span ng-if="item.isGreaterLess==2" style='color:blue'>↓</span></td>
+										<td ng-if="item.vqualityTrend==0"><span ng-if="item.isGreaterLess==1" style='color:blue'>↑</span><span ng-if="item.isGreaterLess==2" style='color:red'>↑</span></td>
+									</tr>
+								</tbody>
+							</table>
+							
+							<table class="table table-bordered"  ng-show="selectedTab=='scts' ">
+								<span ng-if="selectedTab=='scts'" >检查结果：{{message||"执行成功"}},蛙测报告url:<a href="{{reportUrl}}" target="_blank">{{reportUrl}}</a></span>
+								<thead>
+									<th >包名称</th>
+									<th >包类型</th>
+									<th >终端类型</th>
+									<th >测试类型</th>
+									<th >指标名称</th>
+									<th >指标值</th>
+									<th >指标单位</th>
+								</thead>
+								<tbody >
+									<tr ng-repeat="item in deliveryRecords" ng-show='!message'>
+										<td>{{item.packageName}}</td>
+										<td ng-if="item.packageUseType!='294'">{{item.packageUseType|packageUseFilter}}</td>
+										<td ng-if="item.packageUseType=='294'">{{item.packageUseTypeName}}</td>
+										<td>{{item.terminalType}}</td>
+										<td>{{item.testType|testTypeFilter}}</td>
+										<td>{{item.paramName}}</td>
+										<td>{{item.paramValue ||"0"}}</td>
+										<td>{{item.unit}}</td>
+									</tr>
+								</tbody>
+							</table>
+							
+							<table class="table table-bordered"  ng-show="selectedTab=='security'">
+								<span ng-if="selectedTab=='security'" >检查结果：{{message||"执行成功"}}</span>
+								<thead>
+									<th >包名称</th>
+									<th >包类型</th>
+									<th >指标名称</th>
+									<th >指标值</th>
+									<th >指标单位</th>
+								</thead>
+								<tbody >
+									<tr ng-repeat="item in deliveryRecords" ng-show='!message'>
+										<td>{{item.packageName}}</td>
+										<td ng-if="item.packageUseType!='294'">{{item.packageUseType|packageUseFilter}}</td>
+										<td ng-if="item.packageUseType=='294'">{{item.packageUseTypeName}}</td>
+										<td>{{item.paramName}}  </td>
+										<td ng-if="item.paramKey=='TRACKER_HIGH_WARNINGS'">
+											<a href="{{item.reportUrl}}{{item.deployUuid}}_{{item.packageId}}/high.do" target="_blank">
+												{{item.paramValue ||"0"}}
+											</a>
+										</td>
+										<td ng-if="item.paramKey=='TRACKER_NORMAL_WARNINGS'">
+											<a href="{{item.reportUrl}}{{item.deployUuid}}_{{item.packageId}}/medium.do" target="_blank">
+												{{item.paramValue ||"0"}}
+											</a>
+										</td>
+										<td ng-if="item.paramKey=='TRACKER_LOW_WARNINGS'">
+											<a href="{{item.reportUrl}}{{item.deployUuid}}_{{item.packageId}}/low.do" target="_blank">
+												{{item.paramValue ||"0"}}
+											</a>
+										</td>
+										<td>{{item.unit}}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div class="col-sm-12" ng-if="flag==false">
+							{{message}}
+						</div>
+						<div class="col-sm-12" ng-if="newDeliveryRecord!=null" >
+							<span ng-if="selectedTab=='scts'"  >重新检查结果：{{newMessage||"执行成功"}},报告url:<a href="{{newDeliveryRecord.reportUrl}}" target="_blank">{{newDeliveryRecord.reportUrl}}</a></span>	
+							<span ng-if="selectedTab=='security'"  >重新检查结果：{{newMessage||"执行成功"}}</span>			
+						</div>
+						<div class="col-sm-12" >
+							<span ng-if="buildId==null && selectedTab!='scts' &&  selectedTab!='security'">请先设置交付流程配置</span>				
+						</div>
+						<div class="bottom10">
+								<button ng-if="buildId!=null && selectedTab!='scts' &&  selectedTab!='security'" ng-click="reCheck()" >重新检查</button>
+						</div>
+						<div class="bottom10">
+								<button ng-if="(selectedTab=='scts' ||selectedTab=='security') && deployId!='' && deployId!=null && (newDeliveryRecord==null || (newDeliveryRecord!=null && newDeliveryRecord.resultStatus!=1)) && result!=1" ng-click="reCheckST(deployId)" >重新检查</button>
+						</div>
+					</div>
+				</div>
+			</form> 
+		</div>
+</div>

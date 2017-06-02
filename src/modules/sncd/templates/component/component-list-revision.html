@@ -1,0 +1,57 @@
+<div class="module-head paneltitle">
+    <div class="module-info">
+        <p class="title titlefont">构件查询</p>
+        <p class="sub-title titlecolor"></p>
+    </div>
+	<a class="pull-right" style="margin-top:40px;" href="javascript:history.go(-1);">返回</a>
+</div>
+    <div class="container-wrapper">
+        <div class="panel panel-default">
+           
+	        <div class="panel-body">
+	        		{{envType|envTypeFilter}}环境  当前{{version}}版本的Revison：{{revision}} 构件列表            
+	        </div>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th width="5%" style="text-align:center;">序号</th>
+                        <th width="15%" style="text-align:center;">应用包名</th>
+                        <th width="5%" style="text-align:center;">版本号</th>
+						<th width="10%" style="text-align:center;">环境类型</th>
+						<th width="10%" style="text-align:center;">环境参数</th>
+						<th width="10%" style="text-align:center;">是否被部署</th>
+						<th width="10%" style="text-align:center;">申请人</th>
+						<th width="10%" style="text-align:center;">创建时间</th>
+                        <th width="10%" style="text-align:center;">操作</th>
+                    </tr>
+                </thead>
+                <tbody ng-repeat="item in list">
+                    <tr>
+                        <td align="center">
+                            {{$index+1}}
+                        </td>
+                        <td align="center"><div ng-repeat="appItem in item.appName|inputSplitFilter"><a href="javascript:void(0)" ng-click="download({id:item.componentId,appName:appItem})">{{appItem}}</a></div></td>
+                        <td align="center">{{item.componentVersion}}</td> 
+                        <td align="center">{{item.envType|envTypeFilter}}</td>
+                        <td align="center"><span ng-if="item.envParam!=''">{{item.envParam}}</span><span ng-if="item.envParam==''">无</span></td>
+						<td align="center">{{item.isDeploy|isdeployFilter}}</td>
+						<td align="center">{{item.userName}}</td>
+						<td align="center">{{item.createTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                        <td align="center">
+                        	<a ui-sref="ComponentDetail({id:item.componentId})" >详情</a>
+							<a target="_blank" ng-if="item.appName!=null" ng-href="{{item.componentPath}}"> | FTP</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <footer class="ft-pager clearfix">
+            <div sn-pager itemsPerPage="{{pager.pageSize}}" totalItems="{{pager.totalCount}}" listSize="{{pager.pageSize}}"
+                class="text-right">
+            </div>
+        </footer>
+    </div>
+  </div>
+    
+</div>

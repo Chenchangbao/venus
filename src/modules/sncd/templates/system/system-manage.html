@@ -1,0 +1,149 @@
+<div class="module-head paneltitle">
+    <div class="module-info">
+        <p class="title titlefont">我的系统</p>
+        <p class="sub-title titlecolor">提供系统相关信息及功能的配置</p>
+    </div>
+    
+</div>
+
+<div class="container-wrapper">
+    <!--<h2><a ui-sref="SnapshotList">云主机快照</a> > <i class="lightgray">快照详情</i></h2>-->
+    <div class="panel panel-default">
+        <!--<div class="panel-heading">
+            <p class="panel-title link-cursor"  ui-sref="SystemInfo({sysId:sys.sysId})">{{sys.sysCnname}}({{sys.sysName}}) <span class="pull-right">技术负责人：{{sys.techManager}}</span></p>
+        </div>-->
+        <div class="panel-body">
+         <div class="search-con" style="padding: 15px 0;">
+          <form class="form-inline">
+            <div class="form-group pull-left search">
+                <input type="text" class="form-control input-sm search-control" placeholder="请输入关键字，如：系统中文名或英文名" ng-model="keyword">
+               <span  class="glyphicon glyphicon-search search-icon" ng-click="search()"></span>
+               <input type="submit"  style="display: none;" ng-click="search()"></input>
+                <!--<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true" ng-click="search()"></span>-->
+            </div>
+            </form>
+            </div>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th width="10%" style="text-align:center;">系统简称</th>
+                     <th width="10%" style="text-align:center;">运行状态
+                        <div class="btn-group" sn-dropdown>
+                            <button type="button" class="btn btn-xs dropdown-toggle list-filter">
+                               <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-extra">
+                                <li ng-repeat="status in statusList" ng-click="statusFilter(status)">
+                                    <a href="javascript:void(0);">
+                                        {{status.name}}
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </th>
+                    <th width="10%" style="text-align:center;">进行中的版本</th>
+                	<th width="10%" style="text-align:center;">代码库</th>
+                	<th width="10%" style="text-align:center;">技术负责人</th>
+                    <!--<th width="15%" style="text-align:center;">系统质量报告</th>-->
+                    <th width="50%" style="text-align:center;">快捷操作</th>
+                </tr>
+                </thead>
+                <tbody  ng-repeat="sys in sysList">
+                <tr>
+                    <!--<td align="left">
+                        <a  ng-if="sys.reposName"  ui-sref="CodeRepository({sysId:sys.sysId,tab:'CodeRepository'})" ng-if="sys.sysType != null">{{sys.reposName}}</a>
+                        <a ng-if="sys.reposName==null  && hasPermissionMap[sys.sysId]['7006'] !=null && hasPermissionMap[sys.sysId]['7006']" ui-sref="CreateCodeRepository({sysId:sys.sysId,tab:'CreateCodeRepository'})"  >创建代码库</a>
+                    </td>-->
+                    <!-- sysType 3:PC,1:SAP -->
+                    <td align="center" title="{{sys.sysCnname}}" ng-if="sys.sysType=='3'">
+                         <a ui-sref="PCSystemJump({href:'branch/getBranchBySysId.htm?sysId={{sys.sysId}}',tab:'PCSystemJump'})">
+                         <span ng-show="sys.sysParentid == null || (sys.sysParentid != null && sys.sysParentid == '0')">{{sys.sysName}}</span>
+                         <span ng-show="sys.sysParentid != null && sys.sysParentid != '0'">{{sys.sysParentName}}</span>
+                         </a>
+                	</td>
+                    <td align="center" title="{{sys.sysCnname}}" ng-if="sys.sysType=='1'">
+                         <a ui-sref="SAPSystemJump({href:'newSystem/sapSystemDetailInfo.htm?sysId={{sys.sysId}}',tab:'SAPSystemJump'})">
+                         <span ng-show="sys.sysParentid == null || (sys.sysParentid != null && sys.sysParentid == '0')">{{sys.sysName}}</span>
+                         <span ng-show="sys.sysParentid != null && sys.sysParentid != '0'">{{sys.sysParentName}}</span>
+                         </a>
+                	</td>
+                    <td align="center" title="{{sys.sysCnname}}" ng-if="sys.sysType!='1' && sys.sysType!='3'">
+                         <a ui-sref="SysDetail({sysId:sys.sysId,tab:'SysDetail'})">
+                         <span ng-show="sys.sysParentid == null || (sys.sysParentid != null && sys.sysParentid == '0')">{{sys.sysName}}</span>
+                         <span ng-show="sys.sysParentid != null && sys.sysParentid != '0'">{{sys.sysParentName}}</span>
+                         </a>
+                	</td>
+                    <td align="center">
+                   		{{sys.sysStat | sysStatusFilter}}
+                           <span ng-class="{'processing': sys.sysStat == '102', 'unstart': sys.sysStat == '296'}">●</span>
+                	</td>
+                    <td align="center" ng-if="sys.sysType=='1'">
+                   		无
+                	</td>
+                     <td align="center" ng-if="sys.sysType=='3'">
+                        <a href ="javascript:void(0)" ng-if="sys.sysStat == 296"></a>
+                    	<a href ="javascript:void(0)" ng-if="sys.sysStat == 102 && sys.processNum == 0">0</a>
+                    	<a ui-sref="PCSystemJump({href:'branch/getBranchBySysId.htm?sysId={{sys.sysId}}',tab:'PCSystemJump'})" ng-if="sys.processNum > 0 && sys.sysType != null">{{sys.processNum}}</a>
+                    </td>
+                     <td align="center" ng-if="sys.sysType!='1' && sys.sysType!='3'">
+                        <a href ="javascript:void(0)" ng-if="sys.sysStat == 296"></a>
+                    	<a href ="javascript:void(0)" ng-if="sys.sysStat == 102 && sys.processNum == 0">0</a>
+                    	<a ui-sref="VersionProcess({sysId:sys.sysId})"     ng-if="sys.processNum > 0 && sys.sysType != null">{{sys.processNum}}</a>
+                        <!--<a ui-sref="CreateVersion({sysId:sys.sysId,tab:'CreateVersion'})" title="创建版本" ng-if="sys.sysType != null && hasPermissionMap[sys.sysId]['7009'] !=null && hasPermissionMap[sys.sysId]['7009']" >+</a>-->
+                        <!--<br/>
+                        <a href ="javascript:void(0)"  ng-if="sys.finishNum ==  0">已结束</a>
+                        <a ui-sref="VersionFinish({sysId:sys.sysId})"  ng-if="sys.finishNum > 0 && sys.sysType != null">已结束({{sys.finishNum}})</a>
+                        <br/>
+                        <a ui-sref="CreateVersion({sysId:sys.sysId,tab:'CreateVersion'})" ng-if="sys.sysType != null && hasPermissionMap[sys.sysId]['7009'] !=null && hasPermissionMap[sys.sysId]['7009']">创建版本</a>-->
+                    </td>
+                    <td align="center" title="{{sys.techManager}}">
+                   		{{sys.reposName}}
+                	</td>
+                    <td align="center" title="{{sys.techManager}}">
+                   		{{sys.techManagerFullName}}
+                	</td>
+                    <!--<td align="center">
+                        <!--
+                       <a ng-if="sys.sysStat == 102" ui-sref="SystemTeamDetail({sysId:sys.sysId,tab:'SystemTeamDetail'})">查看</a>
+                        -->
+                    <!--</td>-->
+                    <td align="center" ng-if="sys.sysType!='1' && sys.sysType!='3'">
+<!--                     	<a ng-if="sys.sysType == null" ng-click="activeSystem(sys);" href="javascript:;">激活系统</a> -->
+                        <!--<div class="operateWidth">-->
+                         <div>
+                            <a ui-sref="CreateVersion({sysId:sys.sysId,tab:'CreateVersion'})" title="创建版本" ng-if="sys.sysType != null && hasPermissionMap[sys.sysId]['7009'] !=null && hasPermissionMap[sys.sysId]['7009'] && sys.sysType!='1'" >创建版本 |</a>
+                            <!--<a ui-sref="CreateVersion({sysId:sys.sysId,tab:'CreateVersion'})" title="创建版本"  >创建版本 |</a>-->
+                            <a ng-if="sys.sysStat == 296 && sys.sysType!='1'" ui-sref="CreateCodeRepository({sysId:sys.sysId,tab:'CreateCodeRepository'})">创建代码库</a>
+                            <a ng-if="sys.sysStat == 102 && sys.sysType!='1'" ui-sref="SystemTeamDetail({sysId:sys.sysId,tab:'SystemTeamDetail'})">团队及权限 |</a>
+                            <a ng-if="sys.sysStat == 102 && sys.sysType=='1'" ui-sref="SystemTeamDetail({sysId:sys.sysId,tab:'SystemTeamDetail'})">团队及权限 </a>
+                            <a ng-if="sys.sysStat == 102 && sys.sysType!='1'" ui-sref="SystemTeamDetail({sysId:sys.sysId,tab:'CodeRepository'})">代码库 |</a>
+                            <a ng-if="sys.sysStat == 102 && sys.sysType != null && sys.sysType!='1'" ui-sref="SystemPackage({sysId:sys.sysId,tab:'SystemPackage'})">应用包 |</a>
+                            <a ng-if="sys.sysStat == 102 && sys.sysType != null && sys.sysType!='1'" ui-sref="PackageConfig({sysId:sys.sysId,tab:'PackageConfig'})">打包配置 |</a>
+                            <a ng-if="sys.sysStat == 102 && sys.sysType != null && sys.sysType!='1'" ui-sref="SystemBuildConfig({sysId:sys.sysId,tab:'SystemBuildConfig'})" title="系统交付流程配置" ng-if="sys.sysType != null && hasPermissionMap[sys.sysId]['7020'] !=null && hasPermissionMap[sys.sysId]['7020']" >系统交付流程配置 |</a>
+                            <a ng-if="sys.sysStat == 102 && sys.sysType != null && sys.sysType!='1'" ui-sref="PackageConfig({sysId:sys.sysId,tab:'SystemEnv'})">应用部署环境</a>
+                            <a ng-if="sys.sysStat == 102 && sys.sysType != null && sys.sysType!='1' && sys.sysParentid=='0'" ng-click="addSvnRepo(sys.sysId,sys.sysName)" style="cursor:pointer"> | 新增代码库</a>
+                        </div>
+                    </td>
+                    <!--<td align="left">
+                        <a href="http://pcp.cnsuning.com/spcp-web/vm/opsIndex.htm" target="_blank" ng-if="sys.envCount == 0 && sys.sysType != null"> 创建环境</a>
+                        <a href="javascript:void(0)" ng-if="sys.sysType != null && sys.envCount > 0" ui-sref="SystemEnv({sysId:sys.sysId,tab:'SystemEnv'})">管理环境</a>
+                    </td>-->
+                    <!--<td  ng-if="sys.isCodeTrend !=0" align="left">
+                       <a ui-sref="QualityCenter({sysId:sys.sysId,type:1})">{{sys.codeTrend | quaTrendFilter}}</a> 
+                    </td>
+                    <td  ng-if="sys.isCodeTrend==0" align="left">
+                       尚未设置
+                    </td>-->
+                    
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <footer class="ft-pager clearfix">
+        <div sn-pager itemsPerPage="{{pager.pageSize}}" totalItems="{{pager.totalCount}}" listSize="{{pager.pageSize}}"
+             class="text-right">
+        </div>
+    </footer>	
+    </div>
+</div>
+

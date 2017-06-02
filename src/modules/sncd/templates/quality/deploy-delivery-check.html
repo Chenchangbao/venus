@@ -1,0 +1,61 @@
+<div class="modal fade in" ng-controller="deliveryCheckCtrl">
+<div class="modal-dialog">
+<div class="modal-content">
+<div class="modal-header">
+<h4 class="modal-titel">交付流程检查结果</h4>
+</div>
+<form name="deliveryCheckForm">
+	<div class="modal-body"  style="height: 300px;padding:15px">
+			<div  class="form-group col-xs-12" style="height: 55px;" >
+			<label  ng-if="vqTrendInfos==null" class="col-xs-12 "><i style="color: red">*</i>您当前代码的单元测试和静态检查结果未进行检查</label>
+			<label  ng-if="vqTrendInfos!=null" class="col-xs-12 "><i style="color: red">*</i>您当前代码的单元测试和静态检查结果未达到设定的标准</label>
+			<table class="table table-bordered" ng-if="vqTrendInfos!=null">
+								<thead>
+									<th >指标名称</th>
+									<th >指标阀值</th>
+									<th >当前质量</th>
+								</thead>
+								<tbody>
+									<tr ng-repeat="item in vqTrendInfos">
+									<td ng-if="item.isEntrance==1">
+											{{item.paramName}}
+										</td>
+										<td ng-if="item.isEntrance==1">
+											{{item.beCompareValue}}
+										</td>
+										<td ng-if="item.isEntrance==1 && (item.vqualityTrend==1||item.vqualityTrend==0)  ">
+											<span ng-if=" item.vqualityTrend==1 && item.isGreaterLess==1" style='color:red'>	{{item.paramValue || '无'}}↓ &nbsp;&nbsp;</span> 
+											<span ng-if=" item.vqualityTrend==1 && item.isGreaterLess==2" >	{{item.paramValue || '无'}}↓ &nbsp;&nbsp;</span>
+											<span ng-if=" item.vqualityTrend==0 && item.isGreaterLess==2" style='color:red'>	{{item.paramValue || '无'}}↑</span>
+											<span ng-if=" item.vqualityTrend==0 && item.isGreaterLess==1" >	{{item.paramValue || '无'}}↑</span>
+										</td>
+										<td ng-if="item.isEntrance==1 && item.vqualityTrend!=1&& item.vqualityTrend!=0">
+											<span >	{{item.paramValue}} &nbsp;&nbsp;</span> 
+										</td>
+									</tr>
+								</tbody>
+							</table>
+					<!-- 	<label class="col-xs-12 ">请确认是否继续发布:</label>
+						<div  class="col-sm-8">
+							<label class="radio-inline">
+							<input type="radio" name="continueDep" value="1" ng-model="continueDep">
+							是</label>
+							<label class="radio-inline">
+							<input type="radio" name="continueDep" value="0" ng-model="continueDep">
+							否</label>
+						</div>
+						 <div  class="col-xs-12" ng-if="continueDep=='1'">
+			                <textarea rows="2" cols="60" ng-minlength="1" ng-maxlength="500" required="required"  
+			               name="commentsInfo" ng-model="commentsInfo"></textarea>
+			             </div>
+	           			  <div class="col-xs-12 ">注:选择否将退出发布</div> -->
+				</div>
+	</div>
+	<div class="modal-footer" style="height:60px;">
+         <button type="button" class="btn btn-default" ng-click="close()">取消</button>
+         <button type="button" class="btn btn-primary" ng-click="saveDeComments(deliveryCheckForm.$invalid)" >确定 </button>
+	</div>
+</form>
+</div>
+</div>	
+</div>

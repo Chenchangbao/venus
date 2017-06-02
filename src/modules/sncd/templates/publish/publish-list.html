@@ -1,0 +1,132 @@
+<div class="module-head paneltitle">
+    <div class="module-info">
+        <p class="title titlefont">
+            发布单
+        </p>
+        <p class="sub-title titlecolor">
+            默认展示1天内持续交付平台所产生的发布单
+        </p>
+    </div>
+</div>
+<div class="container-wrapper">
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="search-con" style="padding: 15px 0;">
+                <form class="form-inline">
+                    <div class="form-group">
+                        <select class="form-control" ng-model="deployParam.orgId" name="org" ng-options="org.orgId as  org.orgName for org in orgs">
+                            <option value="">-- 全部 --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="系统中文名称" ng-model="deployParam.sysCnname">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="系统英文名称" ng-model="deployParam.sysName">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="发布单号" ng-model="deployParam.requestNo">
+                    </div>
+                    <br/>
+                    <div class="form-group">
+                        <select class="form-control" ng-model="deployParam.envType" name="envType" ng-options=" envType.envType as  envType.envName for envType in envTypes">
+                            <option value="">-- 选择环境类型 --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <select class="form-control" ng-model="deployParam.deployStatus" name="deployReqStatus" ng-options="  deployReqStatus.status as   deployReqStatus.statusDesc for deployReqStatus in deployReqStatuss">
+                            <option value="">-- 发布单状态 --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <div sn-datetimepicker show-time="false" ng-model="deployParam.planTimeStart" placeholder="请选择开始时间">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div sn-datetimepicker show-time="false" ng-model="deployParam.planTimeEnd" placeholder="请选择结束时间">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-default" ng-click="search()">
+                        搜索
+                    </button>
+                    <button class="btn btn-default" ng-click="exportExcel()" ng-disabled="button_clicked">
+                        导出
+                    </button>
+<!--                     <a ng-disabled="true" class="btn btn-default" href="angular/deployReq/deployListExport.htm?orgId={{deployParam.orgId}}&envType={{deployParam.envType}}&sysCnname={{deployParam.sysCnname}}&sysName={{deployParam.sysName}}&requestNo={{deployParam.requestNo}}&deployStatus={{deployParam.deployStatus}}&planTimeStart={{deployParam.planTimeStart}}&planTimeEnd={{deployParam.planTimeEnd}}">导出</a>
+ -->                </form>
+            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            发布单号
+                        </th>
+                        <th>
+                            研发中心
+                        </th>
+                        <th>
+                            发布系统
+                        </th>
+                        <th>
+                            发布环境
+                        </th>
+                        <th>
+                            计划发布时间
+                        </th>
+                        <th>
+                            发布单状态
+                        </th>
+                        <th>
+                            发布单结束时间
+                        </th>
+                        <th>
+                            发布结果
+                        </th>
+                        <th>
+                            操作
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="deployReq in deployReqList">
+                        <td>
+                            <a href="deployReq/deployReqDetail.htm?opFlag=detail&requestNo={{deployReq.requestNo}}&version=true&isnew=true" target="_blank">{{deployReq.requestNo}}</a>
+                        </td>
+                        <td>
+                            {{deployReq.orgName}}
+                        </td>
+                        <td>
+                            {{deployReq.sysCnname}}
+                        </td>
+                        <td>
+                            {{deployReq.envType |envTypeFilter }}
+                        </td>
+                        <td>
+                            {{deployReq.planTime.substring(0,19)}}
+                        </td>
+                        <td>
+                            {{deployReq.deployStatus | deployStatusFilter}}
+                        </td>
+                        <td>
+                            {{deployReq.startTime|date:'yyyy-MM-dd HH:mm:ss'}}
+                        </td>
+                        <td>
+                            {{deployReq.deployFlg | deployFlagFilter}}
+                        </td>
+                        <td>
+                        	<a href="publish.html#/publish-monitor?deployId={{deployReq.deployId}}" target="_blank" ng-if="isRoleDeployer==true && deployReq.appServerType =='ngjboss' && deployReq.deployStatus != '132' ">查看</a>
+                            <a href="deployReq/toPCDeployDetail.htm?requestNo={{deployReq.requestNo}}" target="_blank" ng-if="isRoleDeployer==true && deployReq.sysType =='3' && deployReq.appServerType !='ngjboss' && deployReq.deployStatus != '132' ">查看</a>
+                            <a href="deployReq/deploymonitorpage.htm?deployid={{deployReq.deployId}}" target="_blank" ng-if="isRoleDeployer==true && deployReq.sysType !='3' && (deployReq.deployStatus=='145' ||  deployReq.deployStatus=='144') && deployReq.appServerType !='ngjboss' && deployReq.deployStatus != '132' ">查看</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <footer class="ft-pager clearfix">
+            <div sn-pager itemsPerPage="{{pager.pageSize}}" totalItems="{{pager.totalCount}}" listSize="{{pager.pageSize}}" class="text-right">
+            </div>
+        </footer>
+    </div>
+</div>
+</div>
+</div>

@@ -1,0 +1,90 @@
+@font-face {
+    font-family: 'menu';
+    src:    url('../libs/font-awesome/fonts/menu/iconfont_sncd.eot?80orav');
+    src:    url('../libs/font-awesome/fonts/menu/iconfont_sncd.eot?80orav#iefix') format('embedded-opentype'),
+        url('../libs/font-awesome/fonts/menu/iconfont_sncd.ttf?80orav') format('truetype'),
+        url('../libs/font-awesome/fonts/menu/iconfont_sncd.woff?80orav') format('woff'),
+        url('../libs/font-awesome/fonts/menu/iconfont_sncd.svg?80orav#machine') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'menu' !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-overview:before {
+    content: "\e900";
+}
+.icon-system:before {
+    content: "\e906";
+}
+.icon-edition:before {
+    content: "\e901";
+}
+.icon-assembly:before {
+    content: "\e902";
+}
+.icon-template:before {
+    content: "\e903";
+}
+.icon-assurance:before {
+    content: "\e907";
+}
+.icon-contrast:before {
+    content: "\e905";
+}
+.icon-toconfigure:before {
+    content: "\e90e";
+}
+.icon-release:before {
+    content: "\e904";
+}
+.icon-structure:before {
+    content: "\e908";
+}
+.icon-querySys:before {
+    content: "\e909";
+}
+.icon-queryAssembly:before {
+    content: "\e90a";
+}
+.icon-journal:before {
+    content: "\e90b";
+}
+.icon-jurisdiction:before {
+    content: "\e90c";
+}
+.icon-document:before {
+    content: "\e90d";
+}
+.icon-administrationSc:before {
+    content: "\e90f";
+}
+.icon-upgrade:before {
+    content: "\e910";
+}
+.icon-environment:before {
+    content: "\e911";
+}
+.icon-edit:before {
+    content: "\e912";
+}
+.icon-confirm:before {
+    content: "\e913";
+}
+.icon-delete:before {
+    content: "\e914";
+}
+

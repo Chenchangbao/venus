@@ -1,0 +1,226 @@
+<!--交付配置-->
+<div  class="panel-body"  ng-if="(hasPermissionMap[sys.sysId]['7020'] !=null && hasPermissionMap[sys.sysId]['7020']) && (sys.sysType==null || sys.sysType==''|| repos==null)">
+		该系统尚未初始化，请联系技术总监/技术负责人/系统管理员按以下步骤初始化系统：</br>
+		第一步：请在“系统版本”页签下选择“系统类型”;</br>
+		第二步：创建代码库;</br>
+		第三步：设置打包配置;</br>
+</div>
+
+<div  class="panel-body"  ng-if="(hasPermissionMap[sys.sysId]['7020'] == null || !hasPermissionMap[sys.sysId]['7020'])">
+		您没有系统交付流程配置权限,请联系技术总监/技术负责人/系统管理员初始化权限
+</div>
+<!-- <div  class="panel-body"  ng-if="packageConfig==null || packageConfig==''">
+		该系统尚未配置打包配置，请联系技术总监/技术负责人/系统管理员设置打包配置;</br>
+</div> -->
+
+
+<div class="panel panel-default" ng-if="hasPermissionMap[sys.sysId]['7020'] !=null && hasPermissionMap[sys.sysId]['7020']  && sys.sysType!=null&& sys.sysType!='' && repos!=null">
+	<div class="panel-body">
+     <ul class="nav nav-tabs nav-new">
+      <li ng-class="{'active': selectedTab==1}"><a ng-class="{'active2': selectedTab==1}" ng-click="selectTab(1)" ng-show="false">工具检查配置</a></li>
+      <li ng-class="{'active': selectedTab==2}"><a ng-class="{'active2': selectedTab==2}" ng-click="selectTab(2); ">发布检查配置</a></li>
+      <li ng-class="{'active': selectedTab==3}"><a ng-class="{'active2': selectedTab==3}" ng-click="selectTab(3)">基线值配置</a></li>
+      <li ng-class="{'active': selectedTab=='urlSet'}"><a ng-click="selectTab('urlSet');">蛙测及安全扫描url设置</a></li>
+    </ul>
+    
+    <form class="form-horizontal" ng-show="selectedTab=='urlSet'" >
+				<div class="panel panel-noborder">
+					<ul class="nav nav-tabs nav-new"  >
+						<li ng-repeat="item in envList" 
+							ng-class="{'active': selectedTab2==item.envId}"><a
+							ng-class="{'active2':selectedTab2==item.envId}" 
+							ng-click="selectTab2(item.envId);getEnvPackUrl(item.envId,item.envName);">{{item.envName}}</a>
+						</li>
+					</ul>
+					<div>
+						<div class="col-sm-12">
+							<table class="table table-bordered" >
+								<thead>
+									<th >发布包名称</th>
+									<th >发布包功能</th>
+									<th >url</th>
+									<th >loginUrl</th>
+									<th >用户名</th>
+									<th >密码</th>
+									<th >操作</th>
+								</thead>
+								<tbody >
+									<tr ng-repeat="item in sysEnvPakcUrls" >
+									{{type}}
+										<td>{{item.packageName}}</td>
+										<td ng-if="item.packageUseType!='294'">{{item.packageUseType|packageUseFilter}}</td>
+										<td ng-if="item.packageUseType=='294'">{{item.packageUseName}}</td>
+										<td ng-if="item.show">{{item.url}}</td>
+										<td ng-if="!item.show" ><input type="text"  class="width100"  ng-model="item.url"></td>
+										<td ng-if="item.show">{{item.loginUrl}}</td>
+										<td ng-if="!item.show" ><input type="text"  class="width100"  ng-model="item.loginUrl"></td>
+										<td ng-if="item.show">{{item.userName}}</td>
+										<td ng-if="!item.show" ><input type="text"  class="width20" maxlength="30" ng-model="item.userName"></td>
+										<td ng-if="item.show">{{item.passWord}}</td>
+										<td ng-if="!item.show" ><input type="text"  class="width20" maxlength="30" ng-model="item.passWord"></td>
+										<td ng-show="item.show" ng-click="item.show=false"><a>修改</a></td>
+										<td ng-show="!item.show" ng-click="saveEnvPackUrl($index,item)"><a>保存</a></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</form> 
+    <form class="form-horizontal" ng-show="selectedTab == 2">
+				<div class="panel panel-noborder">
+						<div class="col-sm-8">
+							<div class="bottom10">
+								<span>代码静态检查</span>
+							</div>
+							<table class="table table-bordered">
+								<thead>
+									<th item-width="50%">参数</th>
+									<th item-width="50%">指标</th>
+									<!-- <th item-width="34%">设为入口条件</th> -->
+								</thead>
+								<tbody>
+									<tr ng-repeat="item in systemQualityConfigBos" ng-show="item.paramKey=='BLOCKER_VIOLATIONS' || item.paramKey=='CRITICAL_VIOLATIONS' || item.paramKey=='MAJOR_VIOLATIONS'">
+										<td>{{item.paramName}}</td>
+									<td><span>{{item.isGreaterLess | greateLessFilter}}</span> <span ng-if="!staticEdit1">{{item.paramValue}}</span>
+										<input type="text" class="width30" ng-if="staticEdit1"
+										ng-model="item.paramValue"> <span>{{item.unit}}</span>
+									</td>
+										<!-- <td><input type="checkbox" ng-true-value="1"
+											ng-false-value="0" ng-model="item.isEntrance"></td> -->
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div class="col-sm-8">
+							<div class="bottom10">
+								<span>单元测试</span>
+							</div>
+							<table class="table table-bordered">
+								<thead>
+									<th item-width="50%">参数</th>
+									<th item-width="50%">指标</th>
+									<!-- <th item-width="34%">设为入口条件</th> -->
+								</thead>
+								<tbody>
+									<tr ng-repeat="item in systemQualityConfigBos2" ng-show="item.paramKey=='TEST_SUCCESS_DENSITY' || item.paramKey=='COVERAGE' || item.paramKey=='NEW_COVERAGE'">
+										<td>{{item.paramName}}</td>
+									<td><span>{{item.isGreaterLess | greateLessFilter}}</span> <span ng-if="!staticEdit1">{{item.paramValue}}</span>
+										<input type="text" class="width30" ng-if="staticEdit1"
+										ng-model="item.paramValue"> <span>{{item.unit}}</span>
+									</td>
+										<!-- <td><input type="checkbox" ng-true-value="1"
+											ng-false-value="0" ng-model="item.isEntrance"></td> -->
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div class="col-sm-8">
+							<div class="bottom10">
+								<span>蛙测</span>
+							</div>
+							<table class="table table-bordered">
+								<thead>
+									<th item-width="50%">参数</th>
+									<th item-width="50%">指标</th>
+									<!-- <th item-width="34%">设为入口条件</th> -->
+								</thead>
+								<tbody>
+									<tr ng-repeat="item in systemQualityConfigBos3" ng-show="item.paramKey=='SCTS_SUCCESS_RATE' || item.paramKey=='SCTS_AUTO_RATE'">
+										<td>{{item.paramName}}</td>
+									<td><span>{{item.isGreaterLess | greateLessFilter}}</span> <span ng-if="!staticEdit1">{{item.paramValue}}</span>
+										<input type="text" class="width30" ng-if="staticEdit1"
+										ng-model="item.paramValue"> <span>{{item.unit}}</span>
+									</td>
+										<!-- <td><input type="checkbox" ng-true-value="1"
+											ng-false-value="0" ng-model="item.isEntrance"></td> -->
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div class="col-sm-8">
+							<div class="bottom10">
+								<span>安全扫描 </span>
+							</div>
+							<table class="table table-bordered">
+								<thead>
+									<th item-width="50%">参数</th>
+									<th item-width="50%">指标</th>
+									<!-- <th item-width="34%">设为入口条件</th> -->
+								</thead>
+								<tbody>
+									<tr ng-repeat="item in systemQualityConfigBos4" ng-show="item.paramKey=='TRACKER_HIGH_WARNINGS' || item.paramKey=='TRACKER_NORMAL_WARNINGS'">
+										<td>{{item.paramName}}</td>
+									<td><span>{{item.isGreaterLess | greateLessFilter}}</span> <span ng-if="!staticEdit1">{{item.paramValue}}</span>
+										<input type="text" class="width30" ng-if="staticEdit1"
+										ng-model="item.paramValue"> <span>{{item.unit}}</span>
+									</td>
+										<!-- <td><input type="checkbox" ng-true-value="1"
+											ng-false-value="0" ng-model="item.isEntrance"></td> -->
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					<div class="form-group">
+					<div class="col-sm-offset-3 col-sm-10">
+					 <button class="btn btn-default" ng-if="!staticEdit1" ng-click="editStatic1()">修改指标</button>
+								<button ng-if="staticEdit1" class="btn btn-default"
+									ng-click="cancleEdit1()">取消</button>
+								<button ng-if="staticEdit1" class="btn btn-default"
+									ng-click="changeStatic1()">确认</button>	</div></div>									
+				</div>
+			</form>
+    
+    
+    <form name="versionJobForm" class="form-horizontal" ng-show="selectedTab == 3">
+     
+      <div>
+        <div class="panel panel-noborder">
+            <div class="col-sm-8">
+              <p class="col-sm-12">代码静态问题基线设置</p>
+              <div>
+                <div class="col-sm-6">
+                  <label class="radio-inline col-sm-4"> 
+                    <input type="radio" value="1" ng-checked="isOpen == 1" name="staticOpen" ng-model="isOpen">历史版本
+                  </label>
+                  <select ng-model="version" name="version" ng-disabled="isOpen == 0" class="form-control col-sm-8" style="width:auto" ng-change="queryBaseLineByVersion(version)" ng-options="version.version for version in versionList">
+                    <option value="">--请选择 --</option>
+                  </select>
+                </div>
+                <div class="col-sm-6">
+                  <label class="radio-inline col-sm-4"> 
+                    <input type="radio" value="0" ng-checked="isOpen == 0" name="staticOpen" ng-model="isOpen">历史时间
+                  </label>
+                  <div sn-datetimepicker show-time="false" ng-disabled="isOpen == 1" class="col-sm-8" ng-model="buildTimeDate.buildTime" placeholder="选择日期" >
+                  </div>
+                </div>
+              </div>
+              <div class="buttonSide">
+                <a href="" class="rightSide" ng-if="!edit" ng-click="editStatic()">修改指标</a>
+                <button ng-if="edit" class="rightSide btn btn-default" ng-click="cancleEdit()">取消</button>
+                <button ng-if="edit" class="rightSide btn btn-default" ng-click="changeStatic()">确认</button>
+              </div>
+              <table class="table table-bordered">
+                <thead>
+                  <th item-width="50%">参数</th>
+                  <th item-width="50%">指标</th>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="item in baseLines"  ng-if="item.paramKey != 'CODE_LINES'">
+                    <td title={{item.paramDesc}}>{{item.paramName}}</td>
+                    <td>
+                      <span>{{item.isGreateLess | greateLessFilter}}</span>
+	  				          <span ng-if="!edit">{{item.paramValue}}</span>
+                      <input type="text"  class="width40" ng-if="edit" ng-disabled="item.disabled" ng-model="item.paramValue" ng-change="totalCount(item,baseLines)" required>
+                      <span>{{item.unit}}</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+      </div>
+      
+    </form>
+  </div>
+</div>

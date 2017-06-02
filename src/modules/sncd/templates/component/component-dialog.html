@@ -1,0 +1,74 @@
+<div class="modal fade in" ng-controller="ComponentCtrl">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" ng-click="close()"
+					data-dismiss="modal">
+					<span aria-hidden="true"><i class="suningicon">x</i></span><span
+						class="sr-only">Close</span>
+				</button>
+
+				<h4 class="modal-title">生成线上构件地址:</h4>
+			</div>
+			 <div class="container-wrapper">
+		        <div class="panel panel-default">
+		           
+			        <div class="panel-body">
+			        	<div style="margin-bottom:20px;" ng-if="frozen!=false">经检测，此版本符合相关条件，可以生成上线构件地址</div>
+						<div style="margin-bottom:20px;color:red;" ng-if="frozen==false">经检测，此版本不符合相关条件，无法生成上线构件地址</div>
+						
+						<div ng-if="frozen!=false">
+							<img src="css/images/ok.png" /> 版本已封版</div>
+						<div style="color:red;" ng-if="frozen==false">
+							<img src="css/images/error.png" /> 版本已封版</div>
+						
+						<div><img src="css/images/ok.png" /> 有可用PRD环境(已校验应用包可用)</div>
+						
+						<div ng-if="prdFlag!=false"><img src="css/images/ok.png" /> 已有生产构件（环境类型PRD；环境参数-可用PRD的参数；最新Revison且版本应用包应分别有1个或以上）</div>
+						<div style="color:red;" ng-if="prdFlag==false"><img src="css/images/error.png" /> 已有生产构件（环境类型PRD；环境参数-可用PRD的参数；最新Revison且版本应用包应分别有1个或以上）</div>
+			        </div>
+					<div style="margin:20px;" ng-if="prdFlag==true">
+						生产环境：<span ng-if="componentEnvParam!=''">{{componentEnvParam.paraInfo}}</span>
+						<select class="form-control" ng-if="componentEnvParamList!=''" 
+							style="width:200px;margin-top:-30px;margin-left:70px;" ng-model="paraInfo"
+							required="required" name="env"
+							ng-options="componentEnvParam.paraInfo as componentEnvParam.paraInfo for componentEnvParam in componentEnvParamList"
+							ng-change="envParamChange()">
+						</select>
+					</div>
+					<div ng-repeat="(key,value) in items">
+			            <table class="table" ng-if="prdFlag==true"> 
+			                <thead>
+			                    <tr>
+			                    	<th width="5%"></th>
+			                        <th width="10%" style="text-align:center;">应用包名</th>
+			                        <th width="10%" style="text-align:center;">版本号</th>
+			                        <th width="10%" style="text-align:center;">环境类型</th>
+			                        <th width="10%" style="text-align:center;">环境参数</th>
+									<th width="10%" style="text-align:center;">申请人</th>
+			                    </tr>
+			                </thead>
+			                <tbody ng-repeat="item in value">
+			                    <tr>
+			                    	<td align="center">
+			                    		<input type="radio" name="{{key}}" ng-click="selected(item.componentId,item.appName)" value="{{item.componentId}}" ng-model="componentId">
+									</td>
+			                        <td align="center">{{item.appName}}</td>
+			                        <td align="center">{{item.componentVersion}}</td>
+			                        <td align="center">{{item.envType|envTypeFilter}}</td> 
+			                        <td align="center"><span ng-if="item.envParam!=''">{{item.envParam}}</span><span ng-if="item.envParam==''">无</span></td>
+			                        <td align="center">{{item.userName}}</td>
+			                    </tr>
+			                </tbody>
+			            </table>
+					</div>
+					<div style="margin:20px;" ng-if="prdFlag!=false && frozen!=false">
+						<button class="btn btn-default ng-isolate-scope"  ng-click="prdAddress(system)">生成地址</button>
+						<span style="margin:20px;">{{prdPath}}</span>
+						<button class="btn btn-default ng-isolate-scope" ng-if="canCopy==true" clip-copy="copyPrdPath(prdPath)" clip-click="doSomething()">复制</button>
+					</div>
+		        </div>
+			</div>
+		</div>
+	</div>
+</div>

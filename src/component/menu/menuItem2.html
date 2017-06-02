@@ -1,0 +1,7 @@
+<li ng-class="{'active': active, 'readonly': readonly, 'hasChildren': children && children.length > 0 }">
+  <a ng-click="gotoState($event)" ng-href="{{readonly ? '' : href}}">
+    <i class="fa fa-angle-right pull-right"></i>
+  </a>
+  <hr>
+  <ul ng-show="children && children.length > 0" ng-transclude></ul>
+</li>

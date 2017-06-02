@@ -1,0 +1,67 @@
+/*
+* 版本管理模块样式
+*/
+.text-overflow {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow:hidden;
+}
+.info-report .row .col-xs-6, .unit-report .row, .safe-report .row {
+	height: 37px;
+}
+.table-package {
+	table-layout: fixed;
+}
+.table-package > thead > tr > th{
+	border-bottom: 1px solid #ccc;
+	
+}
+.table-package > tbody > tr > td {
+	border-top : 1px solid #ccc ;	
+	vertical-align: middle;
+}
+.table-package thead th:nth-child(3) {
+	width:50%;
+}
+
+.table-dialog {
+	table-layout: fixed;
+	border: 1px solid #ccc;
+	padding:10px 5px;
+	font-size:12px;
+}
+.table-dialog > thead > tr > th{
+	border: 1px solid #ccc;
+	padding:10px 5px;
+}
+.table-dialog > tbody > tr > td {
+	border: 1px solid #ccc;
+	padding:10px 5px;
+}
+
+.fa-question-circle:hover + .tool-tip-content {
+    display: block;
+}
+.tool-tip-content {
+    display: none;
+	 position: absolute;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    top: -12px;
+    left: 45px;
+    z-index: 100;
+    width: 450px;
+    padding: 15px;
+    box-shadow: 0 0 77px rgba(0,0,0,0.4)
+	
+}
+.tool-tip-content:before{
+	content:'';
+    position: absolute;
+    top: 15px;
+    left: -13px;
+    border: 13px solid transparent;
+    border-right-color: #fff;
+    border-left: 0;
+}

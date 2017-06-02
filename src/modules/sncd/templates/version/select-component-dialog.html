@@ -1,0 +1,75 @@
+<div class="modal fade in" ng-controller="selectComponentDialogCtrl">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" ng-click="close()"
+					data-dismiss="modal">
+					<span aria-hidden="true"><i class="suningicon">x</i></span><span
+						class="sr-only">Close</span>
+				</button>
+
+				<h4 class="modal-title">添加构件:</h4>
+				
+				<div class="form-group">
+					<label class="col-sm-3 control-label">已选应用包：</label>
+					<div class="col-sm-5">
+						<div ng-if="packagesSign==true">
+							<label class="checkbox-inline" ng-repeat="package in packageList"> 
+								{{package.packageName}}
+							</label>
+						</div>
+						<div ng-if="packagesSign==false">
+							<select class="form-control" style="width:200px;margin-top:-10px;margin-left:-30px;" ng-model="packages.item"
+								required="required" name="env"
+								ng-options="package.packageName as package.packageName for package in packageList"
+								ng-change="packageChange()">
+							</select>
+						</div>
+					</div>
+				</div>
+				
+				
+					
+			</div>
+			 <div class="container-wrapper">
+		        <div class="panel panel-default">
+			         <table class="table"> 
+		                <thead>
+		                    <tr>
+		                    	<th width="10%" style="text-align:center;"></th>
+		                        <th width="10%" style="text-align:center;">构件标题</th>
+		                        <th width="10%" style="text-align:center;">环境类型</th>
+		                        <th width="10%" style="text-align:center;">环境参数</th>
+								<th width="10%" style="text-align:center;">是否部署</th>
+								<th width="10%" style="text-align:center;">部署单号</th>
+								<th width="10%" style="text-align:center;">申请人</th>
+								<th width="10%" style="text-align:center;">创建时间</th>
+								<th style="text-align:center;">下载</th>
+		                    </tr>
+		                </thead>
+		                <tbody ng-repeat="item in list">
+		                    <tr >
+		                    	<td align="center">
+		                    		<input type="radio" name="componentId" ng-click="selected(componentId,item.appName,item.componentPath)" value="{{item.componentId}}" ng-model="componentId">
+								</td>
+		                        <td align="center"><span>{{item.componentTitle}}</span></td>
+		                        <td align="center">{{item.envType|envTypeFilter}}</td>
+		                        <td align="center">{{item.envParam}}</td> 
+		                        <td align="center">{{item.isDeploy|isdeployFilter}}</td>
+		                        <td align="center"></td>
+								<td align="center">{{item.userName}}</td>
+								<td align="center">{{item.createTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+								<td align="center">
+									<a ui-sref="ComponentDetail({id:item.componentId})" >详情</a> | 
+									<a href="#" ng-click="download({id:item.componentId,appName:item.appName})">下载</a>
+								</td>
+		                    </tr>
+							
+		                </tbody>
+		            </table>
+					<button class="btn btn-default ng-isolate-scope" ng-click="close()">确定</button>
+		        </div>
+			</div>
+		</div>
+	</div>
+</div>

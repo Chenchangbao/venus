@@ -1,0 +1,89 @@
+
+.container-wrapper{
+    padding: 10px;
+}
+
+.container-wrapper .chart {
+    width:100%;
+    height: 300px;
+    clear:both;
+}
+.container-wrapper .chart2 {
+    width:100%;
+    height: 500px;
+    clear:both;
+}
+
+.panel-default {
+    border: none;
+}
+
+.panel-default .panel-heading {
+    background-color: #dde5ed;
+}
+
+
+.panel-default .panel-title {
+    color: #69768d;
+    font-size: 14px;
+}
+
+.tab-content-wrapper {
+    padding: 15px;
+    min-height: 680px;
+    background: #fff;
+}
+
+.module-head {
+    height: 80px;
+    padding: 10px 20px;
+    background-color: #58c9f3;
+    color: #fff;
+}
+
+.module-head .module-info {
+    float: left;
+}
+
+.module-head .title {
+    font-size: 18px;
+    line-height: 28px;
+}
+
+.module-head .sub-title {
+    font-size: 14px;
+    line-height: 20px;
+}
+
+.module-head .search {
+    position: relative;
+    margin-top: 25px;
+    margin-right: -10px;
+}
+
+.module-head .search>input {
+    width: 200px;
+    float: left;
+}
+
+.module-head .search>span {
+    color: #58c9f3;
+}
+
+.module-head .search-icon {
+    height: 30px;
+    line-height: 30px;
+    width: 20px;
+    left: -22px;
+    cursor: pointer;
+}
+
+.optionedUsers{
+	width:600px;
+	height:50px;
+}
+
+
+.panel-middle{
+	height:700px;
+}

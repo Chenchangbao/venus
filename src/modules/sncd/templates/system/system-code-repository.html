@@ -1,0 +1,99 @@
+
+
+<div ng-if="repos.status == '112'" class="content">代码库申请中...</div>
+<div ng-if="repos.status == '113' && repos.createSvnFlg !=4"
+	class="content">正在努力为您创建代码库，创建过程大约需要2-3分钟。请稍后刷新本页面查看代码库信息，或者在收到代码库创建成功的提醒邮件后，回平台查看代码库信息。</div>
+
+<div class="panel-body"
+	ng-if="(hasPermissionMap[sys.sysId]['7008'] == null || !hasPermissionMap[sys.sysId]['7008'])  && repos==null ">
+	该系统尚无代码库，请先联系技术总监维护代码库信息。</div>
+
+
+<div class="row"
+	ng-if="type =='show' && (repos!=null && repos.status == '113' && repos.createSvnFlg  == 4)">
+	<div class="col-md-5">
+		<div class="panel panel-default panel-noborder">
+			<div class="panel-heading heading2">
+				<h1 class="panel-title">代码库</h1>
+			</div>
+			<div class="panel-body">
+				<sn-tree tree-data="areaData" tree-tpl="codeTreeTpl"></sn-tree>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-7">
+		<div class="panel panel-default panel-noborder">
+			<div class="panel-heading heading2">
+				<h1 class="panel-title">详细信息</h1>
+			</div>
+			<div class="panel-body">
+				<table class="table table-bordered table-hover">
+					<tbody>
+						<tr>
+							<td width="100px">SVN目录：</td>
+							<td>{{svnURL}}</td>
+						</tr>
+
+					</tbody>
+				</table>
+				<table class="table table-bordered table-hover">
+					<tbody>
+						<th width="100px" align="center">权限</th>
+						<th align="center">人员</th>
+						<tr>
+							<td>只读：</td>
+							<td height="170px">{{rUsers}}</td>
+						</tr>
+						<tr style="display:none;">
+							<td>读写：</td>
+							<td height="170px">{{rwUsers}}</td>
+						</tr>
+					</tbody>
+				</table>
+	
+	<div class="pull-right">
+				<button type="submit" class="btn btn-default" ng-click="edit();"
+					ng-if="hasPermissionMap[sys.sysId]['7006'] !=null && hasPermissionMap[sys.sysId]['7006']">修改只读权限</button></div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+
+
+
+
+<div class="panel panel-default"
+	ng-if="type=='edit' && (repos!=null && repos.status == '113' && repos.createSvnFlg  == 4)"
+	onkeydown="if(event.keyCode==13){return false;}">
+	<div class="panel-heading heading2">
+		<h3 class="panel-title">代码库权限修改</h3>
+	</div>
+	<div class="panel-body">
+		<form name="packageForm" class="form-horizontal">
+			<div class="form-group">
+				<label class="col-sm-1 control-label" for="formGroupInputSmall"
+					style="width: 20%">SVN目录：</label>
+				<div class="col-sm-6">{{rootSvnURL}}</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-1 control-label" for="formGroupInputSmall"
+					style="width: 20%">只读权限：</label>
+				<div class="col-sm-6">
+					<div class="optionedUsers" filter-list-input option="newrUsers"></div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-10">
+					<button type="submit" class="btn btn-default"
+						ng-click="updatePermission();">确定</button>
+					<button class="btn btn-default" ng-click="exitEdit();">取消</button>
+				</div>
+			</div>
+			<br />
+		</form>
+	</div>
+</div>

@@ -1,0 +1,67 @@
+<div class="module-head paneltitle">
+    <div class="module-info">
+        <p class="title titlefont">发布整合权限控制</p>
+    </div>
+</div>
+<div class="container-wrapper" ng-show="show=='0'">
+您没有当前页面的权限，如有需要，请联系管理员添加！
+</div>
+<div class="container-wrapper" ng-show="show=='1'">
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="search-con" style="padding: 15px 0;">
+                <form class="form-inline">
+                    <div class="form-group">
+                        <input type="text"  ng-keyup="search()" class="form-control" placeholder="系统英文简称" ng-model="sysName">
+                    </div>
+                    <span class="glyphicon glyphicon-search search-icon" ng-click="search()" style="cursor:pointer"></span>
+               <span>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+               <button type="button" class="btn btn-primary"   ng-click="addWhitelist()" >增加白名单系统</button>
+                </form>
+            </div>
+            
+            <div>
+                <table class="table" style="font-size:12px;">
+                    <thead>
+                    <tr>
+                        <th width="5%" style="text-align:center;">序号</th>
+                        <th width="10%" style="text-align:center;">系统名称</th>
+                        <th width="10%" style="text-align:center;">代码库名称</th>
+                        <th width="8%" style="text-align:center;">授权人员</th>
+                        <th width="12%" style="text-align:center;">授权时间</th>
+                        <th width="10%" style="text-align:center;">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody >
+                    <tr ng-repeat="sysinfo in whitelist">
+
+                        <td  width="5%" style="text-align:center;">
+                            {{$index+1}}
+                        </td>
+                        <td width="10%" style="text-align:center;">
+                            <div class="text_overflow" title="{{sysinfo.sysCnname}}" ng-if="null==sysinfo.sysParentid || sysinfo.sysParentid == '0'">{{sysinfo.sysName}}</div>
+                            <div class="text_overflow" title="{{sysinfo.sysCnname}}" ng-if="null!=sysinfo.sysParentid && sysinfo.sysParentid != '0' ">{{sysinfo.sysParentName}}</div>
+                        </td>
+                        <td  width="10%" style="text-align:center;">
+                         <div class="text_overflow" title="{{sysinfo.reposName}}">{{sysinfo.reposName}}</div>
+                        </td>
+                        <td  width="12%" style="text-align:center;">{{sysinfo.operatorName}} ({{sysinfo.operator}})</td>
+                        <td  width="10%" style="text-align:center;">{{sysinfo.updateTime}}</td>
+                        <td  width="10%" style="text-align:center;">
+                            <a ng-if="sysinfo.isValid =='1'" ng-click="updateWhitelist(sysinfo.sysId,0)" style="cursor:pointer">删除</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div>
+            </div>
+        </div>
+    </div>
+    <footer class="ft-pager clearfix">
+        <div sn-pager itemsPerPage="{{pager.pageSize}}" totalItems="{{pager.totalCount}}" listSize="{{pager.pageSize}}"
+             class="text-right">
+        </div>
+    </footer>
+</div>
+

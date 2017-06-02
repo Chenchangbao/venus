@@ -1,0 +1,21 @@
+<div class="modal fade in">
+  <div class="modal-dialog alert-modal">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="alert-content">
+          <h5 class="alert-title" ng-switch="type">
+            <i class="fa fa-info-circle text-light-blue" ng-switch-when="info"></i>
+            <i class="fa fa-exclamation-circle text-orange" ng-switch-when="warning"></i>
+            <i class="fa fa-check-circle text-green" ng-switch-when="success"></i>
+            <i class="fa fa-times-circle text-red" ng-switch-when="error"></i>
+            {{title}}
+          </h5>
+          <pre ng-bind-html="content"></pre>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" ng-click="close()">知道了</button>
+      </div>
+    </div>
+  </div>
+</div>
